@@ -2,12 +2,16 @@
 
 namespace App\Services\Scraper\Cemetery;
 
-use App\Enums\EnumMedia;
-use App\Services\Scraper\Media\MediaAuthorDTO;
+use Carbon\Carbon;
+
 use Symfony\Component\DomCrawler\Crawler;
 
+use Illuminate\Support\Str;
+
+use App\Enums\EnumMedia;
 use App\Services\Scraper\Scraper;
 use App\Services\Scraper\Media\MediaDTO;
+use App\Services\Scraper\Media\MediaAuthorDTO;
 
 class CemeteryPhotoScraper extends Scraper
 {
@@ -54,16 +58,28 @@ class CemeteryPhotoScraper extends Scraper
         $image = $item->filter('[itemprop="image"]')->first();
         $caption = $item->filter('[itemprop="name"]')->first();
 
+
+
         return new MediaDTO(
             src: $image->attr('data-src'),
             type: EnumMedia::OTHER,
             caption: $caption->count() ? $caption->text() : null,
-            added_at: $addedBy->innerText(),
-            added_by: null,
+            added_at: $this->makeDate($addedBy),
+            added_by: $this->makeAuthor($addedBy),
         );
     }
 
-    private function makeAuthor(Crawler $addedBy): MediaAuthorDTO
+    private function makeDate(?Crawler $addedBy): ?string
+    {
+        if (!$addedBy->count()) {
+            return null;
+        }
+
+        $text = Str::of($addedBy->innerText())->substr(2);
+        return Carbon::parse($text)->toAtomString();
+    }
+
+    private function makeAuthor(Crawler $addedBy): ?MediaAuthorDTO
     {
         $user = $addedBy->filter('a[href*="/user/profile"]')->first();
         $src = $user->attr('href');
@@ -72,7 +88,7 @@ class CemeteryPhotoScraper extends Scraper
 
         return new MediaAuthorDTO(
             id: intval($matches[1]),
-            src: $user->attr('src'),
+            src: $src,
             fullName: $user->text(),
         );
     }
