@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\Scraper\ContinentScrapJob;
 use App\Jobs\Scraper\ScrapContinentJob;
+use App\Services\Scraper\Location\ContinentScraper;
+use App\Services\Scraper\Location\LocationDTO;
 use App\Services\Scraper\Location\LocationScraper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -29,8 +32,18 @@ class ScrapLocations extends Command
      */
     public function handle(): void
     {
+        /**
+         * @var $continents array<LocationDTO>
+         */
+//        $continents = (new ContinentScraper())->start();
 
-        (new LocationScraper())->start();
+//        foreach ($continents as $continent) {
+            ContinentScrapJob::dispatch("continent_72");
+//                ->delay(now()->addMinutes(2));
+//            break;
+//        }
+
+//        dd($continents);
 //
 //
 //        $response  = Http::get("https://www.findagrave.com/cemetery-browse");

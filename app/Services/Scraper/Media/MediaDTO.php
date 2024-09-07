@@ -7,10 +7,10 @@ use App\Enums\EnumMedia;
 class MediaDTO
 {
     public function __construct(
-        public string $url,
-        public int $added_by,
-        public EnumMedia $type,
-        public string $added_at,
+        public string $src,
+        public ?EnumMedia $type,
         public ?string $caption,
+        public ?string $added_at,
+        public ?MediaAuthorDTO $added_by,
     ) {}
 }

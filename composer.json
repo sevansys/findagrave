@@ -9,6 +9,7 @@
         "ext-dom": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "predis/predis": "^2.2",
         "symfony/dom-crawler": "^7.1"
     },
     "require-dev": {

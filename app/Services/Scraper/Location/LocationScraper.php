@@ -2,11 +2,11 @@
 
 namespace App\Services\Scraper\Location;
 
-use Illuminate\Http\Client\Response;
+use Symfony\Component\DomCrawler\Crawler;
 
 use Illuminate\Support\Str;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\DomCrawler\Crawler;
 
 use App\Enums\EnumLocation;
 use App\Services\Scraper\Scraper;
@@ -15,14 +15,13 @@ class LocationScraper extends Scraper
 {
     protected array $graph;
 
-    private int $depth = 0;
-
-    protected string $path = "/cemetery-browse";
     const ITEMS_SELECTOR = ".name-grave > a";
 
-    public function start(): void
+    protected string $path = "/cemetery-browse";
+
+    public function start(?string $locationId = null): mixed
     {
-        $response = $this->scrap($this->path);
+        $response = $this->scrap($this->getRootPath($locationId));
         foreach ($this->fetchItems($response) as $node) {
             if (!$node) {
                 continue;
@@ -35,11 +34,13 @@ class LocationScraper extends Scraper
             $this->scrapLocation($continent);
         }
 
-        Storage::put('locations.json', json_encode($this->graph));
+        return Storage::put("locations.$locationId.json", json_encode($this->graph));
     }
 
     protected function scrapLocation(LocationDTO $location): void
     {
+        dump($location);
+
         $response = $this->scrap($location->src);
         foreach ($this->fetchItems($response) as $node) {
             $node = new Crawler($node);
@@ -50,7 +51,7 @@ class LocationScraper extends Scraper
         }
     }
 
-    private function produceItem(Crawler $node): LocationDTO
+    protected function produceItem(Crawler $node): LocationDTO
     {
         $src = $node->attr('href');
 
@@ -65,6 +66,21 @@ class LocationScraper extends Scraper
             source_id: $source_id,
             type: $type,
             items: [],
+        );
+    }
+
+    protected function fetchItems(Response $response): Crawler
+    {
+        $crawler = new Crawler($response->getBody()->getContents());
+        return $crawler->filter(self::ITEMS_SELECTOR);
+    }
+
+    private function getRootPath(?string $locationId = null): string
+    {
+        return sprintf(
+            "%s%s",
+            $this->path,
+            $locationId ? "" : "/?id=$$locationId"
         );
     }
 
@@ -103,11 +119,5 @@ class LocationScraper extends Scraper
     private function isCemeteryByUrl(string $src): bool
     {
         return Str::of($src)->test('#^\/cemetery\/\d+#');
-    }
-
-    private function fetchItems(Response $response): Crawler
-    {
-        $crawler = new Crawler($response->getBody()->getContents());
-        return $crawler->filter(self::ITEMS_SELECTOR);
     }
 }
