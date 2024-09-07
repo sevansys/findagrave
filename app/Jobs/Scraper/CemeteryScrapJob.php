@@ -2,12 +2,10 @@
 
 namespace App\Jobs\Scraper;
 
-use App\Services\Scraper\Cemetery\CemeteryScraper;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+use App\Services\Scraper\Cemetery\CemeteryScraper;
 
 class CemeteryScrapJob implements ShouldQueue
 {

@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\Scraper\CemeteryScrapJob;
 use Illuminate\Console\Command;
+
+use App\Jobs\Scraper\CemeteryScrapJob;
 
 class ScrapCemetery extends Command
 {
@@ -12,7 +13,7 @@ class ScrapCemetery extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-cemetery';
+    protected $signature = 'app:scrap-cemetery {src}';
 
     /**
      * The console command description.
@@ -26,7 +27,6 @@ class ScrapCemetery extends Command
      */
     public function handle(): void
     {
-        CemeteryScrapJob::dispatch('/cemetery/639018/cimetière-du-père-lachaise');
-            //
+        CemeteryScrapJob::dispatch($this->argument('src'));
     }
 }

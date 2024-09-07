@@ -15,8 +15,6 @@ use App\Services\Scraper\Media\MediaAuthorDTO;
 
 class CemeteryPhotoScraper extends Scraper
 {
-    private ?Crawler $crawler;
-
     public function __construct(
         public string $src,
         private array $items = [],
@@ -29,8 +27,10 @@ class CemeteryPhotoScraper extends Scraper
 
     public function start(): array
     {
-        $response = file_get_contents(app_path('Stubs/Scraper/cemetery-single-photos.html'));
-//        $response = $this->scrap($this->getUrl())->getBody()->getContents();
+        // Uncomment to use stub HTML for a faster development process
+        // $response = file_get_contents(app_path('Stubs/Scraper/cemetery-single-photos.html'));
+
+        $response = $this->scrap($this->getUrl())->getBody()->getContents();
 
         $this->crawler = new Crawler($response);
 
@@ -58,10 +58,10 @@ class CemeteryPhotoScraper extends Scraper
         $image = $item->filter('[itemprop="image"]')->first();
         $caption = $item->filter('[itemprop="name"]')->first();
 
-
+        $src = parse_url($image->attr('data-src'), PHP_URL_PATH);
 
         return new MediaDTO(
-            src: $image->attr('data-src'),
+            src: $src,
             type: EnumMedia::OTHER,
             caption: $caption->count() ? $caption->text() : null,
             added_at: $this->makeDate($addedBy),
