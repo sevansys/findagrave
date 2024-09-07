@@ -2,11 +2,15 @@
 
 namespace App\Services\Scraper;
 
+use Symfony\Component\DomCrawler\Crawler;
+
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 
 abstract class Scraper
 {
+    protected ?Crawler $crawler = null;
+
     public abstract function start();
 
     public function getBase()

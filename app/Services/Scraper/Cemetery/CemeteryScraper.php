@@ -4,36 +4,36 @@ namespace App\Services\Scraper\Cemetery;
 
 use Symfony\Component\DomCrawler\Crawler;
 
+use Illuminate\Support\Str;
+
 use App\Services\Scraper\Scraper;
 
 class CemeteryScraper extends Scraper
 {
     private CemeteryDTO $record;
-    private ?Crawler $crawler = null;
 
     public function __construct(
         private readonly string $src,
     ) {
         $this->record = new CemeteryDTO(
             src: $this->src,
-            name: "",
+            name: "Unknown",
         );
     }
 
     public function start(): CemeteryDTO
     {
-         $response = file_get_contents(app_path('Stubs/Scraper/cemetery-single-about.html'));
-        // $response = $this->scrap($this->src)->getBody()->getContents();
+        // Uncomment to use stub HTML for a faster development process
+        // $response = file_get_contents(app_path('Stubs/Scraper/cemetery-single-about.html'));
+
+        $response = $this->scrap($this->src)->getBody()->getContents();
 
         $this->crawler = new Crawler($response);
 
-        $this
+        return $this
             ->produceAbout()
-            ->producePhotos();
-
-        dd($this->record);
-
-        return $this->record;
+            ->producePhotos()
+            ->record;
     }
 
     private function produceAbout(): self
@@ -57,9 +57,9 @@ class CemeteryScraper extends Scraper
 
     private function produceUrl(): self
     {
-        $node = $this->crawler->filter('[itemprop="url"]')?->first();
+        $node = $this->crawler->filter('[itemprop="url"]')->first();
 
-        if (!$node) {
+        if (!$node->count()) {
             return $this;
         }
 
@@ -73,9 +73,9 @@ class CemeteryScraper extends Scraper
 
     private function producePhone(): self
     {
-        $node = $this->crawler->filter('.icon-phone + span > a')?->first();
+        $node = $this->crawler->filter('.icon-phone + span > a')->first();
 
-        if (!$node) {
+        if (!$node->count()) {
             return $this;
         }
 
@@ -88,7 +88,14 @@ class CemeteryScraper extends Scraper
     }
     private function produceDescription(): self
     {
-        $this->record->description = $this->crawler->filter('#fullBio')?->first()?->html();
+        $node = $this->crawler->filter('#fullBio')->first();
+
+        if (!$node->count()) {
+            return $this;
+        }
+
+        $this->record->description = $node->html();
+
         return $this;
     }
 
@@ -107,7 +114,7 @@ class CemeteryScraper extends Scraper
 
     private function produceSourceId(): self
     {
-        preg_match("#\/cemetery\/(\d*)\/#", $this->src, $matches);
+        preg_match("#/cemetery/(\d*)/#", $this->src, $matches);
         $this->record->source_id = intval($matches[1]);
 
         return $this;
@@ -115,21 +122,26 @@ class CemeteryScraper extends Scraper
 
     private function produceTitle(): self
     {
-        $this->record->name = $this->crawler->filter('#profile-section .bio-name')?->first()->text()
-            ?? "Unknown";
+        $node = $this->crawler->filter('#profile-section .bio-name');
+
+        if (!$node->count()) {
+            return $this;
+        }
+
+        $this->record->name = $node->first()->text();
 
         return $this;
     }
 
     private function produceAddress(): self
     {
-        $node = $this->crawler->filter('address > span')?->first();
+        $node = $this->crawler->filter('address');
 
-        if (!$node) {
+        if (!$node->count()) {
             return $this;
         }
 
-        $this->record->address = $node->html();
+        $this->record->address = Str::of($node->text())->after("Get directions ");
 
         return $this;
     }
