@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Scraper\Media;
+namespace App\Services\Scraper\User;
 
-class MediaAuthorDTO
+class AuthorDTO
 {
     public function __construct(
         public int $id,
         public string $src,
-        public string $fullName,
+        public string $full_name,
     ) {}
 }

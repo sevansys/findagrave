@@ -2,16 +2,13 @@
 
 namespace App\Services\Scraper\Cemetery;
 
-use Carbon\Carbon;
-
-use Symfony\Component\DomCrawler\Crawler;
-
-use Illuminate\Support\Str;
-
 use App\Enums\EnumMedia;
-use App\Services\Scraper\Scraper;
 use App\Services\Scraper\Media\MediaDTO;
-use App\Services\Scraper\Media\MediaAuthorDTO;
+use App\Services\Scraper\Scraper;
+use App\Services\Scraper\User\AuthorDTO;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Symfony\Component\DomCrawler\Crawler;
 
 class CemeteryPhotoScraper extends Scraper
 {
@@ -79,17 +76,17 @@ class CemeteryPhotoScraper extends Scraper
         return Carbon::parse($text)->toAtomString();
     }
 
-    private function makeAuthor(Crawler $addedBy): ?MediaAuthorDTO
+    private function makeAuthor(Crawler $addedBy): ?AuthorDTO
     {
         $user = $addedBy->filter('a[href*="/user/profile"]')->first();
         $src = $user->attr('href');
 
         preg_match("#/user/profile/(\d*)#", $src, $matches);
 
-        return new MediaAuthorDTO(
+        return new AuthorDTO(
             id: intval($matches[1]),
             src: $src,
-            fullName: $user->text(),
+            full_name: $user->text(),
         );
     }
 }

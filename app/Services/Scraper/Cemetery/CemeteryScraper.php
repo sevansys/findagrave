@@ -109,6 +109,7 @@ class CemeteryScraper extends Scraper
         }
 
         $this->record->coordinates = array_splice($data, 0, 2);
+
         return $this;
     }
 
