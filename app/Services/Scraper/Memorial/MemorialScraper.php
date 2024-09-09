@@ -2,12 +2,17 @@
 
 namespace App\Services\Scraper\Memorial;
 
-use Carbon\Carbon;
 use Symfony\Component\DomCrawler\Crawler;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 
+use Carbon\Carbon;
+
+use App\Enums\EnumSuffix;
+use App\Enums\EnumBurial;
 use App\Services\Scraper\Scraper;
+use App\Services\Scraper\User\UserScraper;
 use App\Services\Scraper\Media\MediaScraper;
 
 class MemorialScraper extends Scraper
@@ -22,27 +27,20 @@ class MemorialScraper extends Scraper
         );
     }
 
-//    /**
-//     * Uncomment to use stub HTML for a faster development process - MONUMENT
-//     *
-//     * @param string|null $path
-//     * @return string
-//     */
-//    protected function fetchResponse(?string $path): string
-//    {
-//        return file_get_contents(app_path('Stubs/Scraper/memorial-single-about.html'));
-//    }
-//
-//    /**
-//     * Uncomment to use stub HTML for a faster development process - PERSON
-//     *
-//     * @param string|null $path
-//     * @return string
-//     */
-//    protected function fetchResponse(?string $path): string
-//    {
-//        return file_get_contents(app_path('Stubs/Scraper/memorial-single-person-about.html'));
-//    }
+    /**
+     * Uncomment to use stub HTML for a faster development process - MONUMENT
+     *
+     * @param string|null $path
+     * @return string
+     */
+    protected function fetchResponse(?string $path): string
+    {
+//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-other-burial.html'));
+//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-about.html'));
+        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-person-about.html'));
+//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-with-nickname.html'));
+    }
+
 
     public function start(): MemorialDTO
     {
@@ -66,9 +64,13 @@ class MemorialScraper extends Scraper
             ->produceDeath()
             ->produceBirth()
             ->produceLabels()
+            ->produceBurial()
+            ->produceSiblings()
+            ->produceBioAuthor()
             ->produceCreatedAt()
             ->produceCoordinates()
             ->produceInscription()
+            ->produceOriginalName()
             ->producePrefixSuffix()
             ->produceGravityDetails();
     }
@@ -83,13 +85,15 @@ class MemorialScraper extends Scraper
         $this->record->source_id = empty($source_id) ? null : intval($source_id);
         $this->record->person_id = empty($person_id) ? null : intval($person_id);
         $this->record->cemetery_source_id = empty($cemetery_id) ? null : intval($cemetery_id);
-        $this->record->contributor_id = empty($contributor_id) ? null : intval($contributor_id);
+        $this->record->contributor_source_id = empty($contributor_id) ? null : intval($contributor_id);
 
         return $this;
     }
 
     private function produceTitle(): self
     {
+        $fullName = $this->getScriptValue('fullName');
+
         $lastName = $this->getScriptValue('lastName');
         $firstName = $this->getScriptValue('firstName');
         $middleName = $this->getScriptValue('middleName');
@@ -98,7 +102,32 @@ class MemorialScraper extends Scraper
         $this->record->first_name = !empty($firstName) ? $firstName : null;
         $this->record->middle_name = !empty($middleName) ? $middleName : null;
 
+        $this->record->nickname = $fullName ? $this->extractNickname($fullName) : null;
+        $this->record->maiden_name = $fullName ? $this->extractMaidenName($fullName) : null;
+
         return $this;
+    }
+
+    private function extractNickname(string $fullName): ?string
+    {
+        if (preg_match("#“(.*)”#", $fullName, $matches)) {
+            if (!empty($matches[1])) {
+                return trim($matches[1]);
+            }
+        }
+
+        return null;
+    }
+
+    private function extractMaidenName(string $fullName): ?string
+    {
+        if (preg_match("#&lt;I&gt;(.*)&lt;/I&gt;#", $fullName, $matches)) {
+            if (!empty($matches[1])) {
+                return trim($matches[1]);
+            }
+        }
+
+        return null;
     }
 
     private function produceDeath(): self
@@ -145,6 +174,77 @@ class MemorialScraper extends Scraper
         $this->record->is_memorial = $isMemorial === 'true';
         $this->record->is_cenotaph = $isCenotaph === 'true';
         $this->record->is_still_living = $isStillLiving === 'true';
+
+        return $this;
+    }
+
+    private function produceBurial(): self
+    {
+        $node = $this->crawler->filter('#otherPlace')->first();
+
+        if (!$node->count()) {
+            return $this;
+        }
+
+        $value = Str::of($node->text() ?? '');
+
+        $burial_detail = $value->after('Specifically: ')->trim();
+        $burial = $value->before(' Specifically')->trim()->rtrim('.');
+
+        if ($burial->isNotEmpty()) {
+            $this->record->burial = EnumBurial::getType($burial->toString());
+        }
+
+        if ($burial_detail->isNotEmpty()) {
+            $this->record->burial_derails = $burial_detail->toString();
+        }
+
+        return $this;
+    }
+
+    private function produceSiblings(): self
+    {
+        $this->record->parents = $this->extractParents();
+        $this->record->spouses = $this->extractSpouses();
+
+        return $this;
+    }
+
+    private function extractParents(): array
+    {
+        return $this->extractSiblingsBySelector('#parentsLabel + .member-family > li > a');
+    }
+
+    private function extractSpouses(): array
+    {
+        return $this->extractSiblingsBySelector('#spouseLabel + .member-family > li > a');
+    }
+
+    private function extractSiblingsBySelector(string $selector): array
+    {
+        $items = $this->crawler->filter($selector);
+
+        $data = [];
+        foreach ($items as $item) {
+            $item = new Crawler($item);
+            $data[] = UserScraper::getIdFromSiblingNode($item);
+        }
+
+        return $data;
+    }
+
+    private function produceBioAuthor(): self
+    {
+        $node = $this->crawler->filter('.data-bio .text-muted > a')->first();
+
+        if (!$node->count()) {
+            return $this;
+        }
+
+        $href = Str::of($node->attr('href') ?? '')->trim();
+        $id = $href->match('#user/profile/(\d*)#');
+
+        $this->record->bio_author_source_id = $id->toInteger();
 
         return $this;
     }
@@ -246,6 +346,10 @@ class MemorialScraper extends Scraper
         $query = parse_url($href, PHP_URL_QUERY);
         parse_str($query, $params);
 
+        if (empty($params['spn'])) {
+            return $this;
+        }
+
         $coords = Str::of($params['spn'])
             ->explode(',')
             ->map(fn(string $value) => floatval($value))
@@ -269,17 +373,61 @@ class MemorialScraper extends Scraper
         return $this;
     }
 
+    private function produceOriginalName(): self
+    {
+        $dt = null;
+        foreach ($this->crawler->filter('.mem-events > dt') as $node) {
+            $node = new Crawler($node);
+            $text = Str::of($node->text())->trim();
+
+            if ($text->toString() === 'Original Name') {
+                $dt = $node;
+                break;
+            }
+        }
+
+        if (!$dt) {
+            return $this;
+        }
+
+        $original_name = $dt->siblings()->text();
+
+        $this->record->original_name = !empty($original_name) ? $original_name : null;
+
+        return $this;
+    }
+
     private function producePrefixSuffix(): self
     {
         $fullName = $this->getScriptValue('fullName');
+        $fullName = Str::of($fullName ?? "")->trim();
 
-        $prefix = (string)Str::of($fullName)->match('#&quot;prefix&quot;&gt;(.*)&lt;#');
-        $suffix = (string)Str::of($fullName)->match('#&quot;suffix&quot;&gt;(.*)&lt;#');
-
-        $this->record->prefix = !empty($prefix) ? $prefix : null;
-        $this->record->suffix = !empty($suffix) ? $suffix : null;
+        $this->record->prefix = $this->detectPrefix($fullName);
+        $this->record->suffix = $this->detectSuffix($fullName);
 
         return $this;
+    }
+
+    private function detectPrefix(Stringable $fullName): ?string
+    {
+        $prefix = $fullName->match('#&lt;span class=&quot;prefix&quot;&gt;(.*)&lt;/span&gt;#');
+
+        if (!empty($prefix)) {
+            return $prefix->toString();
+        }
+
+        return null;
+    }
+
+    private function detectSuffix(Stringable $fullName): ?EnumSuffix
+    {
+        foreach (EnumSuffix::map() as $suffix => $suffixValue) {
+            if ($fullName->endsWith($suffix)) {
+                return $suffixValue;
+            }
+        }
+
+        return null;
     }
 
     private function producePhotos(): self
@@ -292,12 +440,6 @@ class MemorialScraper extends Scraper
     private function makePhotos(): array
     {
         $json = $this->getScriptValue('photos', true) ?? [];
-
-        return collect($json['photos'] ?? [])
-            ->reduce(function (array $payload, array $photo) {
-                $payload[] =  MediaScraper::fromScriptData($photo);
-
-                return $payload;
-            }, []);
+        return MediaScraper::fromScriptData($json['photos'] ?? []);
     }
 }

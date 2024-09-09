@@ -7,6 +7,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Str;
 
 use App\Services\Scraper\Scraper;
+use App\Services\Scraper\Media\MediaScraper;
 
 class CemeteryScraper extends Scraper
 {
@@ -21,14 +22,21 @@ class CemeteryScraper extends Scraper
         );
     }
 
+//    /**
+//     * Uncomment to use stub HTML for a faster development process
+//     *
+//     * @param string|null $path
+//     * @return string
+//     */
+//    protected function fetchResponse(?string $path): string
+//    {
+//        return file_get_contents(app_path('Stubs/Scraper/Cemetery/single-about.html'));
+//    }
+
     public function start(): CemeteryDTO
     {
-        // Uncomment to use stub HTML for a faster development process
-        // $response = file_get_contents(app_path('Stubs/Scraper/cemetery-single-about.html'));
-
-        $response = $this->scrap($this->src)->getBody()->getContents();
-
-        $this->crawler = new Crawler($response);
+        $this->scrap($this->src)
+            ->withFindAGraveScript();
 
         return $this
             ->produceAbout()
@@ -44,13 +52,28 @@ class CemeteryScraper extends Scraper
             ->produceDescription()
             ->produceCoordinates()
             ->produceUrl()
+            ->produceSearchUrl()
             ->producePhone()
             ->produceAddress();
     }
 
     private function producePhotos(): self
     {
-        $this->record->photos = (new CemeteryPhotoScraper($this->src))->start() ?? [];
+
+        $photosString = $this->script
+            ->after('photos:')
+            ->beforeLast('}')
+            ->trim()
+            ->append('}');
+
+        $photos = json_decode($photosString, true) ?? [];
+        $photos = $photos["photos"] ?? null;
+
+        if (empty($photos)) {
+            return $this;
+        }
+
+        $this->record->photos = MediaScraper::fromScriptData($photos);
 
         return $this;
     }
@@ -67,6 +90,15 @@ class CemeteryScraper extends Scraper
             url: $node->attr('href'),
             text: $node->text()
         );
+
+        return $this;
+    }
+
+    private function produceSearchUrl(): self
+    {
+        $search_url = $this->getScriptValue("searchUrl") ?? null;
+
+        $this->record->search_url = !empty($search_url) ? $search_url : null;
 
         return $this;
     }

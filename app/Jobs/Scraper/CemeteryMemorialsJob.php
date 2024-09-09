@@ -5,9 +5,9 @@ namespace App\Jobs\Scraper;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Services\Scraper\Memorial\MemorialScraper;
+use App\Services\Scraper\Cemetery\CemeteryMemorialsScraper;
 
-class MemorialScrapJob implements ShouldQueue
+class CemeteryMemorialsJob implements ShouldQueue
 {
     use Queueable;
 
@@ -15,7 +15,8 @@ class MemorialScrapJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        private readonly string $src
+        private readonly string $src,
+        private readonly int $page,
     ) {}
 
     /**
@@ -23,7 +24,7 @@ class MemorialScrapJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $memorial = (new MemorialScraper($this->src))->start();
-        dd($memorial);
+        $memorials = (new CemeteryMemorialsScraper($this->src, $this->page))->start();
+        dd($memorials);
     }
 }

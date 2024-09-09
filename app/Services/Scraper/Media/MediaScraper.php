@@ -2,16 +2,26 @@
 
 namespace App\Services\Scraper\Media;
 
+use Exception;
+
+use Carbon\Carbon;
+
+use Illuminate\Support\Str;
+
 use App\Enums\EnumMedia;
 use App\Services\Scraper\Scraper;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class MediaScraper extends Scraper
 {
-    public function start()
+    public function start() {}
+
+    public static function fromScriptData(array $data): array
     {
-        // TODO: Implement start() method.
+        return array_reduce($data, function (array $payload, array $item) {
+            $payload[] = self::fromScriptDataItem($item);
+
+            return $payload;
+        }, []);
     }
 
     public static function getTypeFromString(?string $type): ?EnumMedia
@@ -25,28 +35,36 @@ class MediaScraper extends Scraper
 
         try {
             return constant($expression);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             report($exception);
             return null;
         }
     }
 
-    public static function fromScriptData(array $data): MediaDTO
+    public static function fromScriptDataItem(array $data): MediaDTO
     {
         $contributor = $data["contributor"] ?? [];
-        $contributor_id = $data["contributorId"] ?? $contributor["id"];
+        $contributor_id = $data["contributorId"] ?? $contributor["id"] ?? null;
 
-        $src = parse_url($data["path"], PHP_URL_PATH);
+        $src = parse_url($data["path"] ?? "", PHP_URL_PATH);
+
+        $type = $data["type"] ?? null;
+        $width = $data["with"] ?? null;
+        $height = $data["height"] ?? null;
+        $caption = $data["caption"] ?? null;
+        $source_id = !empty($data["id"]) ? intval($data["id"]) : null;
+        $contributor_id = $contributor_id ? intval($contributor_id) : null;
+        $created_at = !empty($data["dateCreated"]) ? Carbon::parse($data["dateCreated"])->toDateString() : null;
 
         return new MediaDTO(
             src: $src,
-            width: $data["width"],
-            height: $data["height"],
-            source_id: intval($data['id']),
-            caption: $data["caption"],
-            type: self::getTypeFromString($data["type"]),
-            created_at: Carbon::parse($data["dateCreated"])->toDateString(),
-            contributor_id: intval($contributor_id),
+            width: $width,
+            height: $height,
+            source_id: $source_id,
+            caption: $caption,
+            type: self::getTypeFromString($type),
+            created_at: $created_at,
+            contributor_id: $contributor_id,
         );
     }
 }

@@ -23,7 +23,6 @@ class CemeteryScrapJob implements ShouldQueue
      */
     public function handle(): void
     {
-
         $cemetery = (new CemeteryScraper($this->src))->start();
         dd($cemetery);
     }

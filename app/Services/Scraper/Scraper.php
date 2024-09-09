@@ -3,13 +3,13 @@
 namespace App\Services\Scraper;
 
 use DOMElement;
-use Illuminate\Support\Str;
+
 use Symfony\Component\DomCrawler\Crawler;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
-
-use Stringable;
 
 abstract class Scraper
 {
@@ -19,7 +19,7 @@ abstract class Scraper
 
     protected ?Response $response = null;
 
-    const string EXPRESSION = '#%s:\s{1,}({.*}|.*|".*")#';
+    const string EXPRESSION = '#%s:\s{1,}({.*}|.*|".*")#m';
 
     public abstract function start();
 
@@ -49,7 +49,6 @@ abstract class Scraper
 
     protected function getScriptValue(string $key, bool $isJson = false): null|string|array
     {
-
         $value = $this->script->match(sprintf(self::EXPRESSION, $key));
         $value = Str::of($value)
             ->rtrim(",")
@@ -78,6 +77,7 @@ abstract class Scraper
         $definitionScript = collect($scripts)->filter(function (DOMElement $node) {
             return preg_match("#var findagrave =#", $node->textContent);
         })->first();
+
         $scriptContent = (new Crawler($definitionScript))->html();
 
         return Str::of($scriptContent)

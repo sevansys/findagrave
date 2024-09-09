@@ -11,6 +11,7 @@ class CemeteryDTO
         public ?int $source_id = null,
         public ?string $address = null,
         public ?array $coordinates = null,
+        public ?string $search_url = null,
         public ?string $description = null,
         public ?CemeteryPhoneDTO $phone = null,
         public ?CemeteryWebsiteDTO $website = null,
