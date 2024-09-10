@@ -23,7 +23,6 @@ class MemorialScrapJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $memorial = (new MemorialScraper($this->src))->start();
-        dd($memorial);
+        (new MemorialScraper($this->src))->start();
     }
 }

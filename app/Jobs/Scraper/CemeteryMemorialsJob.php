@@ -25,6 +25,9 @@ class CemeteryMemorialsJob implements ShouldQueue
     public function handle(): void
     {
         $memorials = (new CemeteryMemorialsScraper($this->src, $this->page))->start();
-        dd($memorials);
+
+        if (!empty($memorials)) {
+            CemeteryMemorialsJob::dispatch($this->src, $this->page + 1)->delay(now()->addMinute());
+        }
     }
 }

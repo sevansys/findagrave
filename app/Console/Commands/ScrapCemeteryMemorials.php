@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use App\Jobs\Scraper\CemeteryMemorialsJob;
+
 class ScrapCemeteryMemorials extends Command
 {
     /**
@@ -11,7 +13,7 @@ class ScrapCemeteryMemorials extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-cemetery-memorials';
+    protected $signature = 'app:scrap-cemetery-memorials {src} {page}';
 
     /**
      * The console command description.
@@ -23,8 +25,11 @@ class ScrapCemeteryMemorials extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        //
+        $src = $this->argument('src');
+        $page = intval($this->argument('page'));
+
+        CemeteryMemorialsJob::dispatch($src, $page);
     }
 }

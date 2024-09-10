@@ -27,20 +27,19 @@ class MemorialScraper extends Scraper
         );
     }
 
-    /**
-     * Uncomment to use stub HTML for a faster development process - MONUMENT
-     *
-     * @param string|null $path
-     * @return string
-     */
-    protected function fetchResponse(?string $path): string
-    {
-//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-other-burial.html'));
-//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-about.html'));
-        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-person-about.html'));
-//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-with-nickname.html'));
-    }
-
+//    /**
+//     * Uncomment to use stub HTML for a faster development process - MONUMENT
+//     *
+//     * @param string|null $path
+//     * @return string
+//     */
+//    protected function fetchResponse(?string $path): string
+//    {
+////        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-other-burial.html'));
+////        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-about.html'));
+//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-person-about.html'));
+////        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-with-nickname.html'));
+//    }
 
     public function start(): MemorialDTO
     {
