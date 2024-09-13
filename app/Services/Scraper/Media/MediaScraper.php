@@ -2,14 +2,12 @@
 
 namespace App\Services\Scraper\Media;
 
-use Exception;
-
-use Carbon\Carbon;
-
-use Illuminate\Support\Str;
-
+use App\DTO\Media\MediaDTO;
 use App\Enums\EnumMedia;
 use App\Services\Scraper\Scraper;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Str;
 
 class MediaScraper extends Scraper
 {

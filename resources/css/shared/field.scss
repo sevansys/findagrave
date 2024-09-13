@@ -1,0 +1,49 @@
+$field-border-active-color: #f0d1b3;
+$field-focus-shadow: 0 0 0 .25rem rgba(204,102,0,.65);
+
+:root {
+  --field-box-shadow: none;
+  --field-border-color: #{$color-border};
+}
+
+.field {
+  cursor: text;
+
+  &__label {
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 3;
+    transform: translateY(-50%);
+
+    transition: transform .15s ease-in-out, top .15s ease-in-out, font-size .15s ease-in-out, color .15s ease-in-out;
+  }
+
+  input {
+    position: relative;
+
+    box-shadow: var(--field-box-shadow);
+    border: 1px solid var(--field-border-color);
+
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
+
+    &:focus {
+      z-index: 2;
+    }
+
+    &:is(:not(:placeholder-shown), :focus) {
+      --field-box-shadow: #{$field-focus-shadow};
+      --field-border-color: #{$field-border-active-color};
+
+      & + .field__label {
+        top: 0;
+        transform: none;
+
+        color: grey;
+        font-size: 12px;
+      }
+    }
+  }
+}

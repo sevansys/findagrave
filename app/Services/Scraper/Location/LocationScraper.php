@@ -5,100 +5,90 @@ namespace App\Services\Scraper\Location;
 use Symfony\Component\DomCrawler\Crawler;
 
 use Illuminate\Support\Str;
-use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Storage;
 
 use App\Enums\EnumLocation;
 use App\Services\Scraper\Scraper;
+use App\DTO\Location\LocationDTO;
+use App\DTO\Cemetery\CemeteryDTO;
 
 class LocationScraper extends Scraper
 {
-    protected array $graph;
+    protected array $locations = [];
 
-    const ITEMS_SELECTOR = ".name-grave > a";
+    protected array $cemeteries = [];
 
-    protected string $path = "/cemetery-browse";
+    const string ITEMS_SELECTOR = '.name-grave > a';
 
-    public function start(?string $locationId = null): mixed
+    public function __construct(
+        private readonly string $src
+    ) {}
+
+//    protected function fetchResponse(?string $path): string
+//    {
+////        return file_get_contents(app_path('Stubs/Scraper/Location/country-cities.html'));
+//        return file_get_contents(app_path('Stubs/Scraper/Location/with-cemeteries.html'));
+//    }
+
+    public function start(): array
     {
-        $response = $this->scrap($this->getRootPath($locationId));
-        foreach ($this->fetchItems($response) as $node) {
+        $this->scrap($this->src);
+
+        foreach ($this->fetchItems() as $node) {
             if (!$node) {
                 continue;
             }
 
-            $this->graph[] = $this->produceItem(new Crawler($node));
+            $item = $this->produceItem(new Crawler($node));
+
+            if ($item instanceof LocationDTO) {
+                $this->locations[] = $item;
+            } else {
+                $this->cemeteries[] = $item;
+            }
         }
 
-        foreach ($this->graph as $continent) {
-            $this->scrapLocation($continent);
-        }
-
-        return Storage::put("locations.$locationId.json", json_encode($this->graph));
+        return [$this->locations, $this->cemeteries];
     }
 
-    protected function scrapLocation(LocationDTO $location): void
-    {
-        dump($location);
-
-        $response = $this->scrap($location->src);
-        foreach ($this->fetchItems($response) as $node) {
-            $node = new Crawler($node);
-            $item = $this->produceItem($node);
-            $this->scrapLocation($item);
-
-            $location->items[] = $item;
-        }
-    }
-
-    protected function produceItem(Crawler $node): LocationDTO
+    protected function produceItem(Crawler $node): LocationDTO|CemeteryDTO
     {
         $src = $node->attr('href');
 
         $is_cemetery = $this->isCemeteryByUrl($src);
 
-        $source_id = $this->extractId($src, $is_cemetery);
-        $type = $is_cemetery ? EnumLocation::CEMETERY : $this->detectLocationTypeByType($source_id);
+        if ($is_cemetery) {
+            return $this->makeCemeteryItem($node, $src);
+        } else {
+            return $this->makeLocationItem($node, $src);
+        }
+    }
+
+    private function makeCemeteryItem(Crawler $node, string $src): CemeteryDTO
+    {
+        return new CemeteryDTO(
+            src: $src,
+            name: $node->text(),
+        );
+    }
+
+    private function makeLocationItem(Crawler $node, string $src): LocationDTO
+    {
+        $source_id = $this->extractId($src);
+        $type = $this->detectLocationTypeByType($source_id);
 
         return new LocationDTO(
             src: $src,
             text: $node->text(),
-            source_id: $source_id,
             type: $type,
-            items: [],
         );
     }
 
-    protected function fetchItems(Response $response): Crawler
+    protected function fetchItems(): Crawler
     {
-        $crawler = new Crawler($response->getBody()->getContents());
-        return $crawler->filter(self::ITEMS_SELECTOR);
+        return $this->crawler->filter(self::ITEMS_SELECTOR);
     }
 
-    private function getRootPath(?string $locationId = null): string
-    {
-        return sprintf(
-            "%s%s",
-            $this->path,
-            $locationId ? "" : "/?id=$$locationId"
-        );
-    }
-
-    private function extractId(string $src, bool $isCementer): ?string
-    {
-        if ($isCementer) {
-            return $this->extractCemeteryId($src);
-        } else {
-            return $this->extractLocationId($src);
-        }
-    }
-
-    private function extractCemeteryId(string $src): string
-    {
-        return $src;
-    }
-
-    private function extractLocationId(string $src): string
+    private function extractId(string $src): string
     {
         $url = parse_url($src, PHP_URL_QUERY);
         parse_str($url, $params);

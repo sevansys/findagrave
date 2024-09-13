@@ -1,0 +1,49 @@
+.fields-group {
+  .field {
+    flex: 1;
+  }
+
+  &:is(.gap-0) > .field {
+    &:is(:first-child) {
+      input {
+        border-right-width: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+    }
+
+    &:is(:last-child) {
+      input {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+
+    &:not(:first-child):not(:last-child) {
+      input {
+        border-radius: 0 !important;
+        border-right-width: 0 !important;
+      }
+    }
+  }
+
+  &_1_1_2 {
+    & > * {
+      flex: 1;
+    }
+
+    & > *:is(:last-child) {
+      flex: 2;
+    }
+  }
+
+  &_3_3_1 {
+    & > * {
+      flex: 3;
+    }
+
+    & > *:is(:last-child) {
+      flex: 1;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+.page:not(.page--home) {
+  .header {
+    background-color: $color-primary;
+  }
+}
+
+.page {
+  &--home {
+    .header {
+      top: 0;
+      z-index: 12;
+      position: absolute;
+
+      width: 100%;
+
+      padding-block: 12px;
+
+      background-color: rgba(0, 0, 0, 0);
+      background-image: linear-gradient(to bottom, #36322D 6px, rgba(54, 50, 45, 0) 95%);
+    }
+  }
+}

@@ -13,7 +13,7 @@ class ScrapCemetery extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-cemetery {src}';
+    protected $signature = 'app:scrap-cemetery {id}';
 
     /**
      * The console command description.

@@ -2,18 +2,16 @@
 
 namespace App\Services\Scraper\Memorial;
 
-use Symfony\Component\DomCrawler\Crawler;
-
-use Illuminate\Support\Str;
-use Illuminate\Support\Stringable;
-
-use Carbon\Carbon;
-
-use App\Enums\EnumSuffix;
+use App\DTO\Memorial\MemorialDTO;
 use App\Enums\EnumBurial;
+use App\Enums\EnumSuffix;
+use App\Services\Scraper\Media\MediaScraper;
 use App\Services\Scraper\Scraper;
 use App\Services\Scraper\User\UserScraper;
-use App\Services\Scraper\Media\MediaScraper;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+use Symfony\Component\DomCrawler\Crawler;
 
 class MemorialScraper extends Scraper
 {
@@ -27,19 +25,20 @@ class MemorialScraper extends Scraper
         );
     }
 
-//    /**
-//     * Uncomment to use stub HTML for a faster development process - MONUMENT
-//     *
-//     * @param string|null $path
-//     * @return string
-//     */
-//    protected function fetchResponse(?string $path): string
-//    {
-////        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-other-burial.html'));
-////        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-about.html'));
+    /**
+     * Uncomment to use stub HTML for a faster development process - MONUMENT
+     *
+     * @param string|null $path
+     * @return string
+     */
+    protected function fetchResponse(?string $path): string
+    {
+        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-with-alt-names.html'));
+//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-other-burial.html'));
+//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-about.html'));
 //        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-person-about.html'));
-////        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-with-nickname.html'));
-//    }
+//        return file_get_contents(app_path('Stubs/Scraper/Memorial/single-with-nickname.html'));
+    }
 
     public function start(): MemorialDTO
     {

@@ -1,0 +1,9 @@
+.page {
+  &--home {
+    .logo {
+      height: 50px;
+
+      filter: drop-shadow(0 0 5px #fff);
+    }
+  }
+}

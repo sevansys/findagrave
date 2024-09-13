@@ -9,5 +9,4 @@ enum EnumLocation: int
     case STATE = 3;
     case COUNTY = 4;
     case CITY = 5;
-    case CEMETERY = 6;
 }

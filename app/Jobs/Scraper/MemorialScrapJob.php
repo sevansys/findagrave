@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Scraper;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -9,7 +10,7 @@ use App\Services\Scraper\Memorial\MemorialScraper;
 
 class MemorialScrapJob implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, Batchable;
 
     /**
      * Create a new job instance.
@@ -23,6 +24,7 @@ class MemorialScrapJob implements ShouldQueue
      */
     public function handle(): void
     {
-        (new MemorialScraper($this->src))->start();
+        $memorial = (new MemorialScraper($this->src))->start();
+        dd($memorial);
     }
 }

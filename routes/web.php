@@ -2,25 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/memorial', function () {
-    \Illuminate\Support\Facades\Artisan::call('app:scrap-memorial', [
-//        'src' => '/memorial/19599/105th_pennsylvania_infantry_monument',
-//        'src' => '/memorial/253313066/abraham-a_sancta_clara',
-        'src' => '/memorial/25917457/terry-glenn_dd-cartee',
-    ]);;
+Route::get('/', \App\Http\Controllers\HomeController::class)->name('home');
 
-    return view('welcome');
-});
+Route::resource('memorial', \App\Http\Controllers\MemorialController::class)
+    ->name('index', 'memorial');
 
-Route::get('/cemetery', function () {
-    \Illuminate\Support\Facades\Artisan::call('app:scrap-cemetery', [
-        'src' => '/cemetery/1966577/white-house-cemetery'
-    ]);
-});
+Route::resource('cemetery', \App\Http\Controllers\CemeteryController::class)
+    ->name('index', 'cemetery');
 
-Route::get('/cemetery/memorials', function () {
-    \Illuminate\Support\Facades\Artisan::call('app:scrap-cemetery-memorials', [
-        'src' => '/cemetery/2143601/memorial-search',
-        'page' => 1,
-    ]);
-});
+Route::resource('famous', \App\Http\Controllers\FamousController::class)
+    ->name('index', 'famous');

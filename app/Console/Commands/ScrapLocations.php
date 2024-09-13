@@ -2,14 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\Scraper\ContinentScrapJob;
-use App\Jobs\Scraper\ScrapContinentJob;
-use App\Services\Scraper\Location\ContinentScraper;
-use App\Services\Scraper\Location\LocationDTO;
-use App\Services\Scraper\Location\LocationScraper;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
-use Symfony\Component\DomCrawler\Crawler;
+
+use App\Jobs\Scraper\LocationScrapJob;
+use App\Repositories\Location\LocationRepository;
 
 class ScrapLocations extends Command
 {
@@ -18,7 +14,7 @@ class ScrapLocations extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-locations';
+    protected $signature = 'app:scrap-locations {id} {continue_scrap?} {root_url?}';
 
     /**
      * The console command description.
@@ -30,38 +26,15 @@ class ScrapLocations extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(LocationRepository $repository): void
     {
-        /**
-         * @var $continents array<LocationDTO>
-         */
-//        $continents = (new ContinentScraper())->start();
+        $source_id = intval($this->argument('id'));
+        $location = $repository->findById($source_id);
 
-//        foreach ($continents as $continent) {
-            ContinentScrapJob::dispatch("continent_72");
-//                ->delay(now()->addMinutes(2));
-//            break;
-//        }
-
-//        dd($continents);
-//
-//
-//        $response  = Http::get("https://www.findagrave.com/cemetery-browse");
-//        $crawler = new Crawler($response->getBody()->getContents());
-//
-//        $regions = [];
-//        $crawler->filter('.name-grave > a')->each(function(Crawler $node) use (&$regions) {
-//            $href = $node->attr("href");
-//            $url = parse_url($href, PHP_URL_QUERY);
-//            parse_str($url, $query);
-//
-//            $regions[] = [
-//                "href" => $href,
-//                "text" => $node->text(),
-//                "source_id" => $query["id"],
-//            ];
-//        });
-//
-//        dd($regions);
+        LocationScrapJob::dispatch(
+            $location?->id,
+            !!$this->argument('continue_scrap'),
+            $this->argument('root_url'),
+        );
     }
 }

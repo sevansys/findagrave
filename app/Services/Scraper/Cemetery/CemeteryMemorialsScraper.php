@@ -2,6 +2,8 @@
 
 namespace App\Services\Scraper\Cemetery;
 
+use App\Services\Scraper\Memorial\MemorialScraper;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 use Symfony\Component\DomCrawler\Crawler;
@@ -58,32 +60,12 @@ class CemeteryMemorialsScraper extends Scraper
         }
 
         Bus::batch($jobs)
-            ->before(function () {
-                dump(
-                    sprintf(
-                        'Cemetery memorials before scraping ["%s", %d]',
-                        $this->search_url,
-                        $this->page
-                    ),
-                );
-            })->catch(function (Batch $batch, Throwable $e) {
-                report($e);
-                dump(
-                    sprintf(
-                        'Cemetery memorials scraping failed ["%s", %d]',
-                        $this->search_url,
-                        $this->page
-                    ),
-                );
-            })->finally(function () {
-                dump(
-                    sprintf(
-                        'Cemetery memorials scraping finally ["%s", %d]',
-                        $this->search_url,
-                        $this->page
-                    ),
-                );
-            })->dispatch();
+            ->onConnection("redis")
+            ->onQueue('imports')
+            ->then(function (Batch $batch) {
+                dd($batch);
+            })
+            ->dispatch();
 
         return $this;
     }

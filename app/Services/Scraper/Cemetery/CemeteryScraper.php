@@ -2,12 +2,13 @@
 
 namespace App\Services\Scraper\Cemetery;
 
-use Symfony\Component\DomCrawler\Crawler;
-
-use Illuminate\Support\Str;
-
-use App\Services\Scraper\Scraper;
+use App\DTO\Cemetery\CemeteryDTO;
+use App\DTO\Cemetery\CemeteryPhoneDTO;
+use App\DTO\Cemetery\CemeteryWebsiteDTO;
 use App\Services\Scraper\Media\MediaScraper;
+use App\Services\Scraper\Scraper;
+use Illuminate\Support\Str;
+use Symfony\Component\DomCrawler\Crawler;
 
 class CemeteryScraper extends Scraper
 {
@@ -30,7 +31,8 @@ class CemeteryScraper extends Scraper
 //     */
 //    protected function fetchResponse(?string $path): string
 //    {
-//        return file_get_contents(app_path('Stubs/Scraper/Cemetery/single-about.html'));
+//        return file_get_contents(app_path('Stubs/Scraper/Cemetery/single-with-alt-names.html'));
+////        return file_get_contents(app_path('Stubs/Scraper/Cemetery/single-about.html'));
 //    }
 
     public function start(): CemeteryDTO
@@ -47,14 +49,15 @@ class CemeteryScraper extends Scraper
     private function produceAbout(): self
     {
         return $this
-            ->produceSourceId()
-            ->produceTitle()
-            ->produceDescription()
-            ->produceCoordinates()
             ->produceUrl()
-            ->produceSearchUrl()
+            ->produceTitle()
             ->producePhone()
-            ->produceAddress();
+            ->produceAddress()
+            ->produceSourceId()
+            ->produceAltNames()
+            ->produceSearchUrl()
+            ->produceDescription()
+            ->produceCoordinates();
     }
 
     private function producePhotos(): self
@@ -162,6 +165,25 @@ class CemeteryScraper extends Scraper
         }
 
         $this->record->name = $node->first()->text();
+
+        return $this;
+    }
+
+    private function produceAltNames(): self
+    {
+        $node = $this->crawler->filter('[itemprop="alternateName"]');
+
+        if (!$node->count()) {
+            return $this;
+        }
+
+        $names = [];
+        foreach ($node as $item) {
+            $item = new Crawler($item);
+            $names[] = $item->text();
+        }
+
+        $this->record->alt_name = $names;
 
         return $this;
     }

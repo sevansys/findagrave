@@ -30,7 +30,7 @@ abstract class Scraper
 
     public function makePath($path): string
     {
-        return sprintf('%s/%s', $this->getBase(), $path);
+        return sprintf('%s/%s', $this->getBase(), ltrim($path, '/'));
     }
 
     public function scrap(string $path): self

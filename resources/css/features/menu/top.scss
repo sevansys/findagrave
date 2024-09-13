@@ -1,0 +1,52 @@
+$border-color: rgba(229, 230, 240);
+
+:root {
+  --top-menu-font-color: #f9dedd;
+  --top-menu-border-color: transparent;
+}
+
+.menu {
+
+  &__item {
+    a {
+      outline: none !important
+    }
+  }
+
+  &:is(&--top) {
+    text-transform: uppercase;
+
+    .menu__item {
+      color: var(--top-menu-font-color);
+      border-bottom: 3px solid var(--top-menu-border-color);
+
+      transition: color 0.2s ease, border-color 0.2s ease;
+
+      &:is(&--active, &:hover) {
+        --top-menu-font-color: white;
+      }
+
+      &:not(&--active):hover {
+        --top-menu-border-color: #{transparentize($border-color, 0.5)};
+      }
+
+      &--active {
+        --top-menu-border-color: #{$border-color};
+      }
+    }
+  }
+}
+
+.page:is(.page--home) {
+  .menu {
+    &:is(&--top) {
+      .menu__item {
+        --top-menu-font-color: white;
+
+        &:not(&--active):hover {
+          --top-menu-border-color: #{$border-color};
+        }
+      }
+    }
+  }
+}

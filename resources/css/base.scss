@@ -1,0 +1,29 @@
+:root {
+  --interactive-outline-color: #{$color-outline};
+}
+
+body {
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-family: "Source Sans 3", sans-serif;
+}
+
+.shadow-text {
+  text-shadow: 2px 2px 5px #000,0 0 20px #000,0 0 30px #000;
+}
+
+.text-primary {
+  color: $color-primary;
+}
+
+.text-secondary {
+  color: $color-secondary;
+}
+
+a:focus,
+label:focus,
+button:focus {
+  outline-offset: -1px;
+  outline: 2px solid var(--interactive-outline-color) !important;
+}
