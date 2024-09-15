@@ -19,9 +19,12 @@ $color-btn-border-active-color: #af641a;
 
 .btn {
   background-color: $color-light;
-  box-shadow: 0 2px 0 rgba(0,0,0,.2);
 
   transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
+
+  &:is(&--lofty) {
+    box-shadow: 0 2px 0 rgba(0,0,0,.2);
+  }
 
   &--primary {
     background-color: var(--btn-bg-color);

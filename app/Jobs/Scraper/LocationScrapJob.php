@@ -56,7 +56,7 @@ class LocationScrapJob implements ShouldQueue
         if ($this->continue_scrap) {
             dispatch(function () {
                 Artisan::call('app:scrap-next-location');
-            })->delay(now()->addSeconds(20));
+            })->delay(now()->addSeconds(12));
         }
     }
 

@@ -12,7 +12,8 @@ class Dialog extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public ?string $clsx = null
+        public ?string $clsx = null,
+        public ?string $dialogClsx = null,
     ) {}
 
     /**

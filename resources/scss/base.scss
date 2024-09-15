@@ -7,6 +7,8 @@ body {
   font-style: normal;
   font-optical-sizing: auto;
   font-family: "Source Sans 3", sans-serif;
+
+  background-color: #fafafa;
 }
 
 .shadow-text {
@@ -26,4 +28,15 @@ label:focus,
 button:focus {
   outline-offset: -1px;
   outline: 2px solid var(--interactive-outline-color) !important;
+}
+
+a.link {
+  color: #1775a5;
+
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: #0e4562;
+    text-decoration: underline;
+  }
 }

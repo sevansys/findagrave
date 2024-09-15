@@ -1,39 +1,13 @@
-<div @class(['inline-flex justify-center', $clsx])>
+<div @class([
+  'dropdown',
+  'inline-flex',
+  'justify-center',
+  $clsx,
+])>
   <div
+    x-bind="bindRoot"
     class="relative w-full h-full"
-    x-data="{
-      open: false,
-      value: '{{ $value }}',
-      placeholder: '{{ $placeholder }}',
-      toggle() {
-        if (this.open) {
-          return this.close()
-        }
-
-        this.$refs.button.focus()
-        this.open = true
-      },
-      close(focusAfter) {
-        if (!this.open) {
-          return;
-        }
-
-        this.open = false;
-        focusAfter && focusAfter.focus();
-      },
-      select(value) {
-        this.value = value;
-        this.close();
-      },
-      get selectedLabel() {
-        return Array.from(this.$refs.select.options).find((option) => {
-          return option.value === this.value
-        })?.label ?? this.placeholder;
-      }
-    }"
-    x-id="['dropdown-button']"
-    x-on:keydown.escape.prevent.stop="close($refs.button)"
-    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+    x-data="dropdown({ value: '{{ $value  }}', placeholder: '{{ $placeholder }}' })"
   >
     <select x-ref="select" name="{{ $name }}" hidden="hidden" x-bind:value="value">
       @foreach($options as $option)
@@ -44,45 +18,50 @@
     </select>
 
     <label
-      x-ref="button"
-      :aria-expanded="open"
-      x-on:click.prevent="toggle()"
-      :aria-controls="$id('dropdown-button')"
-      class="flex w-full h-full cursor-pointer"
+      x-bind="bindActivator"
+      class="flex w-full h-full cursor-pointer max-w-full dropdown__activator"
     >
-
       @if($slot->isNotEmpty())
         {{ $slot }}
       @else
-        <span class="flex gap-1 bg-white px-4 py-2 justify-between rounded-lg w-full overflow-hidden max-w-full">
-          <span class="flex flex-col">
+        <span class="default-activator flex gap-2 bg-white px-4 py-2 justify-between rounded-lg w-full max-w-full">
+          <span class="flex flex-1 flex-col max-w-full">
             @if($label)
               <span class="text-xs text-gray-500 truncate">{{ $label }}</span>
             @endif
 
-            <span x-html="selectedLabel" class="truncate"></span>
+            <span x-html="selectedLabel" class="block max-w-full truncate"></span>
           </span>
 
-          <span class="self-center">
-            <x-shared.icons.arrow-down></x-shared.icons.arrow-down>
+          <span class="self-center flex-none">
+            <span class="flex w-5 h-5">
+              <x-shared.icons.arrow-down></x-shared.icons.arrow-down>
+            </span>
           </span>
         </span>
       @endunless
     </label>
 
     <div
-      x-ref="panel"
-      x-show="open"
+      x-bind="bindPanel"
       style="display: none;"
-      :id="$id('dropdown-button')"
-      x-transition.origin.top.left
-      x-on:click.outside="close($refs.button)"
-      class="absolute left-0 mt-2 w-40 rounded-md bg-white shadow-md z-20"
+      @class([
+        'w-40',
+        'z-20',
+        'mt-1.5',
+        'left-0',
+        'absolute',
+        'bg-white',
+        'shadow-md',
+        'rounded-md',
+        'w-full' => $fluid,
+      ])
     >
       @foreach($options as $option)
-        <a href="#"
-           class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2 text-left text-sm hover:bg-gray-50 disabled:text-gray-500 text-nowrap"
-           x-on:click.prevent="select('{{ $option['value'] }}')"
+        <a
+          href="#"
+          x-bind="bindOption('{{ $option['value'] }}')"
+          class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2 text-left text-sm hover:bg-gray-50 disabled:text-gray-500 text-nowrap"
         >
           {{ $option['label']  }}
         </a>

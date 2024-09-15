@@ -19,7 +19,7 @@ enum EnumOrderBy: int
     {
         return [
             [
-                'label' => '',
+                'label' => 'None',
                 'value' => self::NONE->value,
             ],
             [

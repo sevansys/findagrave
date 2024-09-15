@@ -14,8 +14,11 @@ class Field extends Component
     public function __construct(
         public ?string $value = "",
         public ?string $clsx = null,
+        public ?string $name = null,
         public ?string $label = null,
         public ?string $type = "text",
+        public ?bool $required = false,
+        public ?bool $autofocus = false,
         public ?string $fieldClsx = null,
     ) {}
 

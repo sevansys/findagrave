@@ -1,8 +1,11 @@
 <label @class(['field relative inline-flex w-full', $clsx])>
   <input
     placeholder=""
-    type="{{ $type }}"
-    value="{{ $value }}"
+    @required($required)
+    @if($autofocus) autofocus @endif
+    @if ($type) type="{{ $type }}" @endif
+    @if ($name) name="{{ $name }}" @endif
+    @if ($value) value="{{ $value }}" @endif
     @class([
       'px-4',
       'pb-2',

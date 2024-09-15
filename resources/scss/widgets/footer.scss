@@ -1,0 +1,20 @@
+.footer {
+  color: #495057;
+  position: relative;
+  background-color: #e6e4de;
+  background-repeat: repeat-x;
+  background-position: left top;
+
+  .menu {
+    a {
+      color: $color-primary;
+
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        text-decoration: underline;
+        color: darken($color-primary, 5%);
+      }
+    }
+  }
+}

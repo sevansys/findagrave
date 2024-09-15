@@ -1,0 +1,29 @@
+.page {
+  &--home {
+    .logo {
+      height: 50px;
+
+      filter: drop-shadow(0 0 5px #fff);
+    }
+
+    .search-form {
+      background-image: linear-gradient(to bottom, rgba(54, 50, 45, 0) 10%, rgba(54, 50, 45, 0.5) 100%);
+
+      &:is(&--expended) {
+        background-image: linear-gradient(to bottom, rgba(54, 50, 45, 0) 0, #36322D 60%);
+      }
+
+      &__checkboxes {
+        color: white;
+
+        background-color: #36322c;
+      }
+
+      &__actions {
+        .text-primary {
+          color: white;
+        }
+      }
+    }
+  }
+}

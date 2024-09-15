@@ -15,7 +15,7 @@ enum EnumDateAdded: int
     {
         return [
             [
-                'label' => '',
+                'label' => 'None',
                 'value' => self::NONE->value,
             ],
             [

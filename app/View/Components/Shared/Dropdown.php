@@ -13,6 +13,7 @@ class Dropdown extends Component
      */
     public function __construct(
         public array $options,
+        public ?bool $fluid =false,
         public ?string $clsx = null,
         public ?string $name = null,
         public ?string $value = null,
