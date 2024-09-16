@@ -1,0 +1,53 @@
+<div class="flex flex-col hover:bg-gray-100">
+  <a href="{{ $href }}" class="flex items-center gap-4 px-4 p-2 text-[#1775a5] hover:text-[#995c1d]">
+    <picture class="w-20 h-20 border">
+      @if(empty($image))
+        <span class="p-3 block text-gray-600 bg-gray-100">
+          <x-shared.icons.grave></x-shared.icons.grave>
+        </span>
+      @else
+        <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-contain object-center" />
+      @endif
+    </picture>
+    <div>
+      <h3 class="text-xl">{{ $name }}</h3>
+      <div class="flex gap-2 text-gray-600 text-sm">
+        <address>{{ $address }}</address>
+
+        @if($withoutGps)
+          <span>– *No GPS coordinates</span>
+        @endif
+      </div>
+    </div>
+  </a>
+  <div class="flex justify-end p-2">
+    <div class="flex flex-col">
+      @if($withPhotoRequestsCount)
+        <a href="#" class="link flex gap-1 items-center">
+          <span class="w-5 h-5">
+            <x-shared.icons.grave></x-shared.icons.grave>
+          </span>
+          {{ $withPhotoRequestsCount }} requests
+        </a>
+      @endif
+
+      @if($withMemorialsCount)
+        <a href="#" class="link flex gap-1 items-center">
+          <span class="w-5 h-5">
+            <x-shared.icons.monument></x-shared.icons.monument>
+          </span>
+          {{ $withMemorialsCount }} memorials
+        </a>
+      @endif
+
+      @if($withGpsCount)
+        <a href="#" class="link flex gap-1 items-center">
+          <span class="w-5 h-5">
+            <x-shared.icons.gps></x-shared.icons.gps>
+          </span>
+          {{ $withGpsCount }} with GPS
+        </a>
+      @endif
+    </div>
+  </div>
+</div>
