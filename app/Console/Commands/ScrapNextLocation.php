@@ -13,7 +13,7 @@ class ScrapNextLocation extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-next-location';
+    protected $signature = 'app:scrap-next-location {process?}';
 
     /**
      * The console command description.

@@ -10,12 +10,12 @@ class Cemeteries extends Main
             [
                 'icon' => 'add',
                 'text' => 'Add a Cemetery',
-                'href' => '#add-a-cemetery',
+                'href' => route('cemetery-create'),
             ],
             [
                 'icon' => 'browse-location',
                 'text' => 'Browse by Location',
-                'href' => '#browse-by-Location',
+                'href' => route('cemeteries-browse'),
             ],
         ];
     }

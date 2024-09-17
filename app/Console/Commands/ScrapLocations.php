@@ -31,7 +31,7 @@ class ScrapLocations extends Command
         $source_id = intval($this->argument('id'));
         $location = $repository->findById($source_id);
 
-        LocationScrapJob::dispatch(
+        LocationScrapJob::dispatchSync(
             $location?->id,
             !!$this->argument('continue_scrap'),
             $this->argument('root_url'),

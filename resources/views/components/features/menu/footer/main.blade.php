@@ -1,12 +1,12 @@
 <menu class="menu flex gap-4 justify-center font-medium">
   <li class="menu__item">
-    <a href="{{ route('memorial') }}">Memorials</a>
+    <a href="{{ route('memorials-index') }}">Memorials</a>
   </li>
   <li>
-    <a href="{{ route('cemetery') }}">Cemeteries</a>
+    <a href="{{ route('cemeteries-index') }}">Cemeteries</a>
   </li>
   <li>
-    <a href="{{ route('famous') }}">Famous</a>
+    <a href="{{ route('famous-index') }}">Famous</a>
   </li>
   <li>
     <a href="#help">Help</a>

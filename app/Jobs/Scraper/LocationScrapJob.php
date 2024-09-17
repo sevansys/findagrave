@@ -53,11 +53,11 @@ class LocationScrapJob implements ShouldQueue
             $locationRepository->markAsScraped($this->location);
         }
 
-        if ($this->continue_scrap) {
-            dispatch(function () {
-                Artisan::call('app:scrap-next-location');
-            })->delay(now()->addSeconds(12));
-        }
+//        if ($this->continue_scrap) {
+//            dispatch(function () {
+//                Artisan::call('app:scrap-next-location');
+//            })->delay(now()->addSeconds(12));
+//        }
     }
 
     private function getSearchUrl(): string

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Shared\Dialog;
+namespace App\View\Components\Widgets\Cemeteries;
 
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
@@ -16,21 +16,11 @@ class BrowseLocations extends Component
         public ?Location $target,
     ) {}
 
-    protected function getLocations(): array
-    {
-        return [];
-    }
-
-    protected function getCemeteries(): array
-    {
-        return [];
-    }
-
-    /**s
+    /**
      * Get the view / contents that represent the component.
      */
     public function render(): View
     {
-        return view('components.shared.dialog.browse-locations');
+        return view('components.widgets.cemeteries.browse-locations');
     }
 }

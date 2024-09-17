@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Enums\EnumLocation;
+use Illuminate\Support\Str;
 
 class Location extends Model
 {
@@ -15,6 +18,7 @@ class Location extends Model
         'text',
         'type',
         'status',
+        'process',
         'parent_id',
     ];
 
@@ -22,9 +26,43 @@ class Location extends Model
         'type' => EnumLocation::class,
     ];
 
+    public function scopeContinent(Builder $builder)
+    {
+        $builder->where('type', EnumLocation::CONTINENT);
+    }
+
+
+    public function scopeCountries(Builder $builder)
+    {
+        $builder->where('type', EnumLocation::COUNTRY);
+    }
+
+    public function scopeCounties(Builder $builder)
+    {
+        $builder->where('type', EnumLocation::COUNTY);
+    }
+
+    public function scopeStates(Builder $builder)
+    {
+        $builder->where('type', EnumLocation::STATE);
+    }
+
+    public function scopeCities(Builder $builder)
+    {
+        $builder->where('type', EnumLocation::CITY);
+    }
+
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this
+            ->belongsTo(self::class, 'parent_id');
+    }
+
+    public function parents(): BelongsTo
+    {
+        return $this
+            ->belongsTo(self::class, 'parent_id')
+            ->with('parents');
     }
 
     public function children(): HasMany

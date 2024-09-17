@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99fa72a1936f6a0f6d3820e4df69dfe7",
+    "content-hash": "d7387465f1fa1dd0a73699323bcf4bbc",
     "packages": [
+        {
+            "name": "baghunts/laravel-fast-endpoints",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tbaghunts/laravel-fast-endpoints.git",
+                "reference": "a73fc9441929a4561d3cf4cc1e6948d4096f297b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tbaghunts/laravel-fast-endpoints/zipball/a73fc9441929a4561d3cf4cc1e6948d4096f297b",
+                "reference": "a73fc9441929a4561d3cf4cc1e6948d4096f297b",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mockery/mockery": "*",
+                "orchestra/testbench": "@stable"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Baghunts\\LaravelFastEndpoints\\ServiceProvider"
+                    ],
+                    "aliasses": {
+                        "LaravelFastEndpoint": "Baghunts\\LaravelFastEndpoints\\ServiceProvider"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Baghunts\\LaravelFastEndpoints\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Baghunts",
+                    "email": "tatul.baghunts@gmail.com",
+                    "homepage": "https://baghunts.com",
+                    "role": "Creator"
+                }
+            ],
+            "description": "Laravel routes new (fast) experience",
+            "support": {
+                "issues": "https://github.com/tbaghunts/laravel-fast-endpoints/issues",
+                "source": "https://github.com/tbaghunts/laravel-fast-endpoints/tree/v1.0.1"
+            },
+            "time": "2024-08-19T12:29:46+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.12.1",

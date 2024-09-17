@@ -2,6 +2,7 @@
 
 namespace App\Services\Scraper;
 
+use Throwable;
 use DOMElement;
 
 use Symfony\Component\DomCrawler\Crawler;
@@ -10,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\Client\ConnectionException;
 
 abstract class Scraper
 {
@@ -33,6 +35,9 @@ abstract class Scraper
         return sprintf('%s/%s', $this->getBase(), ltrim($path, '/'));
     }
 
+    /**
+     * @throws Throwable
+     */
     public function scrap(string $path): self
     {
         $this->crawler = new Crawler($this->fetchResponse($path));
@@ -62,10 +67,21 @@ abstract class Scraper
         return $value;
     }
 
+    /**
+     * @throws Throwable
+     */
     protected function fetchResponse(?string $path): string
     {
         $url = $this->makePath($path);
         $this->response = Http::get($url);
+
+        throw_if(
+            !$this->response->successful(),
+            new ConnectionException(
+                'Scrap failed! URL: ' . $url,
+                $this->response->getStatusCode()
+            )
+        );
 
         return $this->response->getBody()->getContents();
     }

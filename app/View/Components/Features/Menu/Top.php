@@ -13,16 +13,16 @@ class Top extends Menu
     {
         return [
             [
-                'name' => 'memorial',
-                'label' => 'Memorials'
+                'label' => 'Memorials',
+                'name' => 'memorials-index',
             ],
             [
-                'name' => 'cemetery',
-                'label' => 'Cemeteries'
+                'label' => 'Cemeteries',
+                'name' => 'cemeteries-index',
             ],
             [
-                'name' => 'famous',
-                'label' => 'Famous'
+                'label' => 'Famous',
+                'name' => 'famous-index',
             ],
         ];
     }

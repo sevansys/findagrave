@@ -1,6 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('scrap-next-location', function () {
-})->everyTenSeconds()->runInBackground();
+//foreach (\App\Models\Location::countries()->get() as $country) {
+Schedule::command('app:scrap-next-location')
+    ->everyFiveSeconds()
+    ->runInBackground();
+//}
+//
+//for ($i = 0; $i < 10; $i++) {
+//    Schedule::command('app:scrap')->everyTenSeconds()->runInBackground();
+//}

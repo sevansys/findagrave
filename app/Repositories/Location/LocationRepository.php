@@ -82,4 +82,36 @@ class LocationRepository extends ScrapeableRepository
             'parent_id' => $location->parent_id,
         ];
     }
+
+    public function childrenForBrowse(?int $id): ?Location
+    {
+        if (empty($id)) {
+            return $this->makeContinentLocations();
+        }
+
+        return Location::query()->where('id', $id)->with(['children', 'cemeteries', 'parents'])->first([
+            'id',
+            'type',
+            'text',
+            'parent_id',
+        ]);
+    }
+
+    private function makeContinentLocations(): Location
+    {
+        $location = new Location();
+        $location->id = null;
+        $location->text = null;
+        $location->type = null;
+        $location->parents = [];
+
+        $location->setRelation(
+            'children',
+            Location::query()->where('parent_id', null)->get([
+                'id',
+                'text',
+            ])
+        );
+        return $location;
+    }
 }
