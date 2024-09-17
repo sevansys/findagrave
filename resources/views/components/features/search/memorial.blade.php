@@ -10,7 +10,7 @@
   @endif
 
   <div class="pt-4 flex flex-col gap-4">
-    <section class="search-form__fields max-w-screen-md w-full mx-auto flex flex-col gap-2">
+    <section class="search-form__fields max-w-screen-md w-full mx-{{ $mx }} flex flex-col gap-2">
       <x-shared.fields-group clsx="gap-0">
         <x-shared.field
           autofocus
@@ -70,20 +70,21 @@
         </div>
 
         <div class="flex gap-0 items-stretch">
-          <x-shared.field
-            type="address"
-            label="Cemetery Location"
-            field-clsx="rounded-tr-none rounded-br-none"></x-shared.field>
-          <x-shared.dialog>
-            <x-slot name="activator">
-              <x-shared.btn
-                :lofty="false"
-                clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 relative">
-                Browse
-              </x-shared.btn>
-            </x-slot>
-            AA
-          </x-shared.dialog>
+          @if(!$withoutCemeteryLocation)
+            <x-shared.field
+              type="address"
+              label="Cemetery Location"
+              field-clsx="rounded-tr-none rounded-br-none"></x-shared.field>
+            <x-shared.dialog>
+              <x-slot name="activator">
+                <x-shared.btn
+                  :lofty="false"
+                  clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 relative">
+                  Browse
+                </x-shared.btn>
+              </x-slot>
+            </x-shared.dialog>
+          @endif
         </div>
       </x-shared.fields-group>
     </section>
@@ -92,7 +93,7 @@
       x-collapse
       x-show="expanded">
       <section
-        class="search-form__additional-fields max-w-screen-md w-full mx-auto pb-4 flex flex-col gap-2"
+        class="search-form__additional-fields max-w-screen-md w-full mx-{{ $mx }} pb-4 flex flex-col gap-2"
       >
         <x-shared.fields-group clsx="gap-2 fields-group_3_3_1">
           <x-shared.field label="Bio keywords"></x-shared.field>
@@ -119,7 +120,7 @@
       </section>
 
       <div class="search-form__checkboxes py-5">
-        <section class="max-w-screen-md w-full mx-auto grid grid-cols-3">
+        <section class="max-w-screen-md w-full mx-{{ $mx }} grid grid-cols-3">
           @if(!empty($types))
             <div class="flex flex-col gap-4">
               <h4>By Memorial Types:</h4>
@@ -161,10 +162,15 @@
     </div>
   </div>
 
-  <div class="pt-16 flex flex-col gap-10 search-form__actions">
-    <section class="max-w-screen-md w-full mx-auto">
+  <div class="pt-{{ $compact ? 6 : 16 }} flex flex-col gap-10 search-form__actions">
+    <section class="max-w-screen-md w-full mx-{{ $mx }}">
       <div class="flex gap-5 items-center">
-        <x-shared.btn type="submit" variant="primary" clsx="rounded-lg px-5 py-2 text-lg font-bold uppercase">Search</x-shared.btn>
+        <x-shared.btn
+          type="submit"
+          variant="primary"
+          clsx="rounded-lg px-5 py-2 text-lg font-bold uppercase">
+          {{ $submitText }}
+        </x-shared.btn>
         <a
           href="#"
           @click.prevent="expanded = !expanded"
@@ -190,8 +196,8 @@
       </div>
     </section>
 
-    @if(!empty($beforeEnd))
-      {{ $beforeEnd }}
+    @if(!empty($slot))
+      {{ $slot }}
     @endif
   </div>
 </form>

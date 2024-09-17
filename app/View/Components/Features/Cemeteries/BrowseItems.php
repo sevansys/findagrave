@@ -4,6 +4,7 @@ namespace App\View\Components\Features\Cemeteries;
 
 use Closure;
 
+use Illuminate\Support\Str;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 
@@ -28,9 +29,9 @@ class BrowseItems extends Component
         return $this->location->cemeteries->map(function(Cemetery $cemetery) {
             return [
                 'text' => $cemetery->name,
-                'href' => route('cemetery', [
-                    'name' => $cemetery->name,
-                    'cemetery' => $cemetery->id,
+                'href' => route('cemetery.about', [
+                    'slug' => Str::slug($cemetery->name),
+                    'cemeteryAbout' => $cemetery->id,
                 ])
             ];
         })->toArray();

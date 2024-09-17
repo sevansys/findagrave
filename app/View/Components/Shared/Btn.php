@@ -14,6 +14,7 @@ class Btn extends Component
     public function __construct(
         public bool $lofty = true,
         public ?string $clsx = null,
+        public bool $outlined = false,
         public ?string $type = 'button',
         public ?string $variant = 'default',
     ) {}

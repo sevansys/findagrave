@@ -12,7 +12,7 @@ use Baghunts\LaravelFastEndpoints\Attributes\{
 
 #[Get('/cemeteries')]
 #[Name('cemeteries-index')]
-class CemeteryIndexController extends Endpoint
+class CemeteriesIndexController extends Endpoint
 {
     public function __invoke(): View
     {

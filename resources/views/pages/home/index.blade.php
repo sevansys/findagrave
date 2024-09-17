@@ -12,9 +12,7 @@
   <p class="shadow-text font-bold tracking-wide text-secondary text-xl text-center">Over 248 million memorials created by the community since 1995.</p>
 
   <x-features.search.memorial expended>
-    <x-slot name="beforeEnd">
-      <x-features.cemetery.daily></x-features.cemetery.daily>
-    </x-slot>
+    <x-features.cemetery.daily></x-features.cemetery.daily>
   </x-features.search.memorial>
 
   <x-widgets.home-content>

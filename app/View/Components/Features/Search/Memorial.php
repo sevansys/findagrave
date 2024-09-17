@@ -19,9 +19,13 @@ class Memorial extends Component
      * Create a new component instance.
      */
     public function __construct(
+        public string $mx = 'auto',
+        public bool $compact = false,
         public bool $expended = false,
         public bool $showTitle = false,
+        public string $submitText = "Search",
         public string $title = "Memorial Search",
+        public bool $withoutCemeteryLocation = false,
     ) {}
 
     protected function getMemorialTypes(): array

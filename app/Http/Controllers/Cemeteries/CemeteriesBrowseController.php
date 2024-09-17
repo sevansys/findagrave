@@ -13,7 +13,7 @@ use App\Repositories\Location\LocationRepository;
 #[Where('slug', '(.*)')]
 #[Name('cemeteries-browse')]
 #[Get('/cemeteries/browse/{slug?}')]
-class CemeteryBrowseController extends Endpoint
+class CemeteriesBrowseController extends Endpoint
 {
     public function __invoke(Request $request, LocationRepository $locationRepository): View
     {

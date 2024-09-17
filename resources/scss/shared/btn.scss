@@ -42,4 +42,8 @@ $color-btn-border-active-color: #af641a;
       background-color: var(--btn-bg-active-color);
     }
   }
+
+  &--outlined:not(:hover) {
+    background-color: transparent;
+  }
 }

@@ -143,7 +143,8 @@ class CemeteryScraper extends Scraper
             $data[] = floatval($item->text());
         }
 
-        $this->record->coordinates = array_splice($data, 0, 2);
+        $this->record->latitude = $data[0] ?? null;
+        $this->record->longitude = $data[1] ?? null;
 
         return $this;
     }

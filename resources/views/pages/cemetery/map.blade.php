@@ -1,5 +1,5 @@
 @extends('layouts/default')
 
 @section('content')
-  Single Cemetery
+  Cemetery Map
 @endsection

@@ -88,7 +88,11 @@ return [
     | routes are configured consistently without needing to manually group them.
     |
     */
-    "namespaces" => null,
+    "namespaces" => [
+        "App\Http\Controllers\Cemetery" => [
+            "whereNumber" => ["cemetery"],
+        ]
+    ],
 
 
     /*

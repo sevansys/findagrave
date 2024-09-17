@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Enums\EnumLocation;
-use Illuminate\Support\Str;
+use App\Models\Scopes\ScrapedRecord;
 
+#[ScopedBy(ScrapedRecord::class)]
 class Location extends Model
 {
     public $fillable = [

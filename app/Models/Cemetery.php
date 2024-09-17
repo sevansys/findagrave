@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+use App\Models\Scopes\ScrapedRecord;
+
+#[ScopedBy(ScrapedRecord::class)]
 class Cemetery extends Model
 {
     protected $fillable = [
@@ -16,8 +21,9 @@ class Cemetery extends Model
         'website',
         'address',
         'alt_name',
+        'latitude',
+        'longitude',
         'location_id',
-        'coordinates',
         'description',
     ];
 
@@ -25,13 +31,17 @@ class Cemetery extends Model
         'phone' => 'json',
         'website' => 'json',
         'alt_name' => 'json',
-        'coordinates' => 'array',
     ];
 
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);
     }
+
+//    public function memorials(): HasMany
+//    {
+//        return $this->hasMany(Memorial::class);
+//    }
 
     public function media(): MorphMany
     {
