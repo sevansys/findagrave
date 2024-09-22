@@ -30,7 +30,8 @@ button:focus {
   outline: 2px solid var(--interactive-outline-color) !important;
 }
 
-a.link {
+a.link,
+.body-html a {
   color: #1775a5;
 
   transition: color 0.2s ease-in-out;

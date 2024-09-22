@@ -18,9 +18,9 @@ class Location extends Model
         'src',
         'text',
         'type',
-        'status',
         'process',
         'parent_id',
+        'scrap_status',
     ];
 
     protected $casts = [

@@ -2,8 +2,6 @@
 
 namespace App\View\Components\Features\Actions;
 
-use Closure;
-
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 
@@ -13,6 +11,7 @@ class Main extends Component
      * Create a new component instance.
      */
     public function __construct(
+        public int $gap = 4,
         public string $align = 'end',
         public string $justify = 'center',
     ) {}
@@ -41,7 +40,7 @@ class Main extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
+    public function render(): View
     {
         return view('components.features.actions.main', [
             'actions' => $this->getActions(),

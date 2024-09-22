@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Media extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'src',
         'type',
@@ -19,4 +16,17 @@ class Media extends Model
         'owner_type',
         'contributor_id'
     ];
+
+    protected $appends = [
+        'source_url'
+    ];
+
+    public function getSourceUrlAttribute(): string
+    {
+        return sprintf(
+            '%s%s',
+            config('scraper.base_url'),
+            $this->src ?? '',
+        );
+    }
 }

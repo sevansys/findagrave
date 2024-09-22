@@ -1,5 +1,8 @@
 .page:not(.page--home) {
   .header {
+    top: 0;
+    z-index: 12;
+    position: sticky;
     background-color: $color-primary;
   }
 }

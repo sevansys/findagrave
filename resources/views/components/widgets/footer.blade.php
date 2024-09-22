@@ -1,4 +1,4 @@
-<footer class="footer mt-32 pt-52 pb-36" style="background-image: url({{ asset('/img/footer-bg.png') }})">
+<footer class="footer pt-52 pb-36" style="background-image: url({{ asset('/img/footer-bg.png') }})">
   <div class="absolute inset-0 border my-10 w-1/2 h-24 flex items-center justify-center mx-auto">
     Content Ad
   </div>

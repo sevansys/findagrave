@@ -6,7 +6,7 @@
 
     <div class="flex max-w-screen-xl w-full mx-auto gap-16">
       <div>
-        <x-features.search.memorial show-title></x-features.search.memorial>
+        <x-features.search.memorial compact show-title></x-features.search.memorial>
       </div>
       <div class="w-72">
         <x-shared.content-ad></x-shared.content-ad>

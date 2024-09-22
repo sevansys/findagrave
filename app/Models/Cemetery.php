@@ -23,14 +23,19 @@ class Cemetery extends Model
         'alt_name',
         'latitude',
         'longitude',
+        'created_at',
+        'updated_at',
         'location_id',
         'description',
+        'scrap_status',
     ];
 
     protected $casts = [
         'phone' => 'json',
         'website' => 'json',
         'alt_name' => 'json',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function location(): BelongsTo

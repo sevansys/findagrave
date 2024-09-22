@@ -1,0 +1,10 @@
+:root {
+  --svg-progress-size: 50px;
+}
+
+.progress {
+  &--svg {
+    height: var(--svg-progress-size);
+    width: var(--svg-progress-size);
+  }
+}
