@@ -10,7 +10,13 @@ class CemeteryServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->app['router']->bind('cemeteryAbout', function (int $value) {
+        $router = $this->app['router'];
+
+        $router->bind('cemeteryAbout', function (int $value) {
+            return Cemetery::with(['media'])->findOrFail($value);
+        });
+
+        $router->bind('cemeteryPhotos', function (int $value) {
             return Cemetery::with(['media'])->findOrFail($value);
         });
     }
