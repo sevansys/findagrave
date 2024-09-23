@@ -1,8 +1,9 @@
-<x-shared.dialog dialog-clsx="max-w-screen-md">
+<x-shared.dialog dialog-clsx="max-w-screen-md mt-20">
   <x-slot name="activator">
     {{ $slot }}
   </x-slot>
-  <div class="flex flex-col gap-4">
+
+  <div class="flex flex-col p-8">
     <ul class="list-disc px-2">
       <li>
         When searching in a cemetery, use the ? or * wildcards in name fields. ? replaces one letter. *
@@ -25,7 +26,7 @@
     </p>
   </div>
 
-  <div class="flex justify-end border-t mt-5 pt-2">
+  <div class="flex justify-end border-t py-3 px-4">
     <span @click="modelOpen = false">
       <x-shared.btn clsx="rounded px-5 py-2 bg-gray-100">Close</x-shared.btn>
     </span>
