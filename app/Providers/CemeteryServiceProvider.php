@@ -13,11 +13,19 @@ class CemeteryServiceProvider extends ServiceProvider
         $router = $this->app['router'];
 
         $router->bind('cemeteryAbout', function (int $value) {
-            return Cemetery::with(['media'])->findOrFail($value);
+            return Cemetery::with(['media' => fn ($query) => $query->limit(3)])
+                ->withCount('media')
+                ->findOrFail($value);
         });
 
         $router->bind('cemeteryPhotos', function (int $value) {
-            return Cemetery::with(['media'])->findOrFail($value);
+            return Cemetery::with(['media'])
+                ->withCount('media')
+                ->findOrFail($value);
+        });
+
+        $router->bind('cemeteryMap', function (int $value) {
+            return Cemetery::withCount(['media'])->findOrFail($value);
         });
     }
 }

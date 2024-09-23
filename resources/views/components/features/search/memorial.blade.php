@@ -38,7 +38,7 @@
           >
             <x-shared.btn
               :lofty="false"
-              clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 flex items-center gap-2">
+              clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 bg-gray-200 flex items-center gap-2">
               <span x-html="selectedLabel" class="text-nowrap"></span>
               <span class="w-5 h-5">
                 <x-shared.icons.arrow-down></x-shared.icons.arrow-down>
@@ -60,7 +60,7 @@
           >
             <x-shared.btn
               :lofty="false"
-              clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 flex items-center gap-2">
+              clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 flex items-center bg-gray-200 gap-2">
               <span x-html="selectedLabel" class="text-nowrap"></span>
               <span class="w-5 h-5">
                 <x-shared.icons.arrow-down></x-shared.icons.arrow-down>
@@ -79,7 +79,7 @@
               <x-slot name="activator">
                 <x-shared.btn
                   :lofty="false"
-                  clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 relative">
+                  clsx="rounded-lg rounded-tl-none rounded-bl-none bg-gray-200 -ml-1.5 relative">
                   Browse
                 </x-shared.btn>
               </x-slot>
@@ -183,7 +183,7 @@
           </span>
         </a>
         <x-shared.dialog.search-tips>
-          <span class="p-2 hover:underline text-primary rounded-md flex gap-0 items-center">
+          <a href="#" @click.prevent class="p-2 hover:underline text-primary rounded-md flex gap-0 items-center">
             <span class="w-4 h-4 mr-2">
               <x-shared.icons.info></x-shared.icons.info>
             </span>
@@ -191,7 +191,7 @@
             <span class="w-6 h-6">
               <x-shared.icons.arrow-right></x-shared.icons.arrow-right>
             </span>
-          </span>
+          </a>
         </x-shared.dialog.search-tips>
       </div>
     </section>

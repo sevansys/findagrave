@@ -29,7 +29,7 @@ class Tabs extends Component
             ],
             [
                 "text" => "Photos",
-                "count" => $this->getMediaCount(),
+                "count" => $this->target->media_count ?? 0,
                 'active' => Route::is('cemetery.photos'),
                 "href" => $this->makeRouteUrl('cemetery.photos', 'cemeteryPhotos'),
             ],
@@ -40,15 +40,6 @@ class Tabs extends Component
                 "href" => $this->makeRouteUrl('cemetery.map', 'cemeteryMap'),
             ]
         ];
-    }
-
-    protected function getMediaCount(): int
-    {
-        if (!$this->target->relationLoaded('media')) {
-            return 0;
-        }
-
-        return $this->target->media->count();
     }
 
     protected function makeRouteUrl(string $name, string $key = "cemeteryAbout"): string

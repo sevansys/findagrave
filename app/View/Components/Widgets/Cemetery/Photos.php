@@ -33,17 +33,12 @@ class Photos extends Component
          */
         $media = $this->target->getRelation('media');
 
-        return $media->slice(1, 2);
+        return $media->slice(1);
     }
 
     protected function getMoreCount(): int
     {
-        if (!$this->target->relationLoaded('media')) {
-            return 0;
-        }
-
-        $more = $this->target->media->count() - 3;
-
+        $more = ($this->target->media_count ?? 0) - 3;
         return max($more, 0);
     }
 

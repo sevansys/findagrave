@@ -13,7 +13,7 @@
 
     <x-widgets.cemetery.all-photos :target="$item"></x-widgets.cemetery.all-photos>
 
-    <section class="pt-10 pb-5">
+    <section class="max-w-screen-xl w-full mx-auto pt-10 pb-5">
       <x-widgets.cemetery.footer :target="$item"></x-widgets.cemetery.footer>
     </section>
   </article>

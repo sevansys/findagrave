@@ -27,7 +27,7 @@
 
   <div class="flex justify-end border-t mt-5 pt-2">
     <span @click="modelOpen = false">
-      <x-shared.btn clsx="rounded px-5 py-2">Close</x-shared.btn>
+      <x-shared.btn clsx="rounded px-5 py-2 bg-gray-100">Close</x-shared.btn>
     </span>
   </div>
 </x-shared.dialog>

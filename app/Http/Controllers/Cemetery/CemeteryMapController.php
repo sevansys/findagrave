@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Cemetery;
 
+use App\Models\Cemetery;
 use Illuminate\View\View;
 
 use Baghunts\LaravelFastEndpoints\Attributes\Get;
@@ -12,8 +13,10 @@ use Baghunts\LaravelFastEndpoints\Endpoint\Endpoint;
 #[Get('/cemetery/{cemeteryMap}/{slug}/map')]
 class CemeteryMapController extends Endpoint
 {
-    public function __invoke(): View
+    public function __invoke(Cemetery $cemeteryMap): View
     {
-        return view('pages.cemetery.map');
+        return view('pages.cemetery.map', [
+            'item' => $cemeteryMap,
+        ]);
     }
 }

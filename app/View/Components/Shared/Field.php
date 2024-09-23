@@ -18,15 +18,23 @@ class Field extends Component
         public ?string $label = null,
         public ?string $type = "text",
         public ?bool $required = false,
+        public bool $floatLabel = true,
         public ?bool $autofocus = false,
         public ?string $fieldClsx = null,
     ) {}
+
+    protected function getIsLabeled(): bool
+    {
+        return $this->label && $this->floatLabel;
+    }
 
     /**
      * Get the view / contents that represent the component.
      */
     public function render(): View|Closure|string
     {
-        return view('components.shared.field');
+        return view('components.shared.field', [
+            'isLabeled' => $this->getIsLabeled(),
+        ]);
     }
 }

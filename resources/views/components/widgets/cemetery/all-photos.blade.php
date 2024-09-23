@@ -9,10 +9,16 @@
       </span>
     </x-shared.btn>
 
-    <x-features.cemetery.photos-filter></x-features.cemetery.photos-filter>
+    @if (count($items))
+      <x-features.cemetery.photos-filter></x-features.cemetery.photos-filter>
+    @endif
   </header>
 
-  @if(!empty($items))
+  @unless(count($items))
+    <div class="pt-8 text-center text-lg text-gray-400">
+      <i>No photos yet</i>
+    </div>
+  @else
     <div class="grid grid-cols-4 py-5 gap-8">
       @foreach($items as $item)
         <div class="border rounded-md">

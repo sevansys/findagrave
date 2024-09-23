@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'mapbox' => [
+        'secret_key' => env('MAPBOX_SECRET_KEY'),
+        'public_key' => env('MAPBOX_PUBLIC_KEY'),
+    ],
 ];
