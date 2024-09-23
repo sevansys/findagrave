@@ -18,7 +18,7 @@
            x-transition:leave="transition ease-in duration-200 transform"
            x-transition:leave-start="opacity-100"
            x-transition:leave-end="opacity-0"
-           class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40" aria-hidden="true"
+           class="fixed inset-0 transition-opacity bg-black bg-opacity-40" aria-hidden="true"
       ></div>
 
       <div
@@ -31,7 +31,7 @@
         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         @class([
-          "inline-block w-full p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl",
+          "inline-block w-full p-8 overflow-hidden text-left transition-all transform bg-white shadow-xl",
           $dialogClsx
         ])
       >

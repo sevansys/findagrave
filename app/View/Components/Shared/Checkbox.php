@@ -14,7 +14,9 @@ class Checkbox extends Component
      */
     public function __construct(
         public ?string $name = null,
+        public ?string $clsx = null,
         public ?string $value = null,
+        public ?string $attrs = null,
         public ?string $label = null,
         public ?bool $checked = false,
         public ?bool $required = false,
@@ -24,7 +26,7 @@ class Checkbox extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
+    public function render(): View
     {
         return view('components.shared.checkbox');
     }

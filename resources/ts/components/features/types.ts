@@ -1,8 +1,8 @@
-import type { Map as MapboxMap } from 'mapbox-gl';
+import type { Map as MapboxMap, Style } from 'mapbox-gl';
 
 export interface Map {
-  style: string;
-  isFullscreen: false;
+  isFullscreen: boolean;
+  style?: string | Style;
   instance: MapboxMap | null;
   updateStyle(style: string): this;
   setFullscreen(value: boolean): this;

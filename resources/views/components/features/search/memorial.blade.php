@@ -162,7 +162,13 @@
     </div>
   </div>
 
-  <div class="pt-{{ $compact ? 6 : 16 }} flex flex-col gap-10 search-form__actions">
+  <div
+    @class([
+      'pt-6' => $compact,
+      'pt-16' => !$compact,
+      'flex flex-col gap-10 search-form__actions',
+    ])
+  >
     <section class="max-w-screen-md w-full mx-{{ $mx }}">
       <div class="flex gap-5 items-center">
         <x-shared.btn

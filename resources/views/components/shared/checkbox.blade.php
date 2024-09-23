@@ -1,6 +1,7 @@
-<label class="checkbox inline-flex items-center">
+<label @class(['checkbox inline-flex', $clsx])>
   <span class="flex items-center cursor-pointer relative">
     <input
+      {!! $attrs !!}
       type="checkbox"
       name="{{ $name }}"
       @checked($checked)

@@ -16,11 +16,13 @@ class Field extends Component
         public ?string $clsx = null,
         public ?string $name = null,
         public ?string $label = null,
+        public ?string $attrs = null,
         public ?string $type = "text",
         public ?bool $required = false,
         public bool $floatLabel = true,
         public ?bool $autofocus = false,
         public ?string $fieldClsx = null,
+        public ?string $autocomplete = null,
     ) {}
 
     protected function getIsLabeled(): bool

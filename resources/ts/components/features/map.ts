@@ -18,11 +18,11 @@ export function MapComponent(options: MapboxOptions): AlpineComponent<Map> {
       this.instance.addControl(new mapboxgl.FullscreenControl());
       this.instance.addControl(new mapboxgl.NavigationControl());
     },
-    updateStyle(style: string): this {
+    updateStyle(style: string): Map {
       this.instance?.setStyle((this.style = style));
       return this;
     },
-    setFullscreen(value: boolean): this {
+    setFullscreen(value: boolean): Map {
       this.isFullscreen = value;
       return this;
     },
