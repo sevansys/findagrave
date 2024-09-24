@@ -34,7 +34,7 @@ class ScrapNextCemetery extends Command
             return;
         }
 
-        CemeteryScrapJob::dispatch(
+        CemeteryScrapJob::dispatchSync(
             $nextId,
             true
         );

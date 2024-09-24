@@ -22,19 +22,20 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
      *
      * @param Location $location
      * @param array<CemeteryDTO> $data
-     * @return Collection<Cemetery>
+     * @return int
      */
-    public function insertScraped(Location $location, array $data): Collection
+    public function insertScraped(Location $location, array $data): int
     {
-        $data = array_map(function (CemeteryDTO $cemetery) {
+        $data = array_map(function (CemeteryDTO $cemetery) use ($location) {
             $item = $this->toRow($cemetery);
-            $item['status'] = EnumScrapStatus::NEED_SCRAPING;
+            $item['location_id'] = $location->id;
+            $item['scrap_status'] = EnumScrapStatus::NEED_SCRAPING;
             $item['created_at'] = $item['updated_at'] = Carbon::now()->toAtomString();
 
             return $item;
         }, $data);
 
-        return $location->cemeteries()->createMany($data);
+        return Cemetery::insertOrIgnore($data);
     }
 
     public function putScraped(Cemetery $cemetery, CemeteryDTO $dto): Cemetery
@@ -42,7 +43,7 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
         $data = array_merge(
             $this->toPutRow($dto),
             [
-                'status' => EnumScrapStatus::SCRAPED
+                'scrap_status' => EnumScrapStatus::SCRAPED
             ]
         );
 
@@ -72,24 +73,17 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
         $cemetery->media()->createMany($photos);
     }
 
-    public function nextForScrap(): ?Cemetery
-    {
-        return Cemetery::query()
-            ->where('status', EnumScrapStatus::NEED_SCRAPING)
-            ->first();
-    }
-
     public function nextForScrapId(): ?int
     {
-        return Cemetery::query()
-            ->where('status', EnumScrapStatus::NEED_SCRAPING)
+        return $this->fromWhole(Cemetery::query())
+            ->where('scrap_status', EnumScrapStatus::NEED_SCRAPING)
             ->first(['id'])
             ?->id;
     }
 
     public function findById(int $id): ?Cemetery
     {
-        return Cemetery::query()->find($id);
+        return $this->fromWhole(Cemetery::query())->find($id);
     }
 
     /**
@@ -104,8 +98,8 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
             $this->toPutRow($cemetery),
             [
                 'src' => $cemetery->src,
-                'status' => $cemetery->status,
                 'location_id' => $cemetery->location_id,
+                'scrap_status' => $cemetery->scrap_status,
             ]
         );
     }

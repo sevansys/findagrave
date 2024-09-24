@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EnumVisibility;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -24,6 +25,7 @@ class Cemetery extends Model
         'latitude',
         'longitude',
         'created_at',
+        'visibility',
         'updated_at',
         'location_id',
         'description',
@@ -36,6 +38,7 @@ class Cemetery extends Model
         'alt_name' => 'json',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'visibility' => EnumVisibility::class,
     ];
 
     public function location(): BelongsTo

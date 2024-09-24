@@ -20,3 +20,9 @@ export interface Dropdown {
   close(focusAfter?: HTMLElement): void;
   selectRef(): HTMLSelectElement | undefined;
 }
+
+export interface Response<T> {
+  data: T;
+  status: number;
+  message: string;
+}

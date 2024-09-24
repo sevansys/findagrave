@@ -1,17 +1,23 @@
-<div x-clock x-data="{ modelOpen: false }"  @class(['dialog', $clsx])>
-  <label @click="modelOpen =!modelOpen" class="flex h-full w-full cursor-pointer">
+<div x-data="dialog"  @class(['dialog', $clsx])>
+  <label @click="() => open()" class="flex h-full w-full cursor-pointer">
     {{ $activator }}
   </label>
 
   <div
-    x-show="modelOpen"
+    x-clock
+    x-show="show"
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title"
     class="fixed inset-0 z-50 overflow-y-auto"
   >
-    <div class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-      <div x-cloak @click="modelOpen = false" x-show="modelOpen"
+    <div
+      @class([
+        'flex items-end justify-center min-h-screen text-center md:items-center sm:block',
+        $containerClsx
+      ])
+    >
+      <div x-cloak @click="() => close()" x-show="show"
            x-transition:enter="transition ease-out duration-300 transform"
            x-transition:enter-start="opacity-0"
            x-transition:enter-end="opacity-100"
@@ -23,7 +29,7 @@
 
       <div
         x-cloak
-        x-show="modelOpen"
+        x-show="show"
         x-transition:enter="transition ease-out duration-300 transform"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"

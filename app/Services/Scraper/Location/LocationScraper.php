@@ -10,6 +10,7 @@ use App\Enums\EnumLocation;
 use App\Services\Scraper\Scraper;
 use App\DTO\Location\LocationDTO;
 use App\DTO\Cemetery\CemeteryDTO;
+use Throwable;
 
 class LocationScraper extends Scraper
 {
@@ -29,6 +30,9 @@ class LocationScraper extends Scraper
 //        return file_get_contents(app_path('Stubs/Scraper/Location/with-cemeteries.html'));
 //    }
 
+    /**
+     * @throws Throwable
+     */
     public function start(): array
     {
         $this->scrap($this->src);
@@ -66,7 +70,7 @@ class LocationScraper extends Scraper
     private function makeCemeteryItem(Crawler $node, string $src): CemeteryDTO
     {
         return new CemeteryDTO(
-            src: $src,
+            src: urldecode($src),
             name: $node->text(),
         );
     }
@@ -77,7 +81,7 @@ class LocationScraper extends Scraper
         $type = $this->detectLocationTypeByType($source_id);
 
         return new LocationDTO(
-            src: $src,
+            src: urldecode($src),
             text: $node->text(),
             type: $type,
         );

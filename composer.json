@@ -12,6 +12,7 @@
         "laravel/telescope": "^5.2",
         "laravel/tinker": "^2.9",
         "predis/predis": "^2.2",
+        "spatie/laravel-data": "^4.9",
         "symfony/dom-crawler": "^7.1"
     },
     "require-dev": {

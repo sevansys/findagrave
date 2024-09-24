@@ -25,7 +25,7 @@
         <x-shared.icons.cemetery></x-shared.icons.cemetery>
       </span>
 
-      <x-shared.btn :filled="false" clsx="rounded bg-white items-center text-sm px-5 text-[#5c60a3]">
+      <x-shared.btn :filled="false" class="rounded bg-white items-center text-sm px-5 text-[#5c60a3]">
         <span class="flex gap-1">
           <span class="w-5 h-5">
             <x-shared.icons.add></x-shared.icons.add>

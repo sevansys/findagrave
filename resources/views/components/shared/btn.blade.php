@@ -1,13 +1,7 @@
-<button
-  type="{{ $type }}"
-  @class([
-    'btn p-3',
-    'btn--lofty' => $lofty,
-    'btn--filled' => $filled,
-    'btn--outlined' => $outlined,
-    'btn--' . $variant => $variant,
-    $clsx,
+<button type="{{ $type }}" {{
+  $attributes->merge([
+    'class' => \Arr::toCssClasses($clsx)
   ])
->
+}}>
   {{ $slot }}
 </button>

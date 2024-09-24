@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Jobs\Scraper\LocationScrapJob;
-use App\Repositories\Location\LocationRepository;
 
 class ScrapLocations extends Command
 {
@@ -26,13 +25,12 @@ class ScrapLocations extends Command
     /**
      * Execute the console command.
      */
-    public function handle(LocationRepository $repository): void
+    public function handle(): void
     {
         $source_id = intval($this->argument('id'));
-        $location = $repository->findById($source_id);
 
         LocationScrapJob::dispatchSync(
-            $location?->id,
+            $source_id,
             !!$this->argument('continue_scrap'),
             $this->argument('root_url'),
         );

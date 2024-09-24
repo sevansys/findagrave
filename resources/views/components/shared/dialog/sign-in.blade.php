@@ -6,7 +6,7 @@
   <div x-data="{ forgotPassword: false }" class="text-black normal-case">
     <header class="bg-[#5c60a3] text-white flex justify-between items-center">
       <h4 class="px-5 text-lg font-semibold">Sign in to Find a Grave</h4>
-      <a href="#" class="w-14 h-14 p-3 flex opacity-50 hover:opacity-100" @click.prevent="modelOpen = false">
+      <a href="#" class="w-14 h-14 p-3 flex opacity-50 hover:opacity-100" @click.prevent="() => close()">
         <x-shared.icons.cross></x-shared.icons.cross>
       </a>
     </header>
@@ -47,7 +47,7 @@
           <x-shared.btn
             type="submit"
             variant="primary"
-            clsx="rounded-md">Sign in with Find a Grave</x-shared.btn>
+            class="rounded-md">Sign in with Find a Grave</x-shared.btn>
           <x-shared.checkbox
             name="remember-me"
             label="Keep me signed in"></x-shared.checkbox>
@@ -67,7 +67,7 @@
           label="Enter your email address"></x-shared.field>
 
         <x-shared.btn
-          clsx="rounded-md"
+          class="rounded-md"
           variant="primary">Reset Password</x-shared.btn>
 
         <div class="text-center">
@@ -77,7 +77,7 @@
     </div>
     <footer class="px-4 py-2 bg-gray-100 flex justify-center gap-2">
       <b>New to Find a Grave?</b>
-      <a href="#" class="link" @click.prevent="modelOpen = false; window.topMenuRegister?.click()">Sign Up</a>
+      <a href="#" class="link" @click.prevent="() => close(); window.topMenuRegister?.click()">Sign Up</a>
     </footer>
   </div>
 </x-shared.dialog>

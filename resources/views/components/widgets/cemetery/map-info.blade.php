@@ -37,7 +37,7 @@
         :float-label="false"
         label="Search names"
         field-clsx="rounded-tr-none rounded-br-none"></x-shared.field>
-      <x-shared.btn type="reset" clsx="rounded-tr-md rounded-br-md bg-gray-200" :lofty="false">
+      <x-shared.btn type="reset" class="rounded-tr-md rounded-br-md bg-gray-200" :lofty="false">
         <span class="flex w-5 h-5">
           <x-shared.icons.cross></x-shared.icons.cross>
         </span>

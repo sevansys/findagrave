@@ -18,34 +18,28 @@ class LocationRepository extends ScrapeableRepository
      *
      * @param array $data
      * @param Location|null $parent
-     * @return Collection<Location>
+     * @return int
      */
-    public function insertScraped(array $data, ?Location $parent): Collection
+    public function insertScraped(array $data, ?Location $parent): int
     {
-        $data = array_map(function (LocationDTO $location) {
+        $data = array_map(function (LocationDTO $location) use ($parent) {
             $item = $this->toRow($location);
-            $item['status'] = EnumScrapStatus::NEED_SCRAPING;
+            $item['scrap_status'] = EnumScrapStatus::NEED_SCRAPING;
             $item["created_at"] = $item["updated_at"] = Carbon::now()->toAtomString();
+
+            if ($parent) {
+                $item['parent_id'] = $parent->id;
+            }
+
             return $item;
         }, $data);
 
-        if (!$parent) {
-            $parent = new Location();
-        }
-
-        return $parent->children()->createMany($data);
+        return Location::insertOrIgnore($data);
     }
 
     public function findById(int $id): ?Location
     {
-        return Location::query()->find($id);
-    }
-
-    public function findBySource(string $src): ?Location
-    {
-        return Location::query()
-            ->where('source_id', $src)
-            ->first();
+        return $this->fromWhole(Location::query())->find($id);
     }
 
     public function create(LocationDTO $location): Location
@@ -56,8 +50,8 @@ class LocationRepository extends ScrapeableRepository
 
     public function nextForScrap(): ?Location
     {
-        return Location::query()
-            ->where('status', EnumScrapStatus::NEED_SCRAPING->value)
+        return $this->fromWhole(Location::query())
+            ->where('scrap_status', EnumScrapStatus::NEED_SCRAPING->value)
             ->first();
     }
 
@@ -68,7 +62,7 @@ class LocationRepository extends ScrapeableRepository
             text: $location->text,
             parent_id: $location->parent_id,
             type: $location->type,
-            status: $location->status,
+            scrap_status: $location->scrap_status,
         );
     }
 
@@ -78,8 +72,8 @@ class LocationRepository extends ScrapeableRepository
             'src' => $location->src,
             'text' => $location->text,
             'type' => $location->type,
-            'status' => $location->status,
             'parent_id' => $location->parent_id,
+            'scrap_status' => $location->scrap_status,
         ];
     }
 
@@ -113,5 +107,20 @@ class LocationRepository extends ScrapeableRepository
             ])
         );
         return $location;
+    }
+
+    /**
+     * @param int|null $id
+     * @return Collection<Location>
+     */
+    public function browseLocation(?int $id): Collection
+    {
+        return Location::query()
+            ->where('parent_id', $id)
+            ->get([
+                'id',
+                'text',
+                'type',
+            ]);
     }
 }

@@ -12,6 +12,6 @@ class LocationDTO
         public string $text,
         public ?int $parent_id = null,
         public ?EnumLocation $type = null,
-        public ?EnumScrapStatus $status = null,
+        public ?EnumScrapStatus $scrap_status = null,
     ) {}
 }

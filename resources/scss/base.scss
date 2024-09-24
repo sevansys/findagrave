@@ -41,3 +41,7 @@ a.link,
     text-decoration: underline;
   }
 }
+
+[x-cloak] {
+  display: none !important;
+}

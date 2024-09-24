@@ -3,7 +3,7 @@
   method="GET"
   class="search-form"
   :class="{ 'search-form--expended': expanded }"
-  x-data="{ expanded: {{ $expended ? 'true' : 'false' }} }"
+  x-data="{ location: null, locationId: null, expanded: {{ $expended ? 'true' : 'false' }} }"
 >
   @if($showTitle)
     <h1 class="text-primary text-2xl search-form__title">{{ $title }}</h1>
@@ -38,7 +38,7 @@
           >
             <x-shared.btn
               :lofty="false"
-              clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 bg-gray-200 flex items-center gap-2">
+              class="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 bg-gray-200 flex items-center gap-2">
               <span x-html="selectedLabel" class="text-nowrap"></span>
               <span class="w-5 h-5">
                 <x-shared.icons.arrow-down></x-shared.icons.arrow-down>
@@ -60,7 +60,7 @@
           >
             <x-shared.btn
               :lofty="false"
-              clsx="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 flex items-center bg-gray-200 gap-2">
+              class="rounded-lg rounded-tl-none rounded-bl-none -ml-1.5 flex items-center bg-gray-200 gap-2">
               <span x-html="selectedLabel" class="text-nowrap"></span>
               <span class="w-5 h-5">
                 <x-shared.icons.arrow-down></x-shared.icons.arrow-down>
@@ -73,17 +73,19 @@
           @if(!$withoutCemeteryLocation)
             <x-shared.field
               type="address"
+              attrs=":value='location'"
               label="Cemetery Location"
               field-clsx="rounded-tr-none rounded-br-none"></x-shared.field>
-            <x-shared.dialog>
-              <x-slot name="activator">
-                <x-shared.btn
-                  :lofty="false"
-                  clsx="rounded-lg rounded-tl-none rounded-bl-none bg-gray-200 -ml-1.5 relative">
-                  Browse
-                </x-shared.btn>
-              </x-slot>
-            </x-shared.dialog>
+
+            <input type="hidden" name="location_id" :value="locationId" />
+
+            <x-shared.dialog.browse-locations>
+              <x-shared.btn
+                :lofty="false"
+                class="rounded-lg rounded-tl-none rounded-bl-none bg-gray-200 -ml-1.5 relative">
+                Browse
+              </x-shared.btn>
+            </x-shared.dialog.browse-locations>
           @endif
         </div>
       </x-shared.fields-group>
@@ -174,7 +176,7 @@
         <x-shared.btn
           type="submit"
           variant="primary"
-          clsx="rounded-lg px-5 py-2 text-lg font-bold uppercase">
+          class="rounded-lg px-5 py-2 text-lg font-bold uppercase">
           {{ $submitText }}
         </x-shared.btn>
         <a

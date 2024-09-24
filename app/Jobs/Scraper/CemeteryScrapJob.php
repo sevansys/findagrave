@@ -2,7 +2,6 @@
 
 namespace App\Jobs\Scraper;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -41,11 +40,11 @@ class CemeteryScrapJob implements ShouldQueue
 
         $repository->putScraped($this->cemetery, $cemeteryDTO);
 
-        if ($this->continue_scrap) {
-            dispatch(function () {
-                Artisan::call('app:scrap-next-cemetery');
-            })->delay(now()->addSeconds(10));
-        }
+//        if ($this->continue_scrap) {
+//            dispatch(function () {
+//                Artisan::call('app:scrap-next-cemetery');
+//            })->delay(now()->addSeconds(10));
+//        }
     }
 
     public function fail($exception, CemeteryRepository $cemeteryRepository)

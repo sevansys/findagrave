@@ -20,6 +20,11 @@ $color-btn-border-active-color: #af641a;
 .btn {
   transition: background-color .2s ease-in-out, border-color .2s ease-in-out;
 
+  &[disabled] {
+    opacity: .5;
+    pointer-events: none;
+  }
+
   &:is(&--lofty) {
     box-shadow: 0 2px 0 rgba(0,0,0,.2);
   }

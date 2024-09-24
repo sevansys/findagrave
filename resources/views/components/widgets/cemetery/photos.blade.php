@@ -4,7 +4,7 @@
       <i class="text-gray-600">No additional photos.</i>
       <x-shared.btn
         :filled="false"
-        clsx="flex items-center gap-2 rounded-md py-1.5 bg-white border"
+        class="flex items-center gap-2 rounded-md py-1.5 bg-white border"
       >
         <span class="w-4 h-4 p-0.5 rounded-full bg-[#5c60a3] text-white">
           <x-shared.icons.plus></x-shared.icons.plus>

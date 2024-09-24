@@ -9,6 +9,7 @@ use App\Services\Scraper\Media\MediaScraper;
 use App\Services\Scraper\Scraper;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
+use Throwable;
 
 class CemeteryScraper extends Scraper
 {
@@ -35,6 +36,9 @@ class CemeteryScraper extends Scraper
 ////        return file_get_contents(app_path('Stubs/Scraper/Cemetery/single-about.html'));
 //    }
 
+    /**
+     * @throws Throwable
+     */
     public function start(): CemeteryDTO
     {
         $this->scrap($this->src)

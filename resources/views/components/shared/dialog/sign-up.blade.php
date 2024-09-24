@@ -6,7 +6,7 @@
   <div x-data="{ bePhotoVolunteer: false, showPassword: false }" class="flex flex-col gap-10 text-gray-500 normal-case">
     <header class="bg-[#5c60a3] text-white flex justify-between items-center">
       <h4 class="px-8 text-lg font-semibold">New Member Registration</h4>
-      <a href="#" class="w-14 h-14 p-3 flex opacity-50 hover:opacity-100" @click.prevent="modelOpen = false">
+      <a href="#" class="w-14 h-14 p-3 flex opacity-50 hover:opacity-100" @click.prevent="() => close()">
         <x-shared.icons.cross></x-shared.icons.cross>
       </a>
     </header>
@@ -86,7 +86,7 @@
                     label="Enter a city or country"></x-shared.field>
                 </div>
                 <span>OR</span>
-                <x-shared.btn variant="secondary" clsx="text-white bg-black flex gap-2 rounded-md">
+                <x-shared.btn variant="secondary" class="text-white bg-black flex gap-2 rounded-md">
                   <span class="w-4 h-4">
                     <x-shared.icons.location></x-shared.icons.location>
                   </span>
@@ -116,7 +116,7 @@
       </div>
 
       <div class="flex justify-end py-4 px-8 bg-gray-100">
-        <x-shared.btn type="submit" variant="primary" clsx="rounded-md">Create Account</x-shared.btn>
+        <x-shared.btn type="submit" variant="primary" class="rounded-md">Create Account</x-shared.btn>
       </div>
     </form>
   </div>

@@ -8,10 +8,11 @@
     },
     "devDependencies": {
         "@types/alpinejs__collapse": "^3.13.4",
+        "@types/axios": "^0.9.36",
         "@types/mapbox": "^1.6.45",
         "@types/mapbox-gl": "^3.4.0",
         "autoprefixer": "^10.4.20",
-        "axios": "^1.7.4",
+        "axios": "^1.7.7",
         "eslint": "^8.57.0",
         "eslint-config-standard": "^17.1.0",
         "laravel-vite-plugin": "^1.0",
