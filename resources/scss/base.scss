@@ -45,3 +45,12 @@ a.link,
 [x-cloak] {
   display: none !important;
 }
+
+.ql-toolbar {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.ql-container {
+  min-height: 5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+}

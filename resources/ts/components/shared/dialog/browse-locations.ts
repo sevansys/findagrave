@@ -85,7 +85,6 @@ export function BrowseLocationsComponent(): AlpineComponent<BrowseLocations> {
     },
 
     getTitle(type: EnumBrowseLocation): string {
-      console.log(type, this.titles);
       return this.titles[type];
     },
     isSelected(index: number, location: BrowseLocation): boolean {

@@ -43,11 +43,13 @@
 
       <div class="flex gap-2">
         <x-shared.btn
+          type="button"
           variatn="white"
           @click.prevent="clear()"
           class="py-1.5 rounded-md bg-white border"
         >Clear</x-shared.btn>
         <x-shared.btn
+          type="button"
           variant="primary"
           class="py-1.5 rounded-md"
           x-bind:disabled="noneSelected"

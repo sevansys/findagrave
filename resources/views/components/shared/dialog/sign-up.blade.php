@@ -54,8 +54,8 @@
         <span>Repeat password</span>
         <x-shared.field
           required
+          class="w-64"
           type="password"
-          field-clsx="w-64"
           name="password_verify"
           autocomplete="new-password"></x-shared.field>
 

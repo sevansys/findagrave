@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schedule;
 
 //foreach (\App\Models\Location::countries()->get() as $country) {
 Schedule::command('app:scrap-next-location')
-    ->everyTenSeconds()
+    ->everyTwoSeconds()
     ->runInBackground();
 
 //Schedule::command('app:scrap-next-cemetery')
