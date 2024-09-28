@@ -14,7 +14,7 @@ class Memorials extends Main
             [
                 'icon' => 'grave',
                 'text' => 'Add a Memorial',
-                'href' => '#add-a-memorial',
+                'href' => route('memorial.create'),
             ],
             [
                 'icon' => 'recent',

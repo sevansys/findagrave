@@ -4,9 +4,11 @@ namespace App\Repositories\Location;
 
 use Carbon\Carbon;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Location;
+use App\Enums\EnumLocation;
 use App\Enums\EnumScrapStatus;
 use App\DTO\Location\LocationDTO;
 use App\Repositories\Scrapeable\ScrapeableRepository;
@@ -122,5 +124,41 @@ class LocationRepository extends ScrapeableRepository
                 'text',
                 'type',
             ]);
+    }
+
+    public function autoComplete(?string $like, array|null $types = null): ?Collection
+    {
+        if (is_null($like)) {
+            return null;
+        }
+
+        $query = Location::where(function(Builder $query) use ($like) {
+            $query->whereRaw('SOUNDEX(text) = SOUNDEX(?)', [$like]);
+            $query->orWhereLike('text', 'like', "%$like%");
+        });
+
+        $types = $this->toAutoCompleteTypesRow($types);
+        if ($types) {
+            $query->whereIn('type', array_map(
+                fn(EnumLocation $type) => $type->value, $types)
+            );
+        }
+
+        return $query
+            ->with('parents')
+            ->get(['id', 'text', 'parent_id']);
+    }
+
+    private function toAutoCompleteTypesRow(EnumLocation|array|null $types = null): ?array
+    {
+        if (!$types) {
+            return null;
+        }
+
+        if (!is_array($types)) {
+            $types = [$types];
+        }
+
+        return $types;
     }
 }

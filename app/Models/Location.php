@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Enums\EnumLocation;
 use App\Models\Scopes\ScrapedRecord;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ScopedBy(ScrapedRecord::class)]
 class Location extends Model
@@ -25,6 +26,10 @@ class Location extends Model
 
     protected $casts = [
         'type' => EnumLocation::class,
+    ];
+
+    protected $appends = [
+        'path',
     ];
 
     public function scopeContinent(Builder $builder)
@@ -74,5 +79,32 @@ class Location extends Model
     public function cemeteries(): HasMany
     {
         return $this->hasMany(Cemetery::class);
+    }
+
+    public function getPathAttribute(): string
+    {
+        $parent = $this->getParentsRelation();
+        $items = [$this->text];
+
+        do {
+            if (!$parent || $parent->type === EnumLocation::CONTINENT) {
+                break;
+            }
+
+            $items[] = $parent->text;
+        } while ($parent = $parent?->parents);
+
+        return implode(', ', $items);
+    }
+
+    private function getParentsRelation(): ?Location
+    {
+        if ($this->relationLoaded('parents')) {
+            return $this->parents;
+        } else if ($this->relationLoaded('parent')) {
+            return $this->parent;
+        }
+
+        return null;
     }
 }

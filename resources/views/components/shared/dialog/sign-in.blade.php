@@ -39,7 +39,7 @@
               clsx="text-nowrap"
               label="Show password"
               autocomplete="password"
-              attrs="@change='(event) => showPassword = !!event.target.checked'"></x-shared.checkbox>
+              @change='(event) => showPassword = !!event.target.checked'></x-shared.checkbox>
 
             <a href="#" class="link" @click.prevent="forgotPassword = true">Forgot password?</a>
           </div>

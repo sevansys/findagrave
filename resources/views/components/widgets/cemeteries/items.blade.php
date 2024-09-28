@@ -6,7 +6,8 @@
       <header class="flex justify-between border-b pb-2">
         <h2 class="text-primary font-medium text-2xl">Cemeteries - <span x-html="viewLabel"></span></h2>
         <a
-          x-clock href="#"
+          x-cloak
+          href="#"
           @click.prevent="toggle"
           class="flex text-primary p-1.5 transition-colors ease-in rounded hover:text-white hover:bg-[#5c60a3]">
           <span x-show="isMapView" class="w-6 h-6">
@@ -18,7 +19,7 @@
         </a>
       </header>
 
-      <div x-clock>
+      <div x-cloak>
         <div x-show="isMapView">
           <x-features.cemeteries.map></x-features.cemeteries.map>
         </div>

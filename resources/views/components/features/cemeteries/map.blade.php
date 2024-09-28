@@ -1,5 +1,6 @@
 <div
   x-data="map({
+    minZoom: 12,
     zoom: {{ $zoom }},
     accessToken: '{{ $key }}',
     center: [{{ $longitude }}, {{ $latitude }}]

@@ -1,6 +1,8 @@
 <div
   class="relative flex-1 flex border-l w-full h-full"
   x-data="map({
+    maxZoom: 15,
+    minZoom: 13,
     container: 'map',
     zoom: {{ $zoom }},
     style: '{{ $style }}',

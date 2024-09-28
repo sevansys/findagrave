@@ -11,6 +11,14 @@ enum EnumBurial: string
     case BURIAL_DETAILS_UNKNOWN = "Burial Details Unknown";
     case DONATED_MEDICAL_SCIENCE = "Donated to Medical Science";
 
+    public static function asOptions(): array
+    {
+        return array_map(fn (self $case) => [
+            'label' => $case->value,
+            'value' => $case->name,
+        ], self::cases());
+    }
+
     public static function getType(string $value): ?self
     {
         foreach (self::cases() as $case) {

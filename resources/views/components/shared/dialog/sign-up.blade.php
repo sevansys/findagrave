@@ -47,7 +47,7 @@
           <div class="text-nowrap">
             <x-shared.checkbox
               label="Show password"
-              attrs="@change='(event) => showPassword = !!event.target.checked'"></x-shared.checkbox>
+              @change='(event) => showPassword = !!event.target.checked'></x-shared.checkbox>
           </div>
         </div>
 
@@ -70,7 +70,7 @@
         <span></span>
         <div class="flex flex-col gap-3">
           <x-shared.checkbox label="Receive email notifications about memorials you manage."></x-shared.checkbox>
-          <x-shared.checkbox attrs="@change='(event) => bePhotoVolunteer = !!event.target.checked'">
+          <x-shared.checkbox @change='(event) => bePhotoVolunteer = !!event.target.checked'>
             <x-slot name="label">
               I would like to be a photo volunteer. <a href="#" class="link">What is a Photo Volunteer?</a>
             </x-slot>

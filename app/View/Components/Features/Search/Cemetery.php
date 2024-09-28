@@ -16,6 +16,9 @@ class Cemetery extends Component
     public function __construct(
         public bool $showHint = true,
         public array|string $types = '*',
+        public string $browseText = 'Browse',
+        public string $actionText = 'Search',
+        public string $namePlaceholder = 'Cemetery Name',
         public string $hint = '*Only displays locations with cemeteries',
     ) {}
 
@@ -27,16 +30,21 @@ class Cemetery extends Component
             EnumLocation::STATE,
             EnumLocation::COUNTRY,
         ];
+    }
 
+    protected function getSelectedTypes(): array
+    {
+        $types = $this->types;
+        if ($types === '*') {
+            $types = $this->getAllTypes();
+        }
+
+        return $types;
     }
 
     protected function getLabel(): string
     {
-        $types = $this->types;
-
-        if ($types === '*') {
-            $types = $this->getAllTypes();
-        }
+        $types = $this->getSelectedTypes();
 
         $typesCount = count($types);
 
@@ -64,6 +72,7 @@ class Cemetery extends Component
     {
         return view('components.features.search.cemetery', [
             'label' => $this->getLabel(),
+            'selectedTypes' => $this->getSelectedTypes(),
         ]);
     }
 }

@@ -11,7 +11,7 @@ use Baghunts\LaravelFastEndpoints\Attributes\{
 };
 
 #[Get('/cemetery/create')]
-#[Name('cemetery-create')]
+#[Name('cemetery.create')]
 class CemeteryCreateController extends Endpoint
 {
     public function __invoke(): View

@@ -4,7 +4,7 @@
   </label>
 
   <div
-    x-clock
+    x-cloak
     x-show="show"
     role="dialog"
     aria-modal="true"

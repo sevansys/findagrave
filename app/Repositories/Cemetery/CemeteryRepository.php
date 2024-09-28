@@ -153,4 +153,16 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
             'text' => $website->text,
         ];
     }
+
+    public function autoComplete(?string $like): ?Collection
+    {
+        if (is_null($like)) {
+            return null;
+        }
+
+        return Cemetery::query()
+            ->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$like])
+            ->orWhere('name', 'like', "%$like%")
+            ->get(['id', 'name']);
+    }
 }

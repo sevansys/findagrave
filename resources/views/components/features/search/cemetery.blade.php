@@ -1,20 +1,27 @@
-<div x-data="{ location: null, locationId: null }" class="flex gap-4">
+<div
+  {{ $attributes->merge([
+    'class' => 'flex gap-4'
+  ]) }}
+>
   <div class="w-72">
-    <x-shared.field
+    <x-shared.autocomplete
       name="name"
-      class="bg-gray-50"
-      label="Cemetery Name"></x-shared.field>
+      base-url="/cemeteries/autocomplete"
+      :label="$namePlaceholder"></x-shared.autocomplete>
   </div>
   <div class="flex flex-1 flex-col gap-1">
-    <x-shared.field
+    <x-shared.autocomplete
       name="location"
-      x-bind:value='location'
-      class="bg-gray-50"
-      :label="$label"></x-shared.field>
-    <input type="hidden" name="location_id" :value="locationId" />
+      :label="$label"
+      :params="[
+        'types' => $selectedTypes,
+      ]"
+      base-url="/locations/autocomplete"
+    ></x-shared.autocomplete>
+
     <div class="flex justify-between">
       <x-shared.dialog.browse-locations>
-        <a class="link text-sm">Browse</a>
+        <a class="link text-sm">{{ $browseText }}</a>
       </x-shared.dialog.browse-locations>
 
       @if($showHint)
@@ -27,6 +34,8 @@
       variant="primary"
       class="rounded-md px-8"
       x-bind:disabled="!locationId"
-      @click.prevent="cemeteriesIsNotFound=true">Search</x-shared.btn>
+      @click.prevent="cemeteriesIsNotFound=true">
+      {{ $actionText }}
+    </x-shared.btn>
   </div>
 </div>
