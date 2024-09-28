@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Json\Locations\Autocomplete;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
+
 use Baghunts\LaravelFastEndpoints\Attributes\Get;
 use Baghunts\LaravelFastEndpoints\Attributes\Name;
 use Baghunts\LaravelFastEndpoints\Endpoint\Endpoint;
@@ -28,7 +31,7 @@ class LocationsAutocompleteController extends Endpoint
         );
     }
 
-    public function getLocationTypes(?array $types): ?array
+    private function getLocationTypes(?array $types): ?array
     {
         if (is_null($types)) {
             return null;

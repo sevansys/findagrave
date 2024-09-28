@@ -12,6 +12,9 @@ use App\Enums\EnumLocation;
 use App\Enums\EnumScrapStatus;
 use App\DTO\Location\LocationDTO;
 use App\Repositories\Scrapeable\ScrapeableRepository;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LocationRepository extends ScrapeableRepository
 {
@@ -126,7 +129,11 @@ class LocationRepository extends ScrapeableRepository
             ]);
     }
 
-    public function autoComplete(?string $like, array|null $types = null): ?Collection
+    public function autoComplete(
+        ?string $like,
+        array|null $types = null,
+        int $count = 5
+    ): ?Collection
     {
         if (is_null($like)) {
             return null;
@@ -142,10 +149,17 @@ class LocationRepository extends ScrapeableRepository
             $query->whereIn('type', array_map(
                 fn(EnumLocation $type) => $type->value, $types)
             );
+        } else {
+            $query->whereNot('type', [EnumLocation::CONTINENT->value]);
         }
 
+        //TODO: Optimize query to include relative locations to list if fist level is less than 5
         return $query
-            ->with('parents')
+            ->with('parents', function (BelongsTo $builder) {
+                $builder->whereNot('type', [EnumLocation::CONTINENT->value]);
+            })
+            ->orderByRaw('SOUNDEX(text)')
+            ->limit($count)
             ->get(['id', 'text', 'parent_id']);
     }
 

@@ -1,0 +1,19 @@
+:root {
+  --loader-size: 50px;
+  --loader-color: #25b09b;
+}
+
+.loader {
+  aspect-ratio: 1;
+  width: var(--loader-size);
+  --_c:no-repeat radial-gradient(farthest-side, var(--loader-color) 92%, #0000);
+  background:
+    var(--_c) top,
+    var(--_c) left,
+    var(--_c) right,
+    var(--_c) bottom;
+  background-size: calc(var(--loader-size) / 4) calc(var(--loader-size) / 4);
+  animation: l7 1s infinite;
+}
+
+@keyframes l7 {to{transform: rotate(.5turn)}}
