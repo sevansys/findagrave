@@ -13,6 +13,7 @@ class Dialog extends Component
      */
     public function __construct(
         public ?string $clsx = null,
+        public ?string $name = null,
         public ?string $dialogClsx = null,
         public ?string $containerClsx = null,
     ) {}

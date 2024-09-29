@@ -1,7 +1,9 @@
-<div x-data="dialog"  @class(['dialog', $clsx])>
-  <label @click="() => open()" class="flex h-full w-full cursor-pointer">
-    {{ $activator }}
-  </label>
+<div x-data="dialog(false, {{ $name ? '\'' . $name . '\'' : 'null' }})"  @class(['dialog', $clsx])>
+  @if(!empty($activator))
+    <label @click="() => open()" class="flex h-full w-full cursor-pointer">
+      {{ $activator }}
+    </label>
+  @endif
 
   <div
     x-cloak

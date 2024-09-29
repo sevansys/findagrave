@@ -2,12 +2,18 @@
   {{ $attributes->merge([
     'class' => 'flex gap-4'
   ]) }}
+  action="{{ $action }}"
+  x-data="searchCemetery"
 >
-  <div class="w-72">
+  <div class="flex flex-col">
     <x-shared.autocomplete
+      ref="cemetery"
       name="cemetery"
-      base-url="/cemeteries/autocomplete"
+      value-name="cemetery_id"
       :label="$namePlaceholder"
+      base-url="/cemeteries/autocomplete"
+      :value="request()->get('cemetery')"
+      :input-value="request()->get('cemetery-id')"
     >
       <x-slot name="suggestionIcon">
         <x-shared.icons.cemetery></x-shared.icons.cemetery>
@@ -16,12 +22,16 @@
   </div>
   <div class="flex flex-1 flex-col gap-1">
     <x-shared.autocomplete
+      ref="location"
       name="location"
       :label="$label"
+      value-name="location_id"
+      base-url="/locations/autocomplete"
+      :value="request()->get('location')"
+      :input-value="request()->get('location-id')"
       :params="[
         'types' => $selectedTypes,
       ]"
-      base-url="/locations/autocomplete"
     >
       <x-slot name="suggestionIcon">
         <x-shared.icons.location></x-shared.icons.location>
@@ -29,9 +39,11 @@
     </x-shared.autocomplete>
 
     <div class="flex justify-between">
-      <x-shared.dialog.browse-locations>
-        <a class="link text-sm">{{ $browseText }}</a>
-      </x-shared.dialog.browse-locations>
+      <a
+        href="#"
+        class="link text-sm"
+        x-dialog.browse-locations="{ onSelect: onDialogSelect.bind($data) }"
+      >{{ $browseText }}</a>
 
       @if($showHint)
         <span class="text-gray-600 text-sm">{{ $hint }}</span>
@@ -44,8 +56,7 @@
       type="submit"
       variant="primary"
       class="rounded-md px-8"
-      x-bind:disabled="!locationId"
-      @click.prevent="cemeteriesIsNotFound=true">
+    >
       {{ $actionText }}
     </x-shared.btn>
   </div>

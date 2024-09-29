@@ -22,8 +22,7 @@ class Map extends Component
     {
         return view('components.features.cemeteries.map', [
             'zoom' => 6,
-            'latitude' => 40,
-            'longitude' => -74.5,
+            'center' => null,
             'key' => config('app.mapbox.public_key'),
         ]);
     }

@@ -1,7 +1,9 @@
 import { AlpineComponent } from 'alpinejs';
+
+import { Dialog } from './index';
 import { Response } from '../types';
 
-interface BrowseLocations {
+interface BrowseLocations extends Dialog {
   selected: Array<BrowseLocation>;
   data: Array<BrowseLocationGroup>;
   titles: Record<EnumBrowseLocation, string>;
@@ -30,6 +32,7 @@ const enum EnumBrowseLocation {
 interface BrowseLocation {
   id: number;
   text: string;
+  path: string;
   type: EnumBrowseLocation;
 }
 
@@ -62,6 +65,8 @@ export function BrowseLocationsComponent(): AlpineComponent<BrowseLocations> {
 
     get selectedLocations(): string {
       return Object.values(this.selected)
+        .reverse()
+        .slice(0, -1)
         .map(({ text }) => {
           return text;
         })
@@ -84,6 +89,32 @@ export function BrowseLocationsComponent(): AlpineComponent<BrowseLocations> {
       return this.selectedLocation?.id ?? null;
     },
 
+    init() {
+      this.fetch<BrowseLocation[]>(null).then((continents) => {
+        this.data = [
+          makeEmptyLocation(
+            EnumBrowseLocation.CONTINENT,
+            continents?.data ?? [],
+          ),
+        ];
+      });
+    },
+
+    useSelectedLocations(): void {
+      if (typeof this.params?.onSelect === 'function') {
+        const selected =
+          this.selectedLocation !== null ? { ...this.selectedLocation } : null;
+
+        if (selected) {
+          selected.path = this.selectedLocations;
+        }
+
+        this.params?.onSelect(selected);
+      }
+
+      this.close();
+    },
+
     getTitle(type: EnumBrowseLocation): string {
       return this.titles[type];
     },
@@ -100,16 +131,6 @@ export function BrowseLocationsComponent(): AlpineComponent<BrowseLocations> {
         (this.selected[index]?.id ?? null) === location.id &&
         index === this.selected.length - 1
       );
-    },
-    init() {
-      this.fetch<BrowseLocation[]>(null).then((continents) => {
-        this.data = [
-          makeEmptyLocation(
-            EnumBrowseLocation.CONTINENT,
-            continents?.data ?? [],
-          ),
-        ];
-      });
     },
     async fetch<T>(parentId: number | null): Promise<Response<T> | undefined> {
       return (
@@ -129,7 +150,7 @@ export function BrowseLocationsComponent(): AlpineComponent<BrowseLocations> {
         const { data } = children ?? {};
 
         if (data?.length) {
-          this.data.push(makeEmptyLocation(location.type + 1, data));
+          this.data.push(makeEmptyLocation(data[0].type, data));
         }
       });
     },

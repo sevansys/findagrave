@@ -1,4 +1,5 @@
 import type { AlpineComponent } from 'alpinejs';
+
 import type {
   CemeteriesWidget,
   CemeteriesItemsViewType,

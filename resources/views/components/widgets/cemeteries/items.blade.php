@@ -1,12 +1,13 @@
 <section
+  x-cloak
   x-data="cemeteriesWidget"
-  class="max-w-screen-xl w-full mx-auto">
+  class="max-w-screen-xl w-full mx-auto"
+>
   <div class="flex gap-10">
     <div class="flex flex-col gap-4 flex-1">
       <header class="flex justify-between border-b pb-2">
         <h2 class="text-primary font-medium text-2xl">Cemeteries - <span x-html="viewLabel"></span></h2>
         <a
-          x-cloak
           href="#"
           @click.prevent="toggle"
           class="flex text-primary p-1.5 transition-colors ease-in rounded hover:text-white hover:bg-[#5c60a3]">
@@ -19,13 +20,11 @@
         </a>
       </header>
 
-      <div x-cloak>
-        <div x-show="isMapView">
-          <x-features.cemeteries.map></x-features.cemeteries.map>
-        </div>
-        <div x-show="isListView">
-          <x-features.cemeteries.list-items></x-features.cemeteries.list-items>
-        </div>
+      <div x-show="isMapView">
+        <x-features.cemeteries.map></x-features.cemeteries.map>
+      </div>
+      <div x-show="isListView">
+        <x-features.cemeteries.list-items></x-features.cemeteries.list-items>
       </div>
 
       <p class="text-gray-600">

@@ -24,6 +24,7 @@ class Field extends Component
         public bool $floatLabel = true,
         public ?bool $autofocus = false,
         public ?string $autocomplete = null,
+        public array|string|null $errors = null,
     ) {}
 
     protected function getIsLabeled(): bool
@@ -33,6 +34,7 @@ class Field extends Component
 
     protected function getClsx(): array
     {
+        $hasErrors = $this->hasErrors();
         $isLabeled = $this->getIsLabeled();
 
         return [
@@ -40,12 +42,34 @@ class Field extends Component
             'pb-2',
             'w-full',
             'h-full',
+            'border',
             'rounded-lg',
             'outline-none',
             'transition-shadow',
             'pt-6' => $isLabeled,
             'pt-2' => !$isLabeled,
+            'bg-red-100' => $hasErrors,
+            'border-red-600' => $hasErrors,
+            'border-neutral-300' => !$hasErrors,
         ];
+    }
+
+    protected function getErrors(): array
+    {
+        if (!$this->errors) {
+            return [];
+        }
+
+        if (is_string($this->errors)) {
+            return [$this->errors];
+        }
+
+        return $this->errors;
+    }
+
+    protected function hasErrors(): bool
+    {
+        return count($this->getErrors());
     }
 
     /**
@@ -54,8 +78,10 @@ class Field extends Component
     public function render(): View
     {
         return view('components.shared.field', [
-            'isLabeled' => $this->getIsLabeled(),
             'fieldClsx' => $this->getClsx(),
+            'fieldErrors' => $this->getErrors(),
+            'isHasErrors' => $this->hasErrors(),
+            'isLabeled' => $this->getIsLabeled(),
         ]);
     }
 }

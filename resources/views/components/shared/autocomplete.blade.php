@@ -1,35 +1,62 @@
 @props([
+  'ref' => null,
   'name' => null,
+  'value' => null,
+  'error' => null,
   'params' => null,
   'baseUrl' => null,
+  'valueName' => null,
   'suggestion' => null,
+  'inputValue' => null,
   'label' => 'Keywords',
   'suggestionIcon' => null,
   'textLimitHit' => 'Please enter at last 3 characters.',
 ])
 
 <div
+  x-cloak
+  @if($ref)
+    x-ref="{{ $ref }}"
+  @endif
   class="relative flex flex-col w-full"
   x-data='autoComplete({
-    baseUrl: "{{ $baseUrl }}",
+    query: "{{ $value }}",
     params: @json($params),
+    baseUrl: "{{ $baseUrl }}",
+    inputValue: "{{ $inputValue }}",
+    hasErrors: "{{ !empty($error) }}",
   })'
 >
   <div
-    @click.away="active=false; cursorIndex=-1"
-    @keydown.escape="active=false; cursorIndex=-1"
-    @keydown.enter="console.log('directly linking to: ', inputValue )"
+    @click.away="active = false"
+    @keydown.escape="active = false"
   >
     <x-shared.field
       type="text"
-      @blur="onBlur"
+
+      :name="$name"
       :label="$label"
-      @focus="onFocus"
-      @input="isTyped=true"
+      :errors="$error"
+
+      x-bind:class="{
+        'bg-red-100': hasError,
+        'border-red-600': hasError,
+      }"
       x-model.debounce.250ms="query"
+
+      @blur="onBlur"
+      @focus="onFocus"
+      @input="onInput"
     ></x-shared.field>
 
-    <input type="hidden" name="{{ $name }}" :value="inputValue" />
+    <input
+      type="hidden"
+      :value="inputValue"
+
+      @if($valueName)
+        name="{{ $valueName }}"
+      @endif
+    />
 
     <div
       x-cloak

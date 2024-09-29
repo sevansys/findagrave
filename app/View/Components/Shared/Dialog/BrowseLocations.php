@@ -16,16 +16,6 @@ class BrowseLocations extends Component
         public ?Location $target,
     ) {}
 
-    protected function getLocations(): array
-    {
-        return [];
-    }
-
-    protected function getCemeteries(): array
-    {
-        return [];
-    }
-
     /**s
      * Get the view / contents that represent the component.
      */

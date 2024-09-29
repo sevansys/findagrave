@@ -1,4 +1,10 @@
-<label @class(['field relative inline-flex w-full', $clsx])>
+<label
+  @class([
+    'field relative inline-flex w-full flex-col',
+    'field--errors' => $isHasErrors,
+    $clsx
+  ])
+>
   @switch($type)
     @case('textarea')
       <textarea
@@ -30,7 +36,17 @@
       />
       @break
   @endswitch
-  @if($isLabeled)
+
+    @if($isLabeled)
     <span class="field__label absolute px-4 py-1 text-sm text-gray-800 truncate">{{ $label }}</span>
   @endunless
 </label>
+@if(!empty($isHasErrors))
+  <div class="field__errors flex flex-col gap-1 text-sm">
+    @foreach($fieldErrors as $error)
+      <span class="field__error text-red-600 px-0.5 py-1">
+          {{ $error }}
+        </span>
+    @endforeach
+  </div>
+@endif

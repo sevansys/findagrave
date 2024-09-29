@@ -15,6 +15,7 @@ interface AutoComplete<T> {
   query: string;
   active: boolean;
   isTyped: boolean;
+  hasError: boolean;
   isLoading: boolean;
   inputValue: string;
   suggestions: AutoCompleteItems<T>;
@@ -22,38 +23,46 @@ interface AutoComplete<T> {
 
   get isSuggestionActive(): boolean;
 
+  touch(): void;
   onBlur(): void;
   request(): void;
   onFocus(): void;
+  onInput(): void;
   updateSuggestions(): void;
   marked(text: string): string;
   fetch(): Promise<AutoCompleteResult<T>>;
+  isActive(suggestion: Suggestion<T>): boolean;
   selectSuggestion(suggestion: Suggestion<T>): void;
 }
 
 interface AutoCompleteOptions {
+  query?: string;
   params?: object;
   baseUrl: string;
+  inputValue?: string;
 }
 
 export function AutoCompleteComponent<T = unknown>(
   options: AutoCompleteOptions,
-): AlpineComponent<AutoComplete<Suggestion<T>>> {
+): AlpineComponent<AutoComplete<T>> {
   return {
-    query: '',
     active: false,
     isTyped: false,
-    inputValue: '',
     suggestions: [],
+    hasError: false,
     isLoading: false,
     activeSuggestion: null,
+    query: options.query ?? '',
+    inputValue: options?.inputValue ?? '',
 
     get isSuggestionActive(): boolean {
       return this.active && this.isTyped;
     },
 
     init() {
-      this.$watch('query', () => this.request());
+      this.$watch('query', () => {
+        this.request();
+      });
     },
 
     request(): void {
@@ -62,6 +71,19 @@ export function AutoCompleteComponent<T = unknown>(
       }
 
       this.updateSuggestions();
+    },
+
+    touch(): void {
+      if (!this.inputValue?.length) {
+        return;
+      }
+
+      this.inputValue = '';
+    },
+
+    onInput(): void {
+      this.isTyped = true;
+      this.touch();
     },
 
     onFocus() {
@@ -75,12 +97,12 @@ export function AutoCompleteComponent<T = unknown>(
     },
 
     updateSuggestions() {
-      this.fetch().then((suggestions) => {
+      this.fetch().then((suggestions: AutoCompleteResult<T>) => {
         this.isTyped = true;
         this.suggestions = suggestions.data;
       });
     },
-    isActive(suggestion: Suggestion<T>) {
+    isActive(suggestion: Suggestion<T>): boolean {
       return (
         JSON.stringify(this.activeSuggestion) === JSON.stringify(suggestion)
       );
@@ -92,10 +114,10 @@ export function AutoCompleteComponent<T = unknown>(
       );
     },
     selectSuggestion(suggestion: Suggestion<T>): void {
-      console.log(suggestion);
       this.activeSuggestion = suggestion;
+
       this.query = suggestion.label;
-      this.inputValue = suggestion.value as string;
+      this.inputValue = suggestion.value ? `${suggestion.value}` : '';
 
       this.onBlur();
     },

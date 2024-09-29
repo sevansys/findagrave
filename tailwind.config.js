@@ -7,8 +7,18 @@ export default {
     './resources/**/*.ts',
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        '2|3|auto': '2fr 3fr auto',
+      },
+    },
   },
   plugins: [],
-  safelist: ['pt-2', 'outline-none'],
+  safelist: [
+    'pt-2',
+    'bg-red-100',
+    'outline-none',
+    'border-red-600',
+    'border-neutral-500',
+  ],
 };

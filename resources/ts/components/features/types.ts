@@ -6,6 +6,7 @@ export interface Map {
   instance: MapboxMap | null;
   updateStyle(style: string): this;
   setFullscreen(value: boolean): this;
+  currentLocation(): Promise<GeolocationCoordinates>;
 }
 
 export interface MapOptions {

@@ -1,8 +1,4 @@
-<x-shared.dialog container-clsx="py-5 px-5">
-  <x-slot name="activator">
-    {{ $slot }}
-  </x-slot>
-
+<x-shared.dialog name="browse-locations" container-clsx="py-5 px-5">
   <div x-data="browseLocations" class="max-w-screen-2xl flex flex-col overflow-hidden h-full">
     <header class="bg-[#5c60a3] text-white flex justify-between items-center">
       <h4 class="px-5 text-lg font-semibold">Browse</h4>
@@ -53,7 +49,7 @@
           variant="primary"
           class="py-1.5 rounded-md"
           x-bind:disabled="noneSelected"
-          @click.prevent="close(); location=selectedLocations; locationId=selectedLocationId">Use Selected Location</x-shared.btn>
+          @click.prevent="useSelectedLocations">Use Selected Location</x-shared.btn>
       </div>
     </footer>
   </div>

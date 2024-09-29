@@ -13,6 +13,7 @@ class LocationChildrenResource extends JsonResource
             'id' => $this->id,
             'text' => $this->text,
             'type' => $this->type,
+            'path' => $this->path,
             'parent_id' => $this->parent_id,
         ];
     }

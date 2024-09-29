@@ -2,8 +2,10 @@
 
 namespace App\Repositories\Cemetery;
 
+use App\DTO\Cemeteries\CemeteriesSearchQueryDTO;
 use Carbon\Carbon;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Cemetery;
@@ -14,6 +16,10 @@ use App\Repositories\Scrapeable;
 use App\DTO\Cemetery\CemeteryDTO;
 use App\DTO\Cemetery\CemeteryPhoneDTO;
 use App\DTO\Cemetery\CemeteryWebsiteDTO;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CemeteryRepository extends Scrapeable\ScrapeableRepository
 {
@@ -164,5 +170,29 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
             ->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$like])
             ->orWhere('name', 'like', "%$like%")
             ->get(['id', 'name']);
+    }
+
+    public function search(CemeteriesSearchQueryDTO $request): LengthAwarePaginator
+    {
+        return  Cemetery::query()
+            ->with('media', fn(MorphMany $morphMany) =>
+                $morphMany
+                    ->select('src', 'owner_id', 'owner_type')
+                    ->limit(1)
+            )
+            ->whereHas('location', function(Builder $belongsTo) use ($request) {
+                $belongsTo->where('id', $request->location_id);
+            })
+            ->where(function(Builder $query) use ($request) {
+                $query->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$request->cemetery])
+                    ->orWhere('name', 'like', "%$request->cemetery%");
+            })
+            ->paginate(15 * $request->page, [
+                'id',
+                'name',
+                'address',
+                'alt_name',
+                'location_id',
+            ]);
     }
 }

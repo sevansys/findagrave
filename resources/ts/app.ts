@@ -1,5 +1,3 @@
-import './components/index';
-
 import axios from 'axios';
 
 import Alpine from 'alpinejs';
@@ -11,6 +9,9 @@ window.axios = axios.create({
   withCredentials: true,
 });
 
-Alpine.plugin(Collapse);
+import './components/index';
+
 Alpine.plugin(Focus);
+Alpine.plugin(Collapse);
+
 Alpine.start();

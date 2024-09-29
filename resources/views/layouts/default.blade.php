@@ -29,5 +29,7 @@
       @yield('content')
   </div>
   <x-widgets.footer></x-widgets.footer>
+
+  <x-shared.dialog.browse-locations></x-shared.dialog.browse-locations>
 </body>
 </html>

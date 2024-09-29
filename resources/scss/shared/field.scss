@@ -27,8 +27,8 @@ $field-focus-shadow: 0 0 0 .25rem rgba(204,102,0,.65);
   input, textarea {
     position: relative;
 
-    box-shadow: var(--field-box-shadow);
-    border: 1px solid var(--field-border-color);
+    //box-shadow: var(--field-box-shadow);
+    //border: 1px solid var(--field-border-color);
 
     &::-webkit-inner-spin-button {
       display: none;
@@ -51,4 +51,11 @@ $field-focus-shadow: 0 0 0 .25rem rgba(204,102,0,.65);
       }
     }
   }
+
+  //&--errors input,
+  //&--errors textarea,
+  //input:invalid,
+  //textarea:invalid {
+  //  --field-border-color: #c30d0d;
+  //}
 }

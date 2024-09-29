@@ -2,7 +2,6 @@
 
 namespace App\View\Components\Features\Search;
 
-use Illuminate\Support\Str;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 
@@ -15,12 +14,17 @@ class Cemetery extends Component
      */
     public function __construct(
         public bool $showHint = true,
+        public ?string $action = null,
         public array|string $types = '*',
         public string $browseText = 'Browse',
         public string $actionText = 'Search',
         public string $namePlaceholder = 'Cemetery Name',
         public string $hint = '*Only displays locations with cemeteries',
-    ) {}
+    ) {
+        if ($this->action) {
+            $this->action = route('cemeteries.search.json');
+        }
+    }
 
     protected function getAllTypes(): array
     {
