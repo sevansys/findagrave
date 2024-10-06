@@ -2,11 +2,13 @@
 
 namespace App\Repositories\Cemetery;
 
-use App\DTO\Cemeteries\CemeteriesSearchQueryDTO;
 use Carbon\Carbon;
+
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 use App\Models\Cemetery;
 use App\Models\Location;
@@ -16,10 +18,7 @@ use App\Repositories\Scrapeable;
 use App\DTO\Cemetery\CemeteryDTO;
 use App\DTO\Cemetery\CemeteryPhoneDTO;
 use App\DTO\Cemetery\CemeteryWebsiteDTO;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\DTO\Cemeteries\CemeteriesSearchQueryDTO;
 
 class CemeteryRepository extends Scrapeable\ScrapeableRepository
 {
@@ -194,5 +193,32 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
                 'alt_name',
                 'location_id',
             ]);
+    }
+
+    public function create(CemeteryDTO $dto): Cemetery
+    {
+        $cemetery = Cemetery::create([
+            'src' => $dto->src,
+            'name' => $dto->name,
+            'phone' => $dto->phone,
+            'email' => $dto->email,
+            'address' => $dto->address,
+            'website' => $dto->website,
+            'alt_name' => $dto->alt_name,
+            'latitude' => $dto->latitude,
+            'longitude' => $dto->longitude,
+            'visibility' => $dto->visibility,
+            'location_id' => $dto->location_id,
+            'description' => $dto->description,
+            'office_address' => $dto->office_address,
+            'additional_info' => $dto->additional_info,
+            'scrap_status' => EnumScrapStatus::SCRAPED,
+        ]);
+
+        if ($dto->additional_location) {
+            $cemetery->additional_locations()->sync($dto->additional_location);
+        }
+
+        return $cemetery;
     }
 }

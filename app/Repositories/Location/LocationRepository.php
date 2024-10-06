@@ -6,15 +6,13 @@ use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Models\Location;
 use App\Enums\EnumLocation;
 use App\Enums\EnumScrapStatus;
 use App\DTO\Location\LocationDTO;
 use App\Repositories\Scrapeable\ScrapeableRepository;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LocationRepository extends ScrapeableRepository
 {
@@ -141,17 +139,20 @@ class LocationRepository extends ScrapeableRepository
 
         $query = Location::where(function(Builder $query) use ($like) {
             $query->whereRaw('SOUNDEX(text) = SOUNDEX(?)', [$like]);
-            $query->orWhereLike('text', 'like', "%$like%");
+            $query->orWhere('text', 'like', "%$like%");
         });
 
         $types = $this->toAutoCompleteTypesRow($types);
-        if ($types) {
+
+        $query->when($types, function (Builder $query) use ($types) {
             $query->whereIn('type', array_map(
                 fn(EnumLocation $type) => $type->value, $types)
             );
-        } else {
+        });
+
+        $query->when(!$types, function (Builder $query) {
             $query->whereNot('type', [EnumLocation::CONTINENT->value]);
-        }
+        });
 
         //TODO: Optimize query to include relative locations to list if fist level is less than 5
         return $query

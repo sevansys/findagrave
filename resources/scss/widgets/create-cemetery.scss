@@ -1,0 +1,24 @@
+.cemetery__create {
+  &-names {
+    ul {
+      li:nth-child(2) {
+        .cemetery__name {
+          &-move,
+          &-trash {
+            opacity: 0;
+            pointer-events: none;
+          }
+        }
+      }
+    }
+  }
+
+  &-additional-locations {
+    & > div:nth-child(2) {
+      .cemetery__create-additional-location-remove {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+}

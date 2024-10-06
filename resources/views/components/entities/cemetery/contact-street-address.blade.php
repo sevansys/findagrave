@@ -7,7 +7,7 @@
       <span>{{ $target->address }}</span>
     </div>
     <div>
-      @unless(!$hasCoordinates)
+      @if(!$hasCoordinates)
         No coordinates
       @else
         <span>Coordinates:</span>

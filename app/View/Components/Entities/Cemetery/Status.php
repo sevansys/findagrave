@@ -20,13 +20,13 @@ class Status extends Component
     public function getVisibilityIcon(): string
     {
         return match ($this->target->visibility) {
-            EnumVisibility::PRIVATE => 'lock',
+            EnumVisibility::PRIVATE => 'locked',
             EnumVisibility::NO_LONGER_EXISTS_OR_HAS_BEEN_REMOVED => 'cancel',
             default => 'global',
         };
     }
 
-    public function getVisibilityLabel()
+    public function getVisibilityLabel(): string
     {
         return match ($this->target->visibility) {
             EnumVisibility::PRIVATE => 'This cemetery is marked as private and may not be accessible.',

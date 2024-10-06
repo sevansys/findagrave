@@ -2,14 +2,30 @@
   class="flex flex-col gap-20"
   x-data="{
     data: null,
+    root: null,
     error: null,
     isLoading: false,
-    onSubmit(event) {
-      const formData = new FormData(event.target)
 
+    get formData() {
+      return new FormData(this.root.querySelector('#search-for-duplicates'));
+    },
+
+    get query() {
+      return Object.fromEntries(this.formData.entries())
+    },
+
+    get createNewCemeteryUrl() {
+      return `${window.location.pathname}?${new URLSearchParams(this.query)}`;
+    },
+
+    init() {
+      this.root = this.$el;
+    },
+
+    onSubmit() {
       this.isLoading = true;
       window.axios.get('/cemeteries/search', {
-        params: Object.fromEntries(formData.entries())
+        params: this.query
       }).then((response) => {
         this.data = response.data?.data ?? [];
         this.error = null;
@@ -28,6 +44,7 @@
       <x-features.search.cemetery
         :types="$types"
         @submit.prevent="onSubmit"
+        id="search-for-duplicates"
         class="grid grid-cols-2|3|auto"
         :show-hint="false"></x-features.search.cemetery>
       <template x-if="error">
@@ -46,21 +63,27 @@
           x-data="cemetery"></x-entities.cemetery.list-item-alpine>
       </template>
 
-      <div
-        x-show="data !== null"
-        class="flex flex-col gap-1 items-center py-1 text-gray-500"
-      >
-        <h4 x-show="data !== null && data.length === 0" class="text-xl font-semibold">No results found</h4>
-        <p class="mb-5">Still can't find a matching cemetery? You can add a cemetery now.</p>
-        <x-shared.btn
-          type="submit"
-          class="flex gap-2 border rounded-md py-2 items-center text-[#1775a5]">
-        <span class="w-5 h-5 bg-[#1775a5] text-white rounded-full p-0.5">
-          <x-shared.icons.plus></x-shared.icons.plus>
-        </span>
-          Add Cemetery
-        </x-shared.btn>
-      </div>
+      <template x-if="data !== null">
+        <div
+
+          class="flex flex-col gap-1 items-center py-1 text-gray-500"
+        >
+          <h4 x-show="data !== null && data.length === 0" class="text-xl font-semibold">No results found</h4>
+          <p class="mb-5">Still can't find a matching cemetery? You can add a cemetery now.</p>
+
+          <a :href="createNewCemeteryUrl">
+            <x-shared.btn
+              type="submit"
+              class="flex gap-2 border rounded-md py-2 items-center text-[#1775a5]"
+            >
+              <span class="w-5 h-5 bg-[#1775a5] text-white rounded-full p-0.5">
+                <x-shared.icons.plus></x-shared.icons.plus>
+              </span>
+              Add Cemetery
+            </x-shared.btn>
+          </a>
+        </div>
+      </template>
     </div>
   </div>
 </div>

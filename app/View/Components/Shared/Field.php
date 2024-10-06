@@ -23,6 +23,7 @@ class Field extends Component
         public ?bool $required = false,
         public bool $floatLabel = true,
         public ?bool $autofocus = false,
+        public ?bool $showErrors = true,
         public ?string $autocomplete = null,
         public array|string|null $errors = null,
     ) {}
@@ -48,9 +49,8 @@ class Field extends Component
             'transition-shadow',
             'pt-6' => $isLabeled,
             'pt-2' => !$isLabeled,
-            'bg-red-100' => $hasErrors,
-            'border-red-600' => $hasErrors,
             'border-neutral-300' => !$hasErrors,
+            'bg-red-100 border-red-600' => $hasErrors,
         ];
     }
 

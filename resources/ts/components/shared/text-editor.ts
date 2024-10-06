@@ -3,6 +3,7 @@ import { AlpineComponent } from 'alpinejs';
 
 interface TextEditor {
   instance: Quill | null;
+  field: HTMLTextAreaElement | null;
 }
 
 interface TextEditorOptions {}
@@ -19,9 +20,20 @@ export function TextEditorComponent(
   };
 
   return {
+    field: null,
     instance: null,
     init(): void {
       this.instance = new Quill(this.$el, options);
+      this.field =
+        this.$el.parentElement?.querySelector<HTMLTextAreaElement>(
+          'textarea[data-ql-field]',
+        ) ?? null;
+
+      this.instance.on('text-change', () => {
+        if (this.field && this.instance) {
+          this.field.value = this.instance.root.innerHTML;
+        }
+      });
     },
   };
 }

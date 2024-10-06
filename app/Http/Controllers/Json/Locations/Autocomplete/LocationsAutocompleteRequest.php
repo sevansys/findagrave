@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Json\Locations\Autocomplete;
 
-use Spatie\LaravelData\Attributes\Validation\ArrayType;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\Validation\Enum;
+use Spatie\LaravelData\Attributes\Validation\ArrayType;
 use Spatie\LaravelData\Attributes\Validation\Sometimes;
 use Spatie\LaravelData\Attributes\Validation\StringType;
+use Spatie\LaravelData\Support\Validation\ValidationContext;
 
 use App\Enums\EnumLocation;
-use Spatie\LaravelData\Support\Validation\ValidationContext;
 
 class LocationsAutocompleteRequest extends Data
 {

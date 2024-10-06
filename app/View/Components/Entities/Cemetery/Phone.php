@@ -2,25 +2,15 @@
 
 namespace App\View\Components\Entities\Cemetery;
 
-use Illuminate\View\Component;
-use Illuminate\Contracts\View\View;
-
-use App\Models\Cemetery;
-
-class Phone extends Component
+class Phone extends AboutItem
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct(
-        public Cemetery $target
-    ) {}
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View
+    protected function getProp(): string
     {
-        return view('components.entities.cemetery.phone');
+        return 'phone';
+    }
+
+    public function getViewPath(): string
+    {
+        return 'components.entities.cemetery.phone';
     }
 }

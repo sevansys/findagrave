@@ -8,6 +8,14 @@
     style: '{{ $style }}',
     accessToken: '{{ $key }}',
     center: [{{ $longitude }}, {{ $latitude }}],
+    cemeteries: [
+      {
+        name: '{{ $target->name }}',
+        latitude: {{ $latitude }},
+        longitude: {{ $longitude }},
+        memorialsCount: 0,
+      }
+    ],
   })"
 >
   <div id="map" class="w-full h-full"></div>

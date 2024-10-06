@@ -7,20 +7,15 @@ use Illuminate\Contracts\View\View;
 
 use App\Models\Cemetery;
 
-class Id extends Component
+class Id extends AboutItem
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct(
-        public Cemetery $target,
-    ) {}
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View
+    protected function getProp(): string
     {
-        return view('components.entities.cemetery.id');
+        return 'id';
+    }
+
+    public function getViewPath(): string
+    {
+        return 'components.entities.cemetery.id';
     }
 }

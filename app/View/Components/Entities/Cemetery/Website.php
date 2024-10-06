@@ -2,25 +2,15 @@
 
 namespace App\View\Components\Entities\Cemetery;
 
-use Closure;
-use Illuminate\Contracts\View\View;
-use Illuminate\View\Component;
-
-class Website extends Component
+class Website extends AboutItem
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
+    protected function getProp(): string
     {
-        //
+        return 'website';
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View|Closure|string
+    public function getViewPath(): string
     {
-        return view('components.entities.cemetery.website');
+        return 'components.entities.cemetery.website';
     }
 }

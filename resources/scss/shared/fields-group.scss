@@ -3,7 +3,7 @@
     flex: 1;
   }
 
-  &:is(.gap-0) > .field {
+  &:is(.gap-0) > * {
     &:is(:first-child) {
       input {
         border-right-width: 0 !important;

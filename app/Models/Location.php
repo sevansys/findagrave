@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Enums\EnumLocation;
 use App\Models\Scopes\ScrapedRecord;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ScopedBy(ScrapedRecord::class)]
 class Location extends Model

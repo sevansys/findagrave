@@ -18,7 +18,9 @@
   @if($ref)
     x-ref="{{ $ref }}"
   @endif
-  class="relative flex flex-col w-full"
+  {{ $attributes->merge([
+    'class' => 'relative flex flex-col w-full',
+  ]) }}
   x-data='autoComplete({
     query: "{{ $value }}",
     params: @json($params),
@@ -31,23 +33,27 @@
     @click.away="active = false"
     @keydown.escape="active = false"
   >
-    <x-shared.field
-      type="text"
+    <div class="flex gap-2 items-center">
+      <x-shared.field
+        type="text"
 
-      :name="$name"
-      :label="$label"
-      :errors="$error"
+        :name="$name"
+        :label="$label"
+        :errors="$error"
+        :show-errors="false"
 
-      x-bind:class="{
-        'bg-red-100': hasError,
-        'border-red-600': hasError,
-      }"
-      x-model.debounce.250ms="query"
+        class="bg-gray-50"
+        x-model.debounce.250ms="query"
 
-      @blur="onBlur"
-      @focus="onFocus"
-      @input="onInput"
-    ></x-shared.field>
+        @blur="onBlur"
+        @focus="onFocus"
+        @input="onInput"
+      ></x-shared.field>
+
+      @if(!empty($after))
+        {!! $after !!}
+      @endif
+    </div>
 
     <input
       type="hidden"
@@ -57,6 +63,10 @@
         name="{{ $valueName }}"
       @endif
     />
+
+    @if($error)
+      <x-shared.errors :items="$error"></x-shared.errors>
+    @endif
 
     <div
       x-cloak
@@ -69,7 +79,7 @@
       x-transition:enter-end="opacity-100 transform scale-y-100"
       x-transition:leave-start="opacity-100 transform scale-y-100"
     >
-      <div class="absolute top-1 mt-0.5 w-full max-h-60 overflow-y-auto border bg-white shadow-xl rounded z-10">
+      <div class="absolute top-1 mt-0.5 w-full max-h-60 overflow-y-auto border bg-white shadow-xl rounded z-20">
         <div class="py-1.5">
           <div x-show="query?.length < 3" class="p-3 text-neutral-500 text-sm">
             <i>{{ $textLimitHit }}</i>
