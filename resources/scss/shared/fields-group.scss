@@ -1,6 +1,14 @@
 .fields-group {
-  & > * {
+  &:not(&--no-shrink) > * {
     flex: 1;
+  }
+
+  &--no-shrink > * {
+    flex: 1 0 180px;
+
+    @include screen('md') {
+      flex: 1;
+    }
   }
 
   &:is(.gap-0) > * {
@@ -33,13 +41,21 @@
     }
 
     & > *:is(:last-child) {
-      flex: 2;
+      flex: 0 0 100%;
+
+      @include screen('md') {
+        flex: 2;
+      }
     }
   }
 
   &_3_3_1 {
-    & > * {
-      flex: 3;
+    &:not(&--no-shrink) > * {
+      flex: 0 0 100%;
+
+      @include screen('md') {
+        flex: 3;
+      }
     }
 
     & > *:is(:last-child) {

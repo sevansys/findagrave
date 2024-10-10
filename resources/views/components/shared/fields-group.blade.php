@@ -1,3 +1,3 @@
-<div @class(['fields-group flex', $clsx])>
+<div @class(['fields-group flex flex-wrap', $clsx])>
   {{ $slot }}
 </div>

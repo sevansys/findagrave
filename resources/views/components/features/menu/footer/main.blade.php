@@ -1,4 +1,4 @@
-<menu class="menu flex gap-4 justify-center font-medium">
+<menu class="menu flex flex-wrap gap-x-4 gap-y-2 justify-center font-medium">
   <li class="menu__item">
     <a href="{{ route('memorials-index') }}">Memorials</a>
   </li>
@@ -14,6 +14,9 @@
   <li>
     <a href="#about">About</a>
   </li>
+</menu>
+
+<menu class="menu flex flex-wrap gap-x-4 gap-y-2 justify-center font-medium">
   <li>
     <a href="#" class="flex gap-1 items-center">
       <span class="w-5 h-5">

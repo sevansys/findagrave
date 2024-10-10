@@ -15,7 +15,7 @@
   >
     <div
       @class([
-        'flex items-end justify-center min-h-screen text-center md:items-center sm:block',
+        'flex items-end justify-center min-h-screen text-center lg:items-center sm:block',
         $containerClsx
       ])
     >

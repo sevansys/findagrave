@@ -1,0 +1,7 @@
+@import "variables";
+
+@mixin screen($screen) {
+  @media screen and (min-width: map-get($SCREENS, $screen)) {
+    @content
+  }
+}

@@ -2,13 +2,10 @@
 
 namespace App\View\Components\Features\Menu;
 
-use Closure;
-
 use Illuminate\Contracts\View\View;
 
 class Top extends Menu
 {
-
     public function getItems(): array
     {
         return [
@@ -30,7 +27,7 @@ class Top extends Menu
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
+    public function render(): View
     {
         return view('components.features.menu.top', [
             "items" => $this->getMenu()

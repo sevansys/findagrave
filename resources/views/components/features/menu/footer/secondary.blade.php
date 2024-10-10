@@ -1,4 +1,4 @@
-<menu class="menu flex items-center text-sm gap-1">
+<menu class="menu flex flex-wrap justify-center items-center text-sm gap-1">
   <li>
     <a href="#">Contact</a>
   </li>

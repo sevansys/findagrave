@@ -6,11 +6,11 @@
   x-data="{ location: null, locationId: null, expanded: {{ $expended ? 'true' : 'false' }} }"
 >
   @if($showTitle)
-    <h1 class="text-primary text-2xl search-form__title">{{ $title }}</h1>
+    <h1 class="text-primary text-2xl px-3 search-form__title">{{ $title }}</h1>
   @endif
 
   <div class="pt-4 flex flex-col gap-4">
-    <section class="search-form__fields max-w-screen-md w-full mx-{{ $mx }} flex flex-col gap-2">
+    <section class="search-form__fields max-w-screen-md w-full px-3 mx-{{ $mx }} flex flex-col gap-2">
       <x-shared.fields-group clsx="gap-0">
         <x-shared.field
           autofocus
@@ -71,21 +71,34 @@
 
         <div class="flex gap-0 items-stretch">
           @if(!$withoutCemeteryLocation)
-            <x-shared.field
-              type="address"
-              attrs=":value='location'"
+            <x-shared.autocomplete
+              required
+              ref="location"
+              name="location"
+              value-name="location_id"
               label="Cemetery Location"
-              field-clsx="rounded-tr-none rounded-br-none"></x-shared.field>
-
-            <input type="hidden" name="location_id" :value="locationId" />
-
-            <x-shared.dialog.browse-locations>
-              <x-shared.btn
-                :lofty="false"
-                class="rounded-lg rounded-tl-none rounded-bl-none bg-gray-200 -ml-1.5 relative">
-                Browse
-              </x-shared.btn>
-            </x-shared.dialog.browse-locations>
+              base-url="/locations/autocomplete"
+              :error="$errors->get('location_id')"
+              field-clsx="rounded-tr-none rounded-br-none border-r-0"
+              :value="old('location', request()->get('location'))"
+              :input-value="old('location_id', request()->get('location_id'))"
+              :params="[
+                'types' => [\App\Enums\EnumLocation::CITY, \App\Enums\EnumLocation::COUNTY],
+              ]"
+            >
+              <x-slot name="suggestionIcon">
+                <x-shared.icons.location></x-shared.icons.location>
+              </x-slot>
+              <x-slot name="after">
+                <x-shared.btn
+                  :lofty="false"
+                  x-dialog.browse-locations="{ onSelect({ id, path }) { query=path, inputValue=id } }"
+                  class="rounded-lg self-stretch rounded-tl-none rounded-bl-none bg-gray-200 -ml-2 relative"
+                >
+                  Browse
+                </x-shared.btn>
+              </x-slot>
+            </x-shared.autocomplete>
           @endif
         </div>
       </x-shared.fields-group>
@@ -95,7 +108,7 @@
       x-collapse
       x-show="expanded">
       <section
-        class="search-form__additional-fields max-w-screen-md w-full mx-{{ $mx }} pb-4 flex flex-col gap-2"
+        class="search-form__additional-fields max-w-screen-md w-full px-3 mx-{{ $mx }} pb-4 flex flex-col gap-2"
       >
         <x-shared.fields-group clsx="gap-2 fields-group_3_3_1">
           <x-shared.field label="Bio keywords"></x-shared.field>
@@ -103,7 +116,7 @@
           <x-shared.field label="Plot"></x-shared.field>
         </x-shared.fields-group>
 
-        <x-shared.fields-group clsx="gap-2 fields-group_1_1_1_1">
+        <x-shared.fields-group clsx="gap-2 fields-group--no-shrink fields-group_1_1_1_1">
           <x-shared.field type="number" name="memorial-id" label="Memorial ID"></x-shared.field>
           <x-shared.field type="number" name="contributor-id" label="Contributor ID"></x-shared.field>
           <x-shared.dropdown
@@ -122,7 +135,7 @@
       </section>
 
       <div class="search-form__checkboxes py-5">
-        <section class="max-w-screen-md w-full mx-{{ $mx }} grid grid-cols-3">
+        <section class="max-w-screen-md w-full mx-{{ $mx }} px-3 grid gap-14 grid-cols-2 sm:grid-cols-3">
           @if(!empty($types))
             <div class="flex flex-col gap-4">
               <h4>By Memorial Types:</h4>
@@ -158,7 +171,6 @@
               @endforeach
             </div>
           @endif
-
         </section>
       </div>
     </div>
@@ -168,11 +180,11 @@
     @class([
       'pt-6' => $compact,
       'pt-16' => !$compact,
-      'flex flex-col gap-10 search-form__actions',
+      'flex flex-col gap-3 md:gap-10 search-form__actions',
     ])
   >
-    <section class="max-w-screen-md w-full mx-{{ $mx }}">
-      <div class="flex gap-5 items-center">
+    <section class="max-w-screen-md w-full px-3 pb-4 mx-{{ $mx }}">
+      <div class="flex flex-wrap gap-5 items-center">
         <x-shared.btn
           type="submit"
           variant="primary"

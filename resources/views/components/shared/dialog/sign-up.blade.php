@@ -1,4 +1,4 @@
-<x-shared.dialog dialog-clsx="max-w-screen-md p-0 my-14">
+<x-shared.dialog name="sign-up" dialog-clsx="max-w-screen-md p-0 my-14">
   <x-slot name="activator">
     {{ $slot }}
   </x-slot>
@@ -15,7 +15,7 @@
 
       <h3 class="text-center">Becoming a Find a Grave member is fast, easy and FREE.</h3>
 
-      <div class="text-sm registration-form items-center gap-x-6 gap-y-3 pl-10 px-8">
+      <div class="text-sm registration-form items-center gap-x-6 gap-y-3 md:pl-10 px-4 md:px-8">
         <span class="col-auto">Name</span>
         <x-shared.fields-group clsx="gap-0">
           <x-shared.field name="first-name" :float-label="false" label="First Name"></x-shared.field>
@@ -79,19 +79,38 @@
           <div class="flex flex-col mb-2">
             <div x-show="bePhotoVolunteer">
               <span>Volunteer location</span>
-              <div class="flex items-center gap-5">
-                <div class="flex flex-col flex-1">
-                  <x-shared.field
-                    name="location"
-                    label="Enter a city or country"></x-shared.field>
-                </div>
-                <span>OR</span>
-                <x-shared.btn variant="secondary" class="text-white bg-black flex gap-2 rounded-md">
-                  <span class="w-4 h-4">
+              <div class="flex flex-wrap items-center gap-5">
+                <x-shared.autocomplete
+                  required
+                  ref="location"
+                  name="location"
+                  value-name="location_id"
+                  label="Cemetery Location"
+                  base-url="/locations/autocomplete"
+                  :error="$errors->get('location_id')"
+                  :value="old('location', request()->get('location'))"
+                  :input-value="old('location_id', request()->get('location_id'))"
+                  :params="[
+                      'types' => [\App\Enums\EnumLocation::CITY, \App\Enums\EnumLocation::COUNTY],
+                  ]"
+                >
+                  <x-slot name="suggestionIcon">
                     <x-shared.icons.location></x-shared.icons.location>
-                  </span>
-                  <span>Use my location</span>
-                </x-shared.btn>
+                  </x-slot>
+                  <x-slot name="after">
+                    <span>OR</span>
+                    <x-shared.btn
+                      variant="secondary"
+                      class="text-white bg-black flex flex-auto gap-2 rounded-md text-nowrap"
+                      x-dialog.browse-locations="{ onSelect({ id, path }) { query=path, inputValue=id } }"
+                    >
+                      <span class="w-4 h-4">
+                        <x-shared.icons.location></x-shared.icons.location>
+                      </span>
+                      <span>Use my location</span>
+                    </x-shared.btn>
+                  </x-slot>
+                </x-shared.autocomplete>
               </div>
             </div>
           </div>

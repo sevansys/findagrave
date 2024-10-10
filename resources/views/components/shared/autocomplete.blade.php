@@ -6,6 +6,7 @@
   'params' => null,
   'baseUrl' => null,
   'valueName' => null,
+  'fieldClsx' => null,
   'suggestion' => null,
   'inputValue' => null,
   'label' => 'Keywords',
@@ -42,7 +43,7 @@
         :errors="$error"
         :show-errors="false"
 
-        class="bg-gray-50"
+        @class(["bg-gray-50", $fieldClsx])
         x-model.debounce.250ms="query"
 
         @blur="onBlur"

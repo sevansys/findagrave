@@ -18,8 +18,12 @@
 
       padding-block: 12px;
 
-      background-color: rgba(0, 0, 0, 0);
-      background-image: linear-gradient(to bottom, #36322D 6px, rgba(54, 50, 45, 0) 95%);
+      background-color: $color-primary;
+
+      @include screen('lg') {
+        background-color: rgba(0, 0, 0, 0);
+        background-image: linear-gradient(to bottom, #36322D 6px, rgba(54, 50, 45, 0) 95%);
+      }
     }
   }
 }

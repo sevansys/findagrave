@@ -21,8 +21,8 @@
   @yield('head')
 </head>
 <body @class([
-  'page',
-  sprintf('page--%s', $route()->getName())
+  'overflow-x-hidden page',
+  sprintf('page--%s', $route()?->getName()) => $route()?->getName()
 ])>
   <x-widgets.header></x-widgets.header>
   <div class="content">
@@ -30,6 +30,10 @@
   </div>
   <x-widgets.footer></x-widgets.footer>
 
+  <x-widgets.mobile-menu></x-widgets.mobile-menu>
+
+  <x-shared.dialog.sign-up></x-shared.dialog.sign-up>
+  <x-shared.dialog.sign-in></x-shared.dialog.sign-in>
   <x-shared.dialog.browse-locations></x-shared.dialog.browse-locations>
 </body>
 </html>

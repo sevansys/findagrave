@@ -10,6 +10,19 @@ window.axios = axios.create({
   withCredentials: true,
 });
 
+window.lockBodyScroll = (): void => {
+  const scrollBarWidth: number =
+    window.innerWidth - document.documentElement.clientWidth;
+
+  document.body.style.setProperty('padding-right', `${scrollBarWidth}px`);
+  document.body.style.overflowY = 'hidden';
+};
+
+window.unlockBodyScroll = (): void => {
+  document.body.style.removeProperty('padding-right');
+  document.body.style.overflowY = 'auto';
+};
+
 import './components/index';
 
 Alpine.plugin(Sort);

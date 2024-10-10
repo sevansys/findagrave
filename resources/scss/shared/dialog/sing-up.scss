@@ -1,4 +1,7 @@
 .registration-form {
   display: grid;
-  grid-template-columns: auto 1fr;
+
+  @include screen('md') {
+    grid-template-columns: auto 1fr;
+  }
 }

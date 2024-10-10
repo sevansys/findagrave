@@ -4,3 +4,16 @@ $color-border: #ced4da;
 $color-primary: #5c60a3;
 $color-secondary: #fce274;
 $color-outline-light: #f0d1b3;
+
+$screen-xs-min: 350px;
+$screen-sm-min: 480px;
+$screen-md-min: 768px;
+$screen-lg-min: 992px;
+$screen-xl-min: 1200px;
+
+$SCREENS: (
+  'xs': $screen-xs-min,
+  'sm': $screen-sm-min,
+  'md': $screen-md-min,
+  'lg': $screen-lg-min,
+);

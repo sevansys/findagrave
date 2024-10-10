@@ -9,10 +9,13 @@ import {
   DialogDirective,
   BrowseLocationsComponent,
 } from './dialog';
+import { DrawerDirective, DrawerComponent } from './drawer';
 
 export default () => {
   Alpine.directive('dialog', DialogDirective);
+  Alpine.directive('drawer', DrawerDirective);
 
+  Alpine.data('drawer', DrawerComponent);
   Alpine.data('dialog', DialogComponent);
   Alpine.data('combobox', ComboboxComponent);
   Alpine.data('dropdown', DropdownComponent);

@@ -10,19 +10,6 @@ export interface Dialog {
   params: Record<string, unknown> | null;
 }
 
-function lockBodyScroll(): void {
-  const scrollBarWidth: number =
-    window.innerWidth - document.documentElement.clientWidth;
-
-  document.body.style.setProperty('padding-right', `${scrollBarWidth}px`);
-  document.body.style.overflowY = 'hidden';
-}
-
-function unlockBodyScroll(): void {
-  document.body.style.removeProperty('padding-right');
-  document.body.style.overflowY = 'auto';
-}
-
 export function DialogComponent(
   show: boolean = false,
   name?: string,
@@ -54,9 +41,9 @@ export function DialogComponent(
     },
     effect(value: boolean): void {
       if (value) {
-        lockBodyScroll();
+        window.lockBodyScroll();
       } else {
-        unlockBodyScroll();
+        window.unlockBodyScroll();
       }
     },
   };
@@ -73,7 +60,7 @@ export const DialogDirective: DirectiveCallback = (
     return console.warn('Dialog directive requires a name as first modifier');
   }
 
-  const params = evaluate(expression);
+  const params: object = expression ? evaluate(expression) : {};
 
   const handle = (event: MouseEvent) => {
     event.preventDefault();

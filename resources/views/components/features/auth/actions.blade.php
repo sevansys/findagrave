@@ -1,16 +1,19 @@
-<menu class="menu menu--top flex gap-4">
+<menu class="hidden md:flex menu menu--top gap-4">
   <li class="menu__item">
-    <x-shared.dialog.sign-up>
-      <a id="topMenuRegister" href="#register" class="block px-2.5 pt-2.5 pb-2">
-        Register
-      </a>
-    </x-shared.dialog.sign-up>
+    <a id="topMenuRegister" x-dialog.sign-up href="#register" class="block px-2.5 pt-2.5 pb-2">
+      Register
+    </a>
   </li>
   <li class="menu__item">
-    <x-shared.dialog.sign-in>
-      <a id="topMenuSignin" href="#sign-in" class="block px-2.5 pt-2.5 pb-2">
-        Sign In
-      </a>
-    </x-shared.dialog.sign-in>
+    <a id="topMenuSignIn" x-dialog.sign-in href="#sign-in" class="block px-2.5 pt-2.5 pb-2">
+      Sign In
+    </a>
   </li>
 </menu>
+<a
+  href="#"
+  x-dialog.sign-in
+  class="w-10 h-10 flex md:hidden text-white"
+>
+  <x-shared.icons.account></x-shared.icons.account>
+</a>

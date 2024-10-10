@@ -1,4 +1,4 @@
-<div :class="{ 'bg-[#75757580]': expanded }">
+<div class="hidden sm:block" :class="{ 'bg-[#75757580]': expanded }">
   <x-entities.cemetery.daily
     href="#"
     name="Newlands Old Churchyard"

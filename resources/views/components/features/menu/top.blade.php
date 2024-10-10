@@ -1,4 +1,4 @@
-<menu class="menu menu--top flex gap-4">
+<menu class="menu menu--top gap-4 hidden lg:flex">
   @foreach($items as $item)
     <li @class([
           'menu__item',
