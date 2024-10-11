@@ -101,12 +101,35 @@ class BrowseHeader extends Component
         return sprintf('%d/%s', $location->id, $location->text);
     }
 
+    private function getInfo(): ?array
+    {
+        if (!$this->target->type || $this->target->type->value <= EnumLocation::CONTINENT->value) {
+            return null;
+        }
+
+        $items = [0, 0];
+
+        if ($this->target->relationLoaded('children')) {
+            $items[0] = $this->target->children->count();
+        }
+
+        if ($this->target->relationLoaded('cemeteries')) {
+            $items[1] = $this->target->cemeteries->count();
+        }
+
+        return [
+            'items' => $items,
+            'name' => $this->target->text,
+        ];
+    }
+
     /**
      * Get the view / contents that represent the component.
      */
     public function render(): View
     {
         return view('components.widgets.cemeteries.browse-header', [
+            'info' => $this->getInfo(),
             'targetName' => $this->target['text'],
             'titlePrefix' => $this->getTitlePrefix(),
             'breadcrumbs' => $this->generateBreadcrumbs(),

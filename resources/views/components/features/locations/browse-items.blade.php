@@ -1,8 +1,8 @@
-<menu class="flex flex-col">
+<menu class="flex flex-col gap-0.5">
   @foreach($items as $item)
     <li class="hover:bg-gray-100 transition-colors">
       <a
-        class="link font-medium text-lg leading-[-1px] py-0.5 px-1"
+        class="link leading-none font-medium text-lg py-0.5 px-1"
         href="{{ $item['href'] }}">
         {{ $item['text'] }}
       </a>

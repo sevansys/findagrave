@@ -1,4 +1,4 @@
-<nav class="flex gap-1 items-center">
+<nav class="flex flex-wrap leading-tight gap-1 items-center">
   @foreach($items as $index => $item)
     @if ($item['href'])
       <a class="link"
@@ -12,7 +12,7 @@
     @endif
 
     @if($count !== $index + 1)
-      <span class="w-4 h-4">
+      <span class="w-4 h-4 flex-shrink-0">
         <x-shared.icons.arrow-right></x-shared.icons.arrow-right>
       </span>
     @endif
