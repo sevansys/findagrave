@@ -1,4 +1,4 @@
-<x-shared.dialog name="sign-up" dialog-clsx="max-w-screen-md p-0 my-14">
+<x-shared.dialog name="sign-up" dialog-clsx="max-w-screen-md p-0 my-2 sm:my-7 lg:my-14">
   <x-slot name="activator">
     {{ $slot }}
   </x-slot>

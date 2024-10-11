@@ -1,5 +1,5 @@
 <div class="flex gap-2">
-  <a href="{{ $href }}" class="w-1/5">
+  <a href="{{ $href }}" class="w-16 flex-shrink-0 flex-grow-0">
     <picture>
       <img src="{{ $image }}" alt="{{ $name }}" />
     </picture>

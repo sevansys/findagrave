@@ -1,8 +1,13 @@
-<nav class="flex gap-{{ $gap }} items-{{ $align }} justify-{{ $justify }}">
+<nav
+  {{ $attributes->merge([
+    'class' => "flex gap-$gap items-$align justify-$justify"
+  ]) }}
+>
   @foreach($actions as $action)
     <x-shared.icon-action
       :href="$action['href']"
-      :icon-name="$action['icon']">
+      :icon-name="$action['icon']"
+    >
       {{ $action['text'] }}
 
       @if(!empty($action['count']))

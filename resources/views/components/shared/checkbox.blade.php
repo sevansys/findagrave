@@ -1,4 +1,8 @@
-<label @class(['checkbox inline-flex', $clsx])>
+<label
+  {{ $attributes->merge([
+    'class' => 'checkbox inline-flex items-center ' . ($clsx ?? '')
+  ]) }}
+>
   <span class="flex items-center cursor-pointer relative">
     <input
       type="checkbox"

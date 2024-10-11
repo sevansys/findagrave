@@ -7,7 +7,7 @@
     accessToken: '{{ $key }}',
     container: 'cemeteries-map',
   })"
-  class="w-full h-[500px] text-gray-600 bg-gray-100 border flex justify-center items-center relative"
+  class="w-full h-[500px] max-h-[80vh] text-gray-600 bg-gray-100 border flex flex-col justify-center items-center relative"
 >
   <template id="cemetery-marker-template">
     <span class="flex w-10 h-10 p-2 bg-[#c60] text-white rounded-md">
@@ -51,4 +51,28 @@
   </template>
   <div id="cemeteries-map" class="w-full h-full"></div>
 </div>
+
+
+@if($showInfo)
+  <div class="flex flex-col gap-2 py-5">
+    <div class="flex justify-between gap-5 items-centers flex-wrap">
+      <div class="flex items-center gap-5">
+        <span class="flex items-center gap-2">
+          <span class="flex w-8 h-8 p-1.5 flex-shrink-0 bg-[#c60] text-white rounded-md">
+            <x-shared.icons.cemetery></x-shared.icons.cemetery>
+          </span>
+          Cemetery
+        </span>
+          <span class="flex items-center gap-1">
+          <span class="bg-[#c60] rounded-full w-8 h-8 text-white flex items-center justify-center">2</span>
+          <span>More than one cemetery</span>
+        </span>
+      </div>
+
+      <x-shared.checkbox
+        label="Use current location"
+      ></x-shared.checkbox>
+    </div>
+  </div>
+@endif
 

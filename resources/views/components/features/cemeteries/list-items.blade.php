@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4">
+<div class="flex flex-col">
   @foreach($items as $item)
     <x-entities.cemetery.list-item
       :name="$item['name']"
