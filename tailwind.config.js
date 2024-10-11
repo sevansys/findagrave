@@ -10,6 +10,7 @@ export default {
     extend: {
       gridTemplateColumns: {
         '2|3|auto': '2fr 3fr auto',
+        'browse-locations': 'repeat(5, minmax(250px, 1fr))',
       },
     },
   },
