@@ -1,51 +1,16 @@
 <div
-  class="flex flex-col gap-20"
-  x-data="{
-    data: null,
-    root: null,
-    error: null,
-    isLoading: false,
-
-    get formData() {
-      return new FormData(this.root.querySelector('#search-for-duplicates'));
-    },
-
-    get query() {
-      return Object.fromEntries(this.formData.entries())
-    },
-
-    get createNewCemeteryUrl() {
-      return `${window.location.pathname}?${new URLSearchParams(this.query)}`;
-    },
-
-    init() {
-      this.root = this.$el;
-    },
-
-    onSubmit() {
-      this.isLoading = true;
-      window.axios.get('/cemeteries/search', {
-        params: this.query
-      }).then((response) => {
-        this.data = response.data?.data ?? [];
-        this.error = null;
-      }).catch(({ response }) => {
-        this.data = null;
-        this.error = response.data?.message ?? null;
-      }).finally((() => this.isLoading = false))
-    }
-  }"
+  class="flex flex-col gap-10 md:gap-20"
+  x-data="searchForDuplicates"
 >
-  <h2 class="text-primary text-2xl font-semibold text-center">Search for duplicates</h2>
-
+  <h2 class="text-primary text-xl md:text-2xl font-semibold text-center">Search for duplicates</h2>
 
   <div class="max-w-screen-lg min-h-48 mx-auto w-full flex flex-col gap-5">
-    <div class="px-24 flex flex-col gap-2">
+    <div class="px-0 md:px-12 lg:px-24 flex flex-col gap-2">
       <x-features.search.cemetery
         :types="$types"
         @submit.prevent="onSubmit"
         id="search-for-duplicates"
-        class="grid grid-cols-2|3|auto"
+        class="grid md:grid-cols-cemetery-search"
         :show-hint="false"></x-features.search.cemetery>
       <template x-if="error">
         <p x-html="error" class="text-red-600 font-semibold"></p>

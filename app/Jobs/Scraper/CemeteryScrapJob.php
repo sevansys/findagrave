@@ -2,6 +2,8 @@
 
 namespace App\Jobs\Scraper;
 
+use Throwable;
+
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -25,6 +27,8 @@ class CemeteryScrapJob implements ShouldQueue
 
     /**
      * Execute the job.
+     *
+     * @throws Throwable
      */
     public function handle(CemeteryRepository $repository): void
     {
@@ -39,15 +43,9 @@ class CemeteryScrapJob implements ShouldQueue
         $cemeteryDTO = (new CemeteryScraper($this->cemetery->src))->start();
 
         $repository->putScraped($this->cemetery, $cemeteryDTO);
-
-//        if ($this->continue_scrap) {
-//            dispatch(function () {
-//                Artisan::call('app:scrap-next-cemetery');
-//            })->delay(now()->addSeconds(10));
-//        }
     }
 
-    public function fail($exception, CemeteryRepository $cemeteryRepository)
+    public function fail($exception, CemeteryRepository $cemeteryRepository): void
     {
         report($exception);
         $cemeteryRepository->markAsScrapFail($this->cemetery);

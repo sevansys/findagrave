@@ -34,7 +34,7 @@
     @click.away="active = false"
     @keydown.escape="active = false"
   >
-    <div class="flex gap-2 items-center">
+    <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
       <x-shared.field
         type="text"
 
