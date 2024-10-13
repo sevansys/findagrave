@@ -1,10 +1,10 @@
-<header class="header flex px-4 pt-1 justify-between">
-  <nav class="header__nav flex gap-10 items-center lg:items-end">
+<header class="header flex px-2 md:px-4 pt-1 justify-between">
+  <nav class="header__nav flex gap-2 sm:gap-5 md:gap-10 items-center lg:items-end">
     <a
       x-data
       href="#"
       x-drawer.mobile-menu
-      class="w-10 h-10 text-white flex lg:hidden"
+      class="w-8 h-8 text-white flex lg:hidden"
     >
       <x-shared.icons.menu></x-shared.icons.menu>
     </a>

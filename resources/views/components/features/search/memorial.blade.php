@@ -6,11 +6,11 @@
   x-data="{ location: null, locationId: null, expanded: {{ $expended ? 'true' : 'false' }} }"
 >
   @if($showTitle)
-    <h1 class="text-primary text-2xl px-3 search-form__title">{{ $title }}</h1>
+    <h1 class="text-primary text-2xl px-{{ $px }} search-form__title max-w-screen-md mx-auto">{{ $title }}</h1>
   @endif
 
   <div class="pt-4 flex flex-col gap-4">
-    <section class="search-form__fields max-w-screen-md w-full px-3 mx-{{ $mx }} flex flex-col gap-2">
+    <section class="search-form__fields max-w-screen-md w-full px-{{ $px }} mx-{{ $mx }} flex flex-col gap-2">
       <x-shared.fields-group clsx="gap-0">
         <x-shared.field
           autofocus
@@ -108,7 +108,7 @@
       x-collapse
       x-show="expanded">
       <section
-        class="search-form__additional-fields max-w-screen-md w-full px-3 mx-{{ $mx }} pb-4 flex flex-col gap-2"
+        class="search-form__additional-fields max-w-screen-md w-full px-{{ $px }} mx-{{ $mx }} pb-4 flex flex-col gap-2"
       >
         <x-shared.fields-group clsx="gap-2 fields-group_3_3_1">
           <x-shared.field label="Bio keywords"></x-shared.field>
@@ -135,7 +135,7 @@
       </section>
 
       <div class="search-form__checkboxes py-5">
-        <section class="max-w-screen-md w-full mx-{{ $mx }} px-3 grid gap-14 grid-cols-2 sm:grid-cols-3">
+        <section class="max-w-screen-md w-full mx-{{ $mx }} px-{{ $px }} grid gap-14 grid-cols-2 sm:grid-cols-3">
           @if(!empty($types))
             <div class="flex flex-col gap-4">
               <h4>By Memorial Types:</h4>
@@ -183,8 +183,8 @@
       'flex flex-col gap-3 md:gap-10 search-form__actions',
     ])
   >
-    <section class="max-w-screen-md w-full px-3 pb-4 mx-{{ $mx }}">
-      <div class="flex flex-wrap gap-5 items-center">
+    <section class="max-w-screen-md w-full px-{{ $px }} pb-4 mx-{{ $mx }}">
+      <div class="flex flex-wrap gap-0.5 sm:gap-2 md:gap-5 items-center">
         <x-shared.btn
           type="submit"
           variant="primary"

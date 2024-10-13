@@ -36,8 +36,12 @@
   }
 
   &_1_1_2 {
-    & > * {
-      flex: 1;
+    & > *:is(:nth-child(1), :nth-child(2)) {
+      flex:  0 0 100%;
+
+      @include screen('sm') {
+        flex: 1;
+      }
     }
 
     & > *:is(:last-child) {

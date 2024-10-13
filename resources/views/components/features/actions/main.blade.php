@@ -1,6 +1,6 @@
 <nav
   {{ $attributes->merge([
-    'class' => "flex gap-$gap items-$align justify-$justify"
+    'class' => "flex flex-wrap gap-$gap items-$align justify-$justify"
   ]) }}
 >
   @foreach($actions as $action)

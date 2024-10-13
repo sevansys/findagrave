@@ -19,6 +19,7 @@ class Memorial extends Component
      * Create a new component instance.
      */
     public function __construct(
+        public int $px = 0,
         public string $mx = 'auto',
         public bool $compact = false,
         public bool $expended = false,
@@ -58,7 +59,7 @@ class Memorial extends Component
             EnumSearchMemorialWith::NO_GPS->value => 'No GPS',
             EnumSearchMemorialWith::GPS->value => 'GPS',
             EnumSearchMemorialWith::PLOT_INFO->value => 'Plot Info',
-            EnumSearchMemorialWith::PLOT->value => 'Plot',
+            EnumSearchMemorialWith::NO_GRAVE_PHOTO->value => 'No Plot Info',
         ];
     }
 

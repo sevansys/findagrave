@@ -13,7 +13,7 @@
 <a
   href="#"
   x-dialog.sign-in
-  class="w-10 h-10 flex md:hidden text-white"
+  class="w-8 h-8 flex md:hidden text-white"
 >
   <x-shared.icons.account></x-shared.icons.account>
 </a>
