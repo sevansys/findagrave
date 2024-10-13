@@ -9,7 +9,7 @@
     .search-form {
       background-image: linear-gradient(to bottom, rgba(54, 50, 45, 0) 10%, rgba(54, 50, 45, 0.5) 100%);
 
-      &:is(&--expended) {
+      &:is(&--expanded) {
         background-image: linear-gradient(to bottom, rgba(54, 50, 45, 0) 0, #36322D 60%);
       }
 

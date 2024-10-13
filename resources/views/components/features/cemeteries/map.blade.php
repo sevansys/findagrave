@@ -56,15 +56,15 @@
 @if($showInfo)
   <div class="flex flex-col gap-2 py-5">
     <div class="flex justify-between gap-5 items-centers flex-wrap">
-      <div class="flex items-center gap-5">
+      <div class="flex flex-wrap items-center gap-5">
         <span class="flex items-center gap-2">
           <span class="flex w-8 h-8 p-1.5 flex-shrink-0 bg-[#c60] text-white rounded-md">
             <x-shared.icons.cemetery></x-shared.icons.cemetery>
           </span>
           Cemetery
         </span>
-          <span class="flex items-center gap-1">
-          <span class="bg-[#c60] rounded-full w-8 h-8 text-white flex items-center justify-center">2</span>
+        <span class="flex items-center gap-1">
+          <span class="bg-[#c60] rounded-full text-sm h-6 w-6 md:w-8 md:h-8 text-white flex items-center justify-center">2</span>
           <span>More than one cemetery</span>
         </span>
       </div>

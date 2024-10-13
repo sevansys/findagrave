@@ -1,4 +1,4 @@
-<nav class="flex gap-1">
+<nav class="flex flex-wrap justify-center md:justify-start gap-2">
   <x-shared.action-btn icon-name="share" :clsx="$clsx">
     Share
   </x-shared.action-btn>

@@ -20,6 +20,9 @@ export default {
     'bg-red-100',
     'outline-none',
     'border-red-600',
+    'hover:bg-white',
     'border-neutral-500',
+    'hover:border-black',
+    'hover:bg-[#5C60A3]',
   ],
 };

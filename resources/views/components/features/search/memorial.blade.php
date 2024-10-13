@@ -1,9 +1,12 @@
 <form
+  x-cloak
   action=""
   method="GET"
   class="search-form"
-  :class="{ 'search-form--expended': expanded }"
-  x-data="{ location: null, locationId: null, expanded: {{ $expended ? 'true' : 'false' }} }"
+  :class="{ 'search-form--expanded': expanded }"
+  x-data="memorialsSearch({
+    expanded: {{ $expanded ? 'true' : 'false' }}
+  })"
 >
   @if($showTitle)
     <h1 class="text-primary text-2xl px-{{ $px }} search-form__title max-w-screen-md mx-auto">{{ $title }}</h1>
@@ -69,7 +72,13 @@
           </x-shared.dropdown>
         </div>
 
-        <div class="flex gap-0 items-stretch">
+        <div
+          @class([
+            'gap-0 items-stretch',
+            'flex' => !$withoutCemeteryLocation,
+            'hidden xl:flex' => $withoutCemeteryLocation,
+          ])
+        >
           @if(!$withoutCemeteryLocation)
             <x-shared.autocomplete
               required
@@ -184,7 +193,7 @@
     ])
   >
     <section class="max-w-screen-md w-full px-{{ $px }} pb-4 mx-{{ $mx }}">
-      <div class="flex flex-wrap gap-0.5 sm:gap-2 md:gap-5 items-center">
+      <div class="flex flex-wrap gap-1 sm:gap-2 md:gap-5 items-center">
         <x-shared.btn
           type="submit"
           variant="primary"

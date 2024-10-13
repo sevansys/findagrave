@@ -9,7 +9,7 @@
       We can't find the page you're looking for.
     </h1>
     <p class="text-sm">
-      Check out our <a href="#" class="link">Help</a> page or head <a href="{{ url()->previous() }}" class="link">back home</a>.
+      Check out our <a href="#" class="link">Help</a> page or head <a href="{{ url('/') }}" class="link">back home</a>.
     </p>
     <span class="text-xs text-neutral-600">Error 404</span>
   </section>

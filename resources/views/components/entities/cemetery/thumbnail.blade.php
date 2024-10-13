@@ -12,13 +12,11 @@
         <img src="{{ $src }}" alt="{{ $alt }}" class="block w-full h-full object-contain object-center flex-1" />
       </a>
 
-{{--      @if($contributor)--}}
       <x-shared.contributor-link
         href="#"
         :name="$contributor?->name"
         clsx="absolute bottom-0 left-0 right-0 text-white justify-end z-10"></x-shared.contributor-link>
     </figure>
-{{--      @endif--}}
   @else
     <div class="flex flex-col gap-5 items-center justify-center h-[420px]">
       <span class="w-20 h-20 text-gray-600">

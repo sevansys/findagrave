@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Cemetery;
 
+use DB;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,6 +12,7 @@ use App\Enums\EnumLocation;
 use App\Enums\EnumVisibility;
 use App\Enums\EnumScrapStatus;
 
+use JsonException;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
@@ -93,7 +95,6 @@ class StoreTest extends TestCase
             ],
         ]);
 
-
         $response->assertStatus(302);
         $response->assertSessionHasErrors([
             'name',
@@ -127,6 +128,9 @@ class StoreTest extends TestCase
         ]);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function test_validFullData()
     {
         $location_id = $this->location->id;
@@ -191,5 +195,43 @@ class StoreTest extends TestCase
             'cemetery_id' => $cemetery->id,
             'location_id' => $additional_locations[1],
         ]);
+
+        $cemeteryRow = DB::selectOne(
+            'select ST_AsText(location_point) as location from cemeteries where id = ?',
+            [$cemetery->id]
+        );
+
+        $this->assertEquals($cemeteryRow->location, "POINT(55.751244 37.618423)");
+    }
+
+    public function test_validDataWithoutCoordinates()
+    {
+        $location_id = $this->location->id;
+        $additional_locations = $this->additionalLocations->pluck('id')->toArray();
+
+        $response = $this->request([
+            'name' => ['Test name', 'Alt name 1', 'Alt name 2'],
+            'description' => 'Test description',
+            'location_id' => $location_id,
+            'address' => 'Test address',
+            'additional_location' => $additional_locations,
+            'more' => [
+                'phone' => '+764234223',
+                'email' => 'admin@host.com',
+                'office_address' => 'Test address',
+                'website' => 'https://www.test.com',
+                'additional_info' => 'Additional info',
+                'visibility' => EnumVisibility::PRIVATE->value,
+            ],
+        ]);
+
+        $cemetery = Cemetery::first();
+
+        $cemeteryRaw = DB::selectOne(
+            'select ST_AsText(location_point) as location from cemeteries where id = ?',
+            [$cemetery->id]
+        );
+
+        $this->assertNull($cemeteryRaw->location);
     }
 }

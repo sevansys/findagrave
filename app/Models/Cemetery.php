@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+use DB;
+
 use App\Enums\EnumVisibility;
 use App\Models\Scopes\ScrapedRecord;
 
@@ -24,7 +26,8 @@ class Cemetery extends Model
         'website',
         'address',
         'alt_name',
-        'location',
+        'latitude',
+        'longitude',
         'visibility',
         'created_at',
         'updated_at',
@@ -43,6 +46,27 @@ class Cemetery extends Model
         'updated_at' => 'datetime',
         'visibility' => EnumVisibility::class,
     ];
+
+
+    protected static function booted(): void
+    {
+        self::creating(function(Cemetery $model) {
+            self::createLocationPointer($model);
+        });
+
+        self::updating(function(Cemetery $model) {
+            self::createLocationPointer($model);
+        });
+    }
+
+    public static function createLocationPointer(Cemetery $model): void
+    {
+        if (!$model->latitude || !$model->longitude) {
+            return;
+        }
+
+        $model->location_point = DB::raw("POINT($model->latitude, $model->longitude)");
+    }
 
     public function location(): BelongsTo
     {

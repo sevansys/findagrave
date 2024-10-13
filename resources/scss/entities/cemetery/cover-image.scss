@@ -1,7 +1,11 @@
 .cemetery {
 
   &__image {
-    height: 420px;
+    height: 200px;
+
+    @include screen('md') {
+      height: 420px;
+    }
 
     &--grady {
       &::after,

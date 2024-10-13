@@ -22,7 +22,7 @@ class Memorial extends Component
         public int $px = 0,
         public string $mx = 'auto',
         public bool $compact = false,
-        public bool $expended = false,
+        public bool $expanded = false,
         public bool $showTitle = false,
         public string $submitText = "Search",
         public string $title = "Memorial Search",

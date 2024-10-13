@@ -1,4 +1,4 @@
-<div class="flex gap-4">
+<div class="flex gap-2 md:gap-4">
   @if($image)
     <a href="{{ $href }}">
       <picture class="w-20 h-20 flex border items-center justify-center">

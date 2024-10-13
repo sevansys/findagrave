@@ -2,7 +2,7 @@
   <div class="max-w-screen-xl w-full mx-auto flex flex-col lg:flex-row gap-6 md:gap-12 lg:gap-24">
     <div class="flex-1 flex flex-col gap-4">
       <div class="flex flex-col gap-1">
-        <h1 class="font-normal text-2xl text-primary">Search 580,095 cemeteries in 249 different countries</h1>
+        <h1 class="font-normal text-xl leading-tight md:text-2xl text-primary">Search 580,095 cemeteries in 249 different countries</h1>
         <x-features.search.cemetery
           action="/cemeteries"
           class="grid grid-cols-1 sm:grid-cols-cemetery-search"

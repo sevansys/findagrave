@@ -14,7 +14,7 @@ class CreateForm extends Component
      */
     public function __construct() {}
 
-    protected function getIsAditionalExpended(): bool
+    protected function getIsAditionalexpanded(): bool
     {
         return !empty(old('more'));
     }
@@ -40,7 +40,7 @@ class CreateForm extends Component
             "locationId" => null,
             "addresses" => $addresses,
             "showAdditionalAddresses" => !!count($addresses),
-            "showMoreDetails" => $this->getIsAditionalExpended(),
+            "showMoreDetails" => $this->getIsAditionalexpanded(),
             "location" => old('location', $req->get('location')),
             "names" => old('name', [
                 $req->get('cemetery')

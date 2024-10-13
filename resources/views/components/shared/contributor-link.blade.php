@@ -7,7 +7,7 @@
 
 <figcaption
   @class([
-    'text-sm flex gap-1 px-3 py-2',
+    'text-sm flex flex-wrap gap-1 leading-tight px-1.5 md:px-3 py-2',
     $clsx,
   ])
 >
