@@ -1,4 +1,4 @@
-<form method="GET" class="flex gap-2 items-center">
+<form method="GET" class="flex gap-2 items-center w-full sm:w-auto justify-end">
   <span>View</span>
 
   @foreach($items as $item)

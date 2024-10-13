@@ -1,10 +1,9 @@
 <a
-  target="_blank"
-  href="{{ $href }}"
-  @class([
-    'link flex gap-0.5',
-    $clsx,
-  ])
+  {{ $attributes->merge([
+    'href' => $href,
+    'target' => '_blank',
+    'class' => 'link flex gap-0.5 ' . $clsx,
+  ]) }}
 >
   {{ $slot }}
   <span class="w-4 h-4 mt-0.5">

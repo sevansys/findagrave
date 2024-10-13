@@ -1,6 +1,7 @@
 <footer class="border-t flex flex-col items-center text-center gap-3 py-8 text-gray-600">
   @foreach($breadcrumbs as $index => $breadcrumb)
       <x-shared.breadcrumbs
+        class="justify-center"
         :items="$breadcrumb"></x-shared.breadcrumbs>
 
     @if ($index < $breadcrumbsCount - 1)

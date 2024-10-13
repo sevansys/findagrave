@@ -1,4 +1,8 @@
-<nav class="flex flex-wrap leading-tight gap-1 items-center">
+<nav
+  {{  $attributes->merge([
+    'class' => 'flex flex-wrap leading-tight gap-1 items-center'
+  ]) }}
+>
   @foreach($items as $index => $item)
     @if ($item['href'])
       <a class="link"

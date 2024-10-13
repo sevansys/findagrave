@@ -1,11 +1,13 @@
 <div class="max-w-screen-xl flex flex-col md:flex-row items-center pt-4 md:pt-0 gap-2 md:gap-10 mx-auto w-full">
   <div class="w-full md:w-1/3 px-4 text-center md:text-left">
-    <a href="#" class="text-primary inline-flex gap-1 py-1 px-3 border rounded-md border-[#5c60a3] hover:bg-[#5c60a3] hover:text-white">
-      <span class="w-4 h-4 self-center">
-        <x-shared.icons.gallery></x-shared.icons.gallery>
-      </span>
-        See all cemetery photos
-    </a>
+    @if($showAllPhotosBtn)
+      <a href="#" class="text-primary inline-flex gap-1 py-1 px-3 border rounded-md border-[#5c60a3] hover:bg-[#5c60a3] hover:text-white">
+        <span class="w-4 h-4 self-center">
+          <x-shared.icons.gallery></x-shared.icons.gallery>
+        </span>
+          See all cemetery photos
+      </a>
+    @endif
   </div>
   <menu class="flex-1 flex">
     @foreach($items as $item)

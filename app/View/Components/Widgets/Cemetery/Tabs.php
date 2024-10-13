@@ -15,7 +15,8 @@ class Tabs extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public Cemetery $target
+        public Cemetery $target,
+        public bool $showAllPhotosBtn = false
     ) {}
 
     protected function getMenuItems(): array

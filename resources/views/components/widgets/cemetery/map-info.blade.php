@@ -1,4 +1,6 @@
-<div class="flex flex-col gap-6 w-80 px-3 text-gray-500">
+<div {{ $attributes->merge([
+  'class' => 'flex flex-col gap-6 px-3 text-gray-500'
+]) }}>
   <div class="flex flex-col gap-1">
     <div class="flex justify-between gap-1">
     <span class="flex gap-2 items-center">
@@ -36,8 +38,13 @@
         autofocus
         :float-label="false"
         label="Search names"
-        field-clsx="rounded-tr-none rounded-br-none"></x-shared.field>
-      <x-shared.btn type="reset" class="rounded-tr-md rounded-br-md bg-gray-200" :lofty="false">
+        class="rounded-tr-none rounded-br-none"
+      ></x-shared.field>
+      <x-shared.btn
+        type="reset"
+        :lofty="false"
+        class="rounded-tr-md rounded-br-md bg-gray-200 py-1"
+      >
         <span class="flex w-5 h-5">
           <x-shared.icons.cross></x-shared.icons.cross>
         </span>

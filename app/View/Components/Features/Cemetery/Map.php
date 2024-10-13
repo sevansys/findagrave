@@ -24,10 +24,12 @@ class Map extends Component
             [
                 'label' => 'Map',
                 'value' => self::DEFAULT_STYLE,
+                'icon' => 'global',
             ],
             [
                 'label' => 'Satellite',
                 'value' => 'mapbox://styles/mapbox/satellite-streets-v12',
+                'icon' => 'browse-location',
             ]
         ];
     }

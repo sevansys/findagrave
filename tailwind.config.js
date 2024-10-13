@@ -12,11 +12,15 @@ export default {
         'cemetery-search': '2fr 3fr auto',
         'browse-locations': 'repeat(5, minmax(250px, 1fr))',
       },
+      height: {
+        'cemetery-map': 'calc(100vh - 60px)',
+      },
     },
   },
   plugins: [],
   safelist: [
     'pt-2',
+    'h-[80vh]',
     'bg-red-100',
     'outline-none',
     'border-red-600',

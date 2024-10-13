@@ -8,10 +8,13 @@
       </div>
 
       <x-widgets.cemetery.banner :target="$item"></x-widgets.cemetery.banner>
-      <x-widgets.cemetery.tabs :target="$item"></x-widgets.cemetery.tabs>
+      <x-widgets.cemetery.tabs
+        :target="$item"
+        :show-all-photos-btn="true"
+      ></x-widgets.cemetery.tabs>
     </section>
 
-    <section class="pt-5 px-2 pb-10">
+    <section class="pt-5 px-2 md:pb-10">
       <div class="max-w-screen-xl mx-auto w-full flex flex-col md:flex-row gap-5">
         <div class="flex flex-col gap-4 md:gap-8 w-full md:w-1/3">
           <x-widgets.cemetery.about
@@ -42,7 +45,7 @@
       </div>
     </section>
 
-    <section class="max-w-screen-xl w-full mx-auto pt-10 pb-5">
+    <section class="max-w-screen-xl w-full mx-auto pt-5 md:pt-10 pb-5 px-2">
       <x-widgets.cemetery.footer :target="$item"></x-widgets.cemetery.footer>
     </section>
   </article>
