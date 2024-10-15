@@ -13,7 +13,7 @@ class ScrapNextLocation extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-next-location {process?}';
+    protected $signature = 'app:scrap-next-location';
 
     /**
      * The console command description.
@@ -35,7 +35,6 @@ class ScrapNextLocation extends Command
 
         $this->call('app:scrap-locations', [
             'id' => $location?->id,
-            'continue_scrap' => true,
         ]);
     }
 }

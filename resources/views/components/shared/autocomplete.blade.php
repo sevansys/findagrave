@@ -22,6 +22,7 @@
   {{ $attributes->merge([
     'class' => 'relative flex flex-col w-full',
   ]) }}
+  x-bind:class="{ 'z-10': isSuggestionActive }"
   x-data='autoComplete({
     query: "{{ $value }}",
     params: @json($params),
@@ -46,7 +47,6 @@
         @class(["bg-gray-50", $fieldClsx])
         x-model.debounce.250ms="query"
 
-        @blur="onBlur"
         @focus="onFocus"
         @input="onInput"
       ></x-shared.field>
@@ -68,7 +68,6 @@
     @if($error)
       <x-shared.errors :items="$error"></x-shared.errors>
     @endif
-
     <div
       x-cloak
       class="relative"
@@ -96,7 +95,7 @@
               @else
                 <a
                   href="#"
-                  @click.prevent="() => selectSuggestion(suggestion)"
+                  @click.stop.prevent="() => selectSuggestion(suggestion)"
                   x-bind:class="{
                     'border-t': index,
                     'bg-gray-200': isActive(suggestion),

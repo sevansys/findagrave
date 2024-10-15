@@ -2,7 +2,6 @@
 
 namespace App\Jobs\Scraper;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -24,7 +23,6 @@ class LocationScrapJob implements ShouldQueue
      */
     public function __construct(
         private readonly ?string $id = null,
-        private readonly bool $continue_scrap = false,
         private readonly ?string $root_url = null
     ) {}
 
@@ -52,12 +50,6 @@ class LocationScrapJob implements ShouldQueue
         if ($this->location) {
             $locationRepository->markAsScraped($this->location);
         }
-
-//        if ($this->continue_scrap) {
-//            dispatch(function () {
-//                Artisan::call('app:scrap-next-location');
-//            })->delay(now()->addSeconds(12));
-//        }
     }
 
     private function getSearchUrl(): string

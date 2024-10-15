@@ -13,7 +13,7 @@ class ScrapLocations extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-locations {id} {continue_scrap?} {root_url?}';
+    protected $signature = 'app:scrap-locations {id} {root_url?}';
 
     /**
      * The console command description.
@@ -31,8 +31,7 @@ class ScrapLocations extends Command
 
         LocationScrapJob::dispatchSync(
             $source_id,
-            !!$this->argument('continue_scrap'),
-            $this->argument('root_url'),
+            $this->argument('root_url')
         );
     }
 }

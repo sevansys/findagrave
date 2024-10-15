@@ -21,8 +21,7 @@ class CemeteryScrapJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        private readonly int $id,
-        private readonly bool $continue_scrap = false,
+        private readonly int $id
     ) {}
 
     /**

@@ -4,7 +4,7 @@
   ]) }}
   x-data="map({
     maxZoom: 15,
-    minZoom: 9,
+    minZoom: 7,
     container: 'map',
     zoom: {{ $zoom }},
     style: '{{ $style }}',

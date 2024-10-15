@@ -14,7 +14,7 @@ class ScrapNextCemetery extends Command
      *
      * @var string
      */
-    protected $signature = 'app:scrap-next-cemetery';
+    protected $signature = 'app:scrap-next-cemetery {country_id?}';
 
     /**
      * The console command description.

@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Location;
 use Illuminate\Support\Facades\Schedule;
 
-//Schedule::command('app:scrap-next-location')
-//    ->everyTwoSeconds()
-//    ->runInBackground();
-
-Schedule::command('app:scrap-next-cemetery')
+Schedule::command('app:scrap-next-location')
     ->everyTwoSeconds()
     ->runInBackground();
+
+//Schedule::command('app:scrap-next-cemetery')
+//    ->everyFiveSeconds()
+//    ->runInBackground();

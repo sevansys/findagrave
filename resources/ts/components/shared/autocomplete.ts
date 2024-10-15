@@ -23,8 +23,8 @@ interface AutoComplete<T> {
 
   get isSuggestionActive(): boolean;
 
+  close(): void;
   touch(): void;
-  onBlur(): void;
   request(): void;
   onFocus(): void;
   onInput(): void;
@@ -66,7 +66,7 @@ export function AutoCompleteComponent<T = unknown>(
     },
 
     request(): void {
-      if (this.query?.length < 3) {
+      if ((this.query?.length ?? 0) < 3) {
         return;
       }
 
@@ -86,17 +86,17 @@ export function AutoCompleteComponent<T = unknown>(
       this.touch();
     },
 
-    onFocus() {
+    onFocus(): void {
       this.active = true;
       this.request();
     },
 
-    onBlur() {
+    close() {
       this.active = false;
       this.isTyped = false;
     },
 
-    updateSuggestions() {
+    updateSuggestions(): void {
       this.fetch().then((suggestions: AutoCompleteResult<T>) => {
         this.isTyped = true;
         this.suggestions = suggestions.data;
@@ -119,7 +119,7 @@ export function AutoCompleteComponent<T = unknown>(
       this.query = suggestion.label;
       this.inputValue = suggestion.value ? `${suggestion.value}` : '';
 
-      this.onBlur();
+      this.close();
     },
     async fetch(): Promise<AutoCompleteResult<T>> {
       this.isLoading = true;
