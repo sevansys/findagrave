@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Location;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('app:scrap-next-location')

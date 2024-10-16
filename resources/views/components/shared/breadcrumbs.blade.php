@@ -7,7 +7,7 @@
     @if ($item['href'])
       <a class="link"
          href="{{ $item['href'] }}"
-         @if($item['target']) target="{{ $item['target'] }}" @endif
+         @isset($item['target']) target="{{ $item['target'] }}" @endif
       >
         {{ $item['text'] }}
       </a>

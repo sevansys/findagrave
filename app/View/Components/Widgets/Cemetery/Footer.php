@@ -2,11 +2,11 @@
 
 namespace App\View\Components\Widgets\Cemetery;
 
-use App\Models\Cemetery;
-use Closure;
-
+use App\Models\Location;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
+
+use App\Models\Cemetery;
 
 class Footer extends Component
 {
@@ -19,85 +19,26 @@ class Footer extends Component
 
     protected function getBreadcrumbs(): array
     {
-        return [
-            [
-                [
-                    "href" => "#",
-                    "text" => "AA",
-                    "target" => null,
-                ],
-                [
-                    "href" => "#",
-                    "text" => "BB",
-                    "target" => null,
-                ],
-                [
-                    "href" => null,
-                    "target" => null,
-                    "text" => $this->target->name,
-                ]
-            ],
-            [
-                [
-                    "href" => "#",
-                    "text" => "AA",
-                    "target" => null,
-                ],
-                [
-                    "href" => "#",
-                    "text" => "BB",
-                    "target" => null,
-                ],
-                [
-                    "href" => "#",
-                    "text" => "CC",
-                    "target" => null,
-                ],
-                [
-                    "href" => "#",
-                    "text" => "DD",
-                    "target" => null,
-                ],
-                [
-                    "href" => "#",
-                    "text" => "EE",
-                    "target" => null,
-                ],
-                [
-                    "href" => "#",
-                    "text" => "FF",
-                    "target" => null,
-                ],
-                [
-                    "href" => null,
-                    "target" => null,
-                    "text" => $this->target->name,
-                ]
-            ],
-            [
-                [
-                    "href" => "#",
-                    "text" => "AA",
-                    "target" => null,
-                ],
-                [
-                    "href" => "#",
-                    "text" => "BB",
-                    "target" => null,
-                ],
-                [
-                    "href" => null,
-                    "target" => null,
-                    "text" => $this->target->name,
-                ]
-            ],
-        ];
+        if (!$this->target->relationLoaded('additional_locations')) {
+            return [];
+        }
+
+        return $this->target->additional_locations->map(function(Location $location) {
+            $nav = $location->getForNavigation();
+
+            $nav[] = [
+                "href" => null,
+                "text" => $this->target->name,
+            ];
+
+            return $nav;
+        })->toArray();
     }
 
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
+    public function render(): View
     {
         $breadcrumbs = $this->getBreadcrumbs();
 

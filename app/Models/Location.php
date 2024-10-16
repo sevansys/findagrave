@@ -96,6 +96,42 @@ class Location extends Model
         return implode(', ', $items);
     }
 
+    public function getForNavigation(): array
+    {
+        $data = [];
+
+        $parent = $this->getParentsRelation();
+
+        do {
+            if (!$parent || $parent->type === EnumLocation::CONTINENT) {
+                break;
+            }
+
+            $data[] = [
+                'text' => $parent->text,
+                'href' => $parent->getBrowseRoute(),
+            ];
+        } while($parent = $parent->parents);
+
+        $data[] = [
+            'text' => $this->text,
+            'href' => $this->getBrowseRoute(),
+        ];
+
+        return array_reverse($data);
+    }
+
+    public function getBrowseRoute(): string
+    {
+        return route('cemeteries-browse', [
+            'slug' => sprintf(
+                '%d/%s',
+                $this->id,
+                \Str::slug($this->text),
+            ),
+        ]);
+    }
+
     private function getParentsRelation(): ?Location
     {
         if ($this->relationLoaded('parents')) {

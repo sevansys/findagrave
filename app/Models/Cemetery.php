@@ -76,12 +76,10 @@ class Cemetery extends Model
     public function additional_locations(): BelongsToMany
     {
         return $this->belongsToMany(
-            CemeteryAdditionalLocations::class,
+            Location::class,
             'cemetery_additional_locations',
             'cemetery_id',
             'location_id',
-            'id',
-            'id',
         )->withTimestamps();
     }
 
