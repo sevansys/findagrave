@@ -47,6 +47,7 @@
         @class(["bg-gray-50", $fieldClsx])
         x-model.debounce.250ms="query"
 
+        @blur="onBlur"
         @focus="onFocus"
         @input="onInput"
       ></x-shared.field>

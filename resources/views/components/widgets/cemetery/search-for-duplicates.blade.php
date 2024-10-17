@@ -8,10 +8,14 @@
     <div class="px-0 md:px-12 lg:px-24 flex flex-col gap-2">
       <x-features.search.cemetery
         :types="$types"
-        @submit.prevent="onSubmit"
+        cemetery-required
+        :show-hint="false"
         id="search-for-duplicates"
+        ajax-data-evaluate-key="data"
+        ajax-error-evaluate-key="error"
+        ajax-loading-evaluate-key="isLoading"
         class="grid md:grid-cols-cemetery-search"
-        :show-hint="false"></x-features.search.cemetery>
+      ></x-features.search.cemetery>
       <template x-if="error">
         <p x-html="error" class="text-red-600 font-semibold"></p>
       </template>

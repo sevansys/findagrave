@@ -3,6 +3,7 @@
   'name' => null,
   'options' => [],
   'label' => null,
+  'required' => false,
   'notFoundText' => 'No matches found',
 ])
 
@@ -61,6 +62,7 @@
       type="hidden"
       id="{{ $id }}"
       name="{{ $name }}"
+      @required($required)
       x-ref="hiddenTextField"
     />
     <div

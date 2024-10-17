@@ -1,5 +1,9 @@
 @extends('layouts.default')
 
 @section('content')
-  <x-widgets.memorial.choose-location></x-widgets.memorial.choose-location>
+  @if(request()->has('cemetery_id'))
+    Memorial form
+  @else
+    <x-widgets.memorial.choose-location></x-widgets.memorial.choose-location>
+  @endif
 @endsection

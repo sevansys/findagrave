@@ -4,11 +4,12 @@ namespace App\Repositories\Cemetery;
 
 use Carbon\Carbon;
 
-
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+
+use DB;
 
 use App\Models\Cemetery;
 use App\Models\Location;
@@ -173,26 +174,58 @@ class CemeteryRepository extends Scrapeable\ScrapeableRepository
 
     public function search(CemeteriesSearchQueryDTO $request): LengthAwarePaginator
     {
-        return  Cemetery::query()
-            ->with('media', fn(MorphMany $morphMany) =>
+        $cemeteriesDBRaw = DB::table('cemeteries')
+            ->join('locations', 'cemeteries.location_id', '=', 'locations.id')
+            ->whereRaw("
+                (locations.id = ? OR locations.id IN (
+                    WITH RECURSIVE sub_locations AS (
+                        SELECT id, parent_id FROM locations WHERE id = ? AND scrap_status = ?
+                        UNION ALL
+                        SELECT l.id, l.parent_id FROM locations l
+                        INNER JOIN sub_locations sl ON sl.id = l.parent_id
+                    )
+                    SELECT id FROM sub_locations
+                ))
+                AND (
+                    cemeteries.scrap_status = ?
+                )
+                AND (
+                    cemeteries.name IS NULL OR
+                    SOUNDEX(cemeteries.name) = SOUNDEX(?) OR
+                    cemeteries.name LIKE ?
+                )
+            ", [
+                $request->location_id,
+                $request->location_id,
+                EnumScrapStatus::SCRAPED,
+                EnumScrapStatus::SCRAPED,
+                $request->cemetery,
+                "%$request->cemetery%"
+            ])
+            ->select([
+                'cemeteries.id',
+                'cemeteries.name',
+                'cemeteries.address',
+                'cemeteries.alt_name',
+                'cemeteries.location_id',
+            ])
+            ->paginate(15 * $request->page);
+
+        $cemeteries = Cemetery::hydrate($cemeteriesDBRaw->items())
+            ->load([
+                'media' => fn(MorphMany $morphMany) =>
                 $morphMany
                     ->select('src', 'owner_id', 'owner_type')
-                    ->limit(1)
-            )
-            ->whereHas('location', function(Builder $belongsTo) use ($request) {
-                $belongsTo->where('id', $request->location_id);
-            })
-            ->where(function(Builder $query) use ($request) {
-                $query->whereRaw('SOUNDEX(name) = SOUNDEX(?)', [$request->cemetery])
-                    ->orWhere('name', 'like', "%$request->cemetery%");
-            })
-            ->paginate(15 * $request->page, [
-                'id',
-                'name',
-                'address',
-                'alt_name',
-                'location_id',
+                    ->limit(1),
             ]);
+
+        return new LengthAwarePaginator(
+            $cemeteries,
+            $cemeteriesDBRaw->total(),
+            $cemeteriesDBRaw->perPage(),
+            $cemeteriesDBRaw->currentPage(),
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
     }
 
     public function create(CemeteryDTO $dto): Cemetery

@@ -25,6 +25,7 @@ interface AutoComplete<T> {
 
   close(): void;
   touch(): void;
+  onBlur(): void;
   request(): void;
   onFocus(): void;
   onInput(): void;
@@ -89,6 +90,10 @@ export function AutoCompleteComponent<T = unknown>(
     onFocus(): void {
       this.active = true;
       this.request();
+    },
+
+    onBlur(): void {
+      setTimeout(() => this.close(), 100);
     },
 
     close() {

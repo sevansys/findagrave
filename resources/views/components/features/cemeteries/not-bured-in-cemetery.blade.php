@@ -1,14 +1,26 @@
-<div {{ $attributes->merge([
-  'class' => 'flex flex-col gap-4 w-full'
-]) }}>
-  <x-shared.combobox
-    name="burial-type"
-    placeholder="Choose a burial type"
-    :options="\App\Enums\EnumBurial::asOptions()"></x-shared.combobox>
+<form
+  method="GET"
+  {{ $attributes->merge([
+    'class' => 'flex flex-col gap-4 w-full'
+  ]) }}
+>
+  <div class="flex flex-col gap-1.5">
+    <x-shared.combobox
+      required
+      name="burial_type"
+      placeholder="Choose a burial type"
+      :options="\App\Enums\EnumBurial::asOptions()"
+    ></x-shared.combobox>
+  </div>
+
+
   <x-shared.field
     type="textarea"
-    name="other-burial-details"
-    label="Add any other burial details (OPTIONAL)"></x-shared.field>
+    name="burial_details"
+    label="Add any other burial details (OPTIONAL)"
+  ></x-shared.field>
+
+  <input type="hidden" name="cemetery_id" value="" />
 
   <div>
     <x-shared.btn
@@ -17,4 +29,4 @@
       class="py-2 px-4 rounded-lg"
     >Continue</x-shared.btn>
   </div>
-</div>
+</form>

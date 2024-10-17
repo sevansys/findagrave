@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('app:scrap-next-location')
-    ->everyTwoSeconds()
+    ->everySecond()
     ->runInBackground();
 
 //Schedule::command('app:scrap-next-cemetery')

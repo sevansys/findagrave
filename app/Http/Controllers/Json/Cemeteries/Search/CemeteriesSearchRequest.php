@@ -13,10 +13,9 @@ use Spatie\LaravelData\Attributes\Validation\StringType;
 class CemeteriesSearchRequest extends Data
 {
     public function __construct(
-        #[Min(3)]
-        #[Required]
+        #[Sometimes]
         #[StringType]
-        public string $cemetery,
+        public ?string $cemetery = null,
 
         #[Required]
         #[Exists('locations', 'id')]

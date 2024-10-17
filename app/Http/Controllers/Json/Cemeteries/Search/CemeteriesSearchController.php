@@ -19,8 +19,8 @@ class CemeteriesSearchController extends Endpoint
     {
         $cemeteries = $cemeteryRepository->search(new CemeteriesSearchQueryDTO(
             page: $request->page ?? 1,
-            cemetery: $request->cemetery,
             location_id: $request->location_id,
+            cemetery: $request->cemetery,
         ));
         return CemeteriesSearchResource::collection($cemeteries);
     }

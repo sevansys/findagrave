@@ -13,15 +13,20 @@ class Cemetery extends Component
      * Create a new component instance.
      */
     public function __construct(
+        public bool $ajax = true,
         public bool $showHint = true,
         public ?string $action = null,
         public array|string $types = '*',
         public string $browseText = 'Browse',
         public string $actionText = 'Search',
+        public bool $cemeteryRequired = false,
+        public ?string $ajaxDataEvaluateKey = null,
+        public ?string $ajaxErrorEvaluateKey = null,
+        public ?string $ajaxLoadingEvaluateKey = null,
         public string $namePlaceholder = 'Cemetery Name',
         public string $hint = '*Only displays locations with cemeteries',
     ) {
-        if ($this->action) {
+        if (!$this->action) {
             $this->action = route('cemeteries.search.json');
         }
     }
@@ -69,6 +74,16 @@ class Cemetery extends Component
         );
     }
 
+    private function getParams(): array
+    {
+        return [
+            'ajax' => $this->ajax,
+            'evaluateErrorKey' => $this->ajaxErrorEvaluateKey,
+            'evaluationDataKey' => $this->ajaxDataEvaluateKey,
+            'evaluateLoadingKey' => $this->ajaxLoadingEvaluateKey,
+        ];
+    }
+
     /**
      * Get the view / contents that represent the component.
      */
@@ -76,6 +91,7 @@ class Cemetery extends Component
     {
         return view('components.features.search.cemetery', [
             'label' => $this->getLabel(),
+            'params' => $this->getParams(),
             'selectedTypes' => $this->getSelectedTypes(),
         ]);
     }

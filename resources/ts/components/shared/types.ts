@@ -26,3 +26,8 @@ export interface Response<T> {
   status: number;
   message: string;
 }
+
+export interface ErrorResponse<PossibleKeys extends string> {
+  message: string;
+  errors: Record<PossibleKeys, Array<string>>;
+}
